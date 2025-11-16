@@ -59,6 +59,19 @@ API 레퍼런스 및 사용 예제
 - [KEY-MANAGEMENT.md](./07-sequence-diagrams/KEY-MANAGEMENT.md) - 키 관리 (8개 다이어그램)
 - [DEPLOYMENT-FLOW.md](./07-sequence-diagrams/DEPLOYMENT-FLOW.md) - 배포 플로우 (8개 다이어그램)
 
+### [08-q-tsl](./08-q-tsl/) - Q-TSL (Q-SSL) 설계 ✨ NEW!
+양자 내성 전송 보안 계층 설계 문서
+- [Q-TSL-OVERVIEW.md](./08-q-tsl/Q-TSL-OVERVIEW.md) - Q-TSL/Q-SSL 개요 (23개 다이어그램)
+- [Q-TSL-ARCHITECTURE.md](./08-q-tsl/Q-TSL-ARCHITECTURE.md) - 아키텍처 설계 (21개 다이어그램)
+- [Q-TSL-DESIGN.md](./08-q-tsl/Q-TSL-DESIGN.md) - 상세 프로토콜 설계 (8개 다이어그램)
+- [CERTIFICATE-MANAGEMENT.md](./08-q-tsl/CERTIFICATE-MANAGEMENT.md) - 인증서 관리 (5개 다이어그램)
+- [HANDSHAKE-PROTOCOL.md](./08-q-tsl/HANDSHAKE-PROTOCOL.md) - TLS-PQC Hybrid 핸드셰이크 (9개 다이어그램)
+- [CIPHER-SUITES.md](./08-q-tsl/CIPHER-SUITES.md) - 암호화 스위트 (4개 다이어그램)
+- [SEQUENCE-DIAGRAMS.md](./08-q-tsl/SEQUENCE-DIAGRAMS.md) - Q-TSL 시퀀스 다이어그램 (10개)
+- [IMPLEMENTATION-GUIDE.md](./08-q-tsl/IMPLEMENTATION-GUIDE.md) - 구현 가이드 (15+ 스크립트)
+- [INTEGRATION.md](./08-q-tsl/INTEGRATION.md) - 시스템 통합 (7개 다이어그램)
+- [TESTING-VALIDATION.md](./08-q-tsl/TESTING-VALIDATION.md) - 테스트 및 검증
+
 ## 🎯 Quick Start
 
 ### 빠른 시작

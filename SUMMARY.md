@@ -53,15 +53,28 @@ Q-Docs/
 │   ├── FAQ.md                                   ✅ 자주 묻는 질문
 │   └── DEBUG-GUIDE.md                           ✅ 디버깅 가이드
 │
-└── 07-sequence-diagrams/                        ✅ 시퀀스 다이어그램 (NEW!)
-    ├── SEQUENCE-DIAGRAMS.md                     ✅ 시퀀스 다이어그램 개요 (7개 다이어그램)
-    ├── AUTH-FLOW.md                             ✅ 인증 플로우 (7개 다이어그램)
-    ├── TOKEN-LIFECYCLE.md                       ✅ 토큰 라이프사이클 (7개 다이어그램)
-    ├── KEY-MANAGEMENT.md                        ✅ 키 관리 플로우 (8개 다이어그램)
-    └── DEPLOYMENT-FLOW.md                       ✅ 배포 플로우 (8개 다이어그램)
+├── 07-sequence-diagrams/                        ✅ 시퀀스 다이어그램
+│   ├── SEQUENCE-DIAGRAMS.md                     ✅ 시퀀스 다이어그램 개요 (7개 다이어그램)
+│   ├── AUTH-FLOW.md                             ✅ 인증 플로우 (7개 다이어그램)
+│   ├── TOKEN-LIFECYCLE.md                       ✅ 토큰 라이프사이클 (7개 다이어그램)
+│   ├── KEY-MANAGEMENT.md                        ✅ 키 관리 플로우 (8개 다이어그램)
+│   └── DEPLOYMENT-FLOW.md                       ✅ 배포 플로우 (8개 다이어그램)
+│
+└── 08-q-tsl/                                    ✅ Q-TSL (Q-SSL) 설계 (NEW!)
+    ├── README.md                                ✅ Q-TSL 섹션 인덱스
+    ├── Q-TSL-OVERVIEW.md                        ✅ Q-TSL/Q-SSL 개요 (23개 다이어그램)
+    ├── Q-TSL-ARCHITECTURE.md                    ✅ Q-TSL 아키텍처 설계 (21개 다이어그램)
+    ├── Q-TSL-DESIGN.md                          ✅ 상세 프로토콜 설계 (8개 다이어그램)
+    ├── CERTIFICATE-MANAGEMENT.md                ✅ 인증서 관리 (5개 다이어그램)
+    ├── HANDSHAKE-PROTOCOL.md                    ✅ TLS-PQC Hybrid 핸드셰이크 (9개 다이어그램)
+    ├── CIPHER-SUITES.md                         ✅ 암호화 스위트 (4개 다이어그램)
+    ├── SEQUENCE-DIAGRAMS.md                     ✅ Q-TSL 시퀀스 다이어그램 (10개)
+    ├── IMPLEMENTATION-GUIDE.md                  ✅ 구현 가이드 (15+ 스크립트)
+    ├── INTEGRATION.md                           ✅ 시스템 통합 (7개 다이어그램)
+    └── TESTING-VALIDATION.md                    ✅ 테스트 및 검증
 ```
 
-## ✅ 완료된 문서 (37개)
+## ✅ 완료된 문서 (47개)
 
 ### 📋 메인 문서
 1. **README.md** - Q-Docs 메인 인덱스 및 Quick Start
@@ -215,10 +228,96 @@ Q-Docs/
       - Multi-Environment 배포
     - 배포 전략 비교 표
 
+### 🔐 08-q-tsl (Q-TSL/Q-SSL 설계) - **NEW SECTION!** (10개)
+
+35. **README.md** - Q-TSL 섹션 인덱스
+    - Q-TSL (Quantum-resistant Transport Security Layer) 개요
+    - Hybrid Cryptography 모델 소개
+    - QSIGN 시스템 내 Q-TSL 적용 범위
+    - 성능 고려사항 및 최적화 전략
+
+36. **Q-TSL-OVERVIEW.md** - Q-TSL/Q-SSL 개요
+    - ✨ **23개 Mermaid 다이어그램**
+    - 양자 위협과 PQC 필요성
+    - TLS-PQC Hybrid Mode 작동 원리
+    - Q-TSL vs 전통적 TLS 1.3 비교표
+    - 단계별 마이그레이션 전략 (6개월 로드맵)
+
+37. **Q-TSL-ARCHITECTURE.md** - Q-TSL 아키텍처 설계
+    - ✨ **21개 Mermaid 다이어그램**
+    - OSI 7계층 기반 계층 구조
+    - 하이브리드 암호화 모델 (KYBER1024 + ECDHE)
+    - 서명 알고리즘 (DILITHIUM3 + ECDSA/RSA)
+    - X.509v3 Hybrid 인증서 체인 및 PKI
+    - Luna HSM 통합 아키텍처 (PKCS#11)
+
+38. **Q-TSL-DESIGN.md** - 상세 프로토콜 설계
+    - ✨ **8개 Mermaid 다이어그램**
+    - 바이트 레벨 메시지 포맷 명세
+    - 핸드셰이크 프로토콜 상세 설계 (상태 머신)
+    - 레코드 프로토콜 (AES-256-GCM, Anti-Replay)
+    - Alert 프로토콜 (90+ 에러 코드)
+    - 성능 최적화 설계 (Session Resumption, 0-RTT, Hardware Acceleration)
+
+39. **CERTIFICATE-MANAGEMENT.md** - 인증서 관리
+    - ✨ **5개 Mermaid 다이어그램**
+    - PQC 인증서 구조 (X.509v3 확장)
+    - 하이브리드 인증서 체인
+    - CA 계층 구조 (Root → Intermediate → Issuing)
+    - OpenSSL + OQS 인증서 발급 (10단계)
+    - CRL/OCSP 설정, Luna HSM 키 보호
+
+40. **HANDSHAKE-PROTOCOL.md** - TLS-PQC Hybrid 핸드셰이크
+    - ✨ **9개 Mermaid 시퀀스 다이어그램**
+    - ClientHello/ServerHello PQC 확장
+    - KYBER1024 KEM + ECDHE P-384 키 교환
+    - Dual Signature 검증 (DILITHIUM3 + RSA-PSS)
+    - Mutual TLS 인증
+    - Session Resumption, 0-RTT 데이터 전송
+
+41. **CIPHER-SUITES.md** - 암호화 스위트
+    - ✨ **4개 Mermaid 다이어그램**
+    - 10+ Cipher Suites (Hybrid, Pure PQC, Classical)
+    - Tier 1-4 보안 수준 분류
+    - 협상 프로세스 및 정책 엔진
+    - APISIX/Nginx 설정 예제
+
+42. **SEQUENCE-DIAGRAMS.md** - Q-TSL 시퀀스 다이어그램
+    - ✨ **10개 상세 시퀀스 다이어그램** (30+ steps each)
+    - 전체 Q-TSL Hybrid 핸드셰이크
+    - 키 교환 상세 흐름 (KYBER1024 KEM)
+    - 인증서 검증 흐름 (체인 검증 + OCSP)
+    - Session Resumption/Ticket
+    - Mutual TLS, 0-RTT, 에러 처리
+
+43. **IMPLEMENTATION-GUIDE.md** - 구현 가이드
+    - ✨ **15+ 실행 가능한 Bash 스크립트**
+    - OpenSSL + OQS 빌드 및 설치
+    - APISIX Gateway Q-TSL 설정 (YAML)
+    - Nginx Q-TSL 모듈 설정
+    - 클라이언트 라이브러리 (Python, Node.js, Java, Go)
+    - 성능 튜닝, 트러블슈팅
+
+44. **INTEGRATION.md** - 시스템 통합
+    - ✨ **7개 Mermaid 아키텍처 다이어그램**
+    - Q-Gateway (APISIX) Q-TSL 통합
+    - Keycloak PQC Q-TSL 연동
+    - Vault HSM Q-TSL 통합
+    - Kubernetes Ingress Q-TSL 설정
+    - 레거시 시스템 호환성, 마이그레이션 전략
+
+45. **TESTING-VALIDATION.md** - 테스트 및 검증
+    - 기능 테스트 (10+ 자동화 스크립트)
+    - 보안 테스트 (Cipher Suite, 인증서 검증, testssl.sh)
+    - 성능 벤치마크 (wrk, ab, K6, 비교 분석)
+    - 부하 테스트 (Ramp-up, Sustained, Spike, Stress, Endurance)
+    - 침투 테스트 (OWASP ZAP)
+    - CI/CD 자동화 (GitHub Actions)
+
 ## 📊 문서 통계
 
 ### 문서 개수
-- **총 문서 수**: 37개
+- **총 문서 수**: 47개
 - **메인 문서**: 1개 (README.md)
 - **SUMMARY.md**: 1개
 - **개요 문서**: 4개 (00-overview)
@@ -229,11 +328,13 @@ Q-Docs/
 - **API 레퍼런스**: 4개 (05-api-reference)
 - **문제 해결**: 4개 (06-troubleshooting)
 - **시퀀스 다이어그램**: 5개 (07-sequence-diagrams)
+- **Q-TSL 설계**: 10개 (08-q-tsl) ✨ NEW!
 
 ### 콘텐츠 통계
-- **총 라인 수**: 약 25,000+ 라인
-- **Mermaid 다이어그램**: 60+ 개
-  - 시스템 아키텍처 다이어그램: 20+ 개
+- **총 라인 수**: 약 40,000+ 라인 (기존 25,000 + Q-TSL 15,000)
+- **Mermaid 다이어그램**: 150+ 개 (기존 60 + Q-TSL 90)
+  - 시스템 아키텍처 다이어그램: 40+ 개
+  - 시퀀스 다이어그램: 80+ 개
   - 시퀀스 다이어그램: 30+ 개
   - 플로우차트: 10+ 개
 - **시퀀스 다이어그램 상세 단계**: 200+ steps
