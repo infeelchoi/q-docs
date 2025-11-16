@@ -60,21 +60,33 @@ Q-Docs/
 │   ├── KEY-MANAGEMENT.md                        ✅ 키 관리 플로우 (8개 다이어그램)
 │   └── DEPLOYMENT-FLOW.md                       ✅ 배포 플로우 (8개 다이어그램)
 │
-└── 08-q-tls/                                    ✅ Q-TLS (Q-SSL) 설계 (NEW!)
-    ├── README.md                                ✅ Q-TLS 섹션 인덱스
-    ├── Q-TLS-OVERVIEW.md                        ✅ Q-TLS/Q-SSL 개요 (23개 다이어그램)
-    ├── Q-TLS-ARCHITECTURE.md                    ✅ Q-TLS 아키텍처 설계 (21개 다이어그램)
-    ├── Q-TLS-DESIGN.md                          ✅ 상세 프로토콜 설계 (8개 다이어그램)
-    ├── CERTIFICATE-MANAGEMENT.md                ✅ 인증서 관리 (5개 다이어그램)
-    ├── HANDSHAKE-PROTOCOL.md                    ✅ TLS-PQC Hybrid 핸드셰이크 (9개 다이어그램)
-    ├── CIPHER-SUITES.md                         ✅ 암호화 스위트 (4개 다이어그램)
-    ├── SEQUENCE-DIAGRAMS.md                     ✅ Q-TLS 시퀀스 다이어그램 (10개)
-    ├── IMPLEMENTATION-GUIDE.md                  ✅ 구현 가이드 (15+ 스크립트)
-    ├── INTEGRATION.md                           ✅ 시스템 통합 (7개 다이어그램)
-    └── TESTING-VALIDATION.md                    ✅ 테스트 및 검증
+├── 08-q-tls/                                    ✅ Q-TLS (Q-SSL) 설계
+│   ├── README.md                                ✅ Q-TLS 섹션 인덱스
+│   ├── Q-TLS-OVERVIEW.md                        ✅ Q-TLS/Q-SSL 개요 (23개 다이어그램)
+│   ├── Q-TLS-ARCHITECTURE.md                    ✅ Q-TLS 아키텍처 설계 (21개 다이어그램)
+│   ├── Q-TLS-DESIGN.md                          ✅ 상세 프로토콜 설계 (8개 다이어그램)
+│   ├── CERTIFICATE-MANAGEMENT.md                ✅ 인증서 관리 (5개 다이어그램)
+│   ├── HANDSHAKE-PROTOCOL.md                    ✅ TLS-PQC Hybrid 핸드셰이크 (9개 다이어그램)
+│   ├── CIPHER-SUITES.md                         ✅ 암호화 스위트 (4개 다이어그램)
+│   ├── SEQUENCE-DIAGRAMS.md                     ✅ Q-TLS 시퀀스 다이어그램 (10개)
+│   ├── IMPLEMENTATION-GUIDE.md                  ✅ 구현 가이드 (15+ 스크립트)
+│   ├── INTEGRATION.md                           ✅ 시스템 통합 (7개 다이어그램)
+│   └── TESTING-VALIDATION.md                    ✅ 테스트 및 검증
+│
+└── 10-OQS/                                      ✅ Open Quantum Safe (OQS) 설계 (NEW!)
+    ├── README.md                                ✅ OQS 섹션 인덱스
+    ├── OQS-OVERVIEW.md                          ✅ OQS 프로젝트 개요 (15+ 다이어그램)
+    ├── OQS-ARCHITECTURE.md                      ✅ OQS 아키텍처 설계 (20+ 다이어그램)
+    ├── OQS-DESIGN.md                            ✅ 상세 API 설계 (10+ 다이어그램)
+    ├── LIBOQS-INTEGRATION.md                    ✅ liboqs 통합 가이드 (빌드/설치)
+    ├── OPENSSL-OQS.md                           ✅ OpenSSL 3.x 통합 (oqs-provider)
+    ├── OQS-QSIGN-INTEGRATION.md                 ✅ QSIGN 시스템 통합 (15+ 다이어그램)
+    ├── IMPLEMENTATION-GUIDE.md                  ✅ 구현 가이드 (20+ 스크립트)
+    ├── TESTING-VALIDATION.md                    ✅ 테스트 및 검증
+    └── SEQUENCE-DIAGRAMS.md                     ✅ OQS 시퀀스 다이어그램 (10+ 다이어그램)
 ```
 
-## ✅ 완료된 문서 (47개)
+## ✅ 완료된 문서 (57개)
 
 ### 📋 메인 문서
 1. **README.md** - Q-Docs 메인 인덱스 및 Quick Start
@@ -314,10 +326,82 @@ Q-Docs/
     - 침투 테스트 (OWASP ZAP)
     - CI/CD 자동화 (GitHub Actions)
 
+### 🔬 10-OQS (Open Quantum Safe 설계) - **NEW SECTION!** (10개)
+
+46. **README.md** - OQS 섹션 인덱스
+    - Open Quantum Safe 프로젝트 개요
+    - OQS 생태계 (liboqs, oqs-provider, oqs-openssl)
+    - QSIGN에서의 OQS 역할
+    - 지원 알고리즘 전체 목록
+
+47. **OQS-OVERVIEW.md** - OQS 프로젝트 개요
+    - ✨ **15+ Mermaid 다이어그램**
+    - OQS 프로젝트 소개 및 역사
+    - NIST PQC 표준화 프로세스 (FIPS 203/204/205)
+    - 지원 알고리즘 전체 목록 (KYBER, DILITHIUM, SPHINCS+, FALCON, etc.)
+    - OQS vs 상용 솔루션 비교
+    - QSIGN의 OQS 선택 이유
+
+48. **OQS-ARCHITECTURE.md** - OQS 아키텍처 설계
+    - ✨ **20+ Mermaid 다이어그램**
+    - liboqs 아키텍처 (레이어 구조, 모듈 구성, 메모리 관리)
+    - oqs-provider 아키텍처 (OpenSSL 3.x Provider API integration)
+    - Algorithm API 설계 (KEM, Signature, common interfaces)
+    - HSM 통합 아키텍처 (Luna HSM PKCS#11 interface)
+    - QSIGN 컴포넌트별 OQS 통합 방식 (Vault, Keycloak, APISIX)
+
+49. **OQS-DESIGN.md** - 상세 API 설계
+    - ✨ **10+ Mermaid 다이어그램**
+    - liboqs API 상세 (KEM, Signature, RNG)
+    - 함수 시그니처, 파라미터, 리턴값
+    - 알고리즘 전환 메커니즘 (runtime algorithm selection)
+    - 에러 처리 전략 및 스레드 안전성
+    - 20+ 실제 C code examples
+
+50. **LIBOQS-INTEGRATION.md** - liboqs 통합 가이드
+    - ✨ **실행 가능한 빌드 스크립트 및 예제**
+    - liboqs 빌드 및 설치 (Ubuntu, RHEL, macOS)
+    - CMake 통합 (find_package, target_link_libraries)
+    - C/C++ API 사용법 (complete code examples)
+    - Python/Go 바인딩 (liboqs-python, liboqs-go)
+    - 알고리즘 선택 가이드 및 성능 튜닝
+
+51. **OPENSSL-OQS.md** - OpenSSL 3.x 통합 (oqs-provider)
+    - oqs-provider 아키텍처 및 설치
+    - OpenSSL 3.x Provider interface
+    - TLS 1.3 with PQC examples
+    - X.509 PQC 인증서 생성
+    - Hybrid 모드 설정
+
+52. **OQS-QSIGN-INTEGRATION.md** - QSIGN 시스템 통합
+    - ✨ **15+ Mermaid 다이어그램**
+    - Vault OQS Transit Engine 통합
+    - Keycloak OIDC with PQC
+    - APISIX TLS termination with OQS
+    - 6-stage migration plan
+
+53. **IMPLEMENTATION-GUIDE.md** - 구현 가이드
+    - ✨ **20+ 실행 가능한 스크립트**
+    - Vault OQS plugin development (Go)
+    - Keycloak OQS SPI development (Java)
+    - Docker and Kubernetes deployment
+
+54. **TESTING-VALIDATION.md** - 테스트 및 검증
+    - Algorithm-specific functional tests
+    - Performance benchmarks
+    - CI/CD integration (GitHub Actions, GitLab CI)
+
+55. **SEQUENCE-DIAGRAMS.md** - OQS 시퀀스 다이어그램
+    - ✨ **10+ 상세 시퀀스 다이어그램**
+    - OQS initialization sequences
+    - KYBER key exchange flows
+    - Vault Transit Engine operations
+    - Certificate issuance with OQS CA
+
 ## 📊 문서 통계
 
 ### 문서 개수
-- **총 문서 수**: 47개
+- **총 문서 수**: 57개
 - **메인 문서**: 1개 (README.md)
 - **SUMMARY.md**: 1개
 - **개요 문서**: 4개 (00-overview)
@@ -328,11 +412,12 @@ Q-Docs/
 - **API 레퍼런스**: 4개 (05-api-reference)
 - **문제 해결**: 4개 (06-troubleshooting)
 - **시퀀스 다이어그램**: 5개 (07-sequence-diagrams)
-- **Q-TLS 설계**: 10개 (08-q-tls) ✨ NEW!
+- **Q-TLS 설계**: 10개 (08-q-tls)
+- **OQS 설계**: 10개 (10-OQS) ✨ NEW!
 
 ### 콘텐츠 통계
-- **총 라인 수**: 약 40,000+ 라인 (기존 25,000 + Q-TLS 15,000)
-- **Mermaid 다이어그램**: 150+ 개 (기존 60 + Q-TLS 90)
+- **총 라인 수**: 약 50,000+ 라인 (기존 25,000 + Q-TLS 15,000 + OQS 10,000)
+- **Mermaid 다이어그램**: 220+ 개 (기존 60 + Q-TLS 90 + OQS 70)
   - 시스템 아키텍처 다이어그램: 40+ 개
   - 시퀀스 다이어그램: 80+ 개
   - 시퀀스 다이어그램: 30+ 개
