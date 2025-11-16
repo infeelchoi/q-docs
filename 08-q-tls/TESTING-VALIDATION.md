@@ -1,6 +1,6 @@
-# Q-TSL Testing and Validation Guide
+# Q-TLS Testing and Validation Guide
 
-Q-TSL (Quantum-resistant Transport Security Layer) 테스트 및 검증을 위한 종합 가이드입니다.
+Q-TLS (Quantum-resistant Transport Security Layer) 테스트 및 검증을 위한 종합 가이드입니다.
 
 ## 목차
 
@@ -44,10 +44,10 @@ Q-TSL (Quantum-resistant Transport Security Layer) 테스트 및 검증을 위�
     - [ ] Cipher suite 협상
 
   프로토콜:
-    - [ ] HTTP/1.1 over Q-TSL
-    - [ ] HTTP/2 over Q-TSL
-    - [ ] WebSocket over Q-TSL
-    - [ ] gRPC over Q-TSL
+    - [ ] HTTP/1.1 over Q-TLS
+    - [ ] HTTP/2 over Q-TLS
+    - [ ] WebSocket over Q-TLS
+    - [ ] gRPC over Q-TLS
 
   에러 처리:
     - [ ] Alert 프로토콜
@@ -60,7 +60,7 @@ Q-TSL (Quantum-resistant Transport Security Layer) 테스트 및 검증을 위�
 
 ```bash
 #!/bin/bash
-# functional-tests.sh - Q-TSL Functional Tests
+# functional-tests.sh - Q-TLS Functional Tests
 
 set -e
 
@@ -347,7 +347,7 @@ echo "Results saved to: ${RESULTS_DIR}/functional-test-summary.json"
 
 ```bash
 #!/bin/bash
-# security-tests.sh - Q-TSL Security Tests
+# security-tests.sh - Q-TLS Security Tests
 
 set -e
 
@@ -356,7 +356,7 @@ PORT="443"
 CA_CERT="/opt/qsign/certs/ca/root-ca.crt"
 
 echo "========================================="
-echo "Q-TSL Security Tests"
+echo "Q-TLS Security Tests"
 echo "========================================="
 echo ""
 
@@ -634,7 +634,7 @@ if ! command -v wrk &> /dev/null; then
 fi
 
 echo "========================================="
-echo "Q-TSL Performance Benchmark (wrk)"
+echo "Q-TLS Performance Benchmark (wrk)"
 echo "========================================="
 echo ""
 
@@ -733,7 +733,7 @@ RESULTS_DIR="/tmp/qtsl-benchmark"
 mkdir -p "${RESULTS_DIR}"
 
 echo "========================================="
-echo "Q-TSL Performance Benchmark (ab)"
+echo "Q-TLS Performance Benchmark (ab)"
 echo "========================================="
 echo ""
 
@@ -754,28 +754,28 @@ echo "  Gnuplot data: ${RESULTS_DIR}/ab-gnuplot.tsv"
 
 ```bash
 #!/bin/bash
-# compare-performance.sh - Compare Q-TSL vs TLS 1.3 performance
+# compare-performance.sh - Compare Q-TLS vs TLS 1.3 performance
 
 set -e
 
-QTSL_SERVER="https://api.qsign.local:9443"  # Q-TSL port
+QTSL_SERVER="https://api.qsign.local:9443"  # Q-TLS port
 TLS_SERVER="https://api.qsign.local:8443"   # Legacy TLS port
 REQUESTS=1000
 CONCURRENCY=50
 
 echo "========================================="
-echo "Performance Comparison: Q-TSL vs TLS 1.3"
+echo "Performance Comparison: Q-TLS vs TLS 1.3"
 echo "========================================="
 echo ""
 
-# Q-TSL benchmark
-echo "[1/2] Benchmarking Q-TSL..."
+# Q-TLS benchmark
+echo "[1/2] Benchmarking Q-TLS..."
 QTSL_RESULT=$(ab -n ${REQUESTS} -c ${CONCURRENCY} -q "${QTSL_SERVER}/health" 2>&1)
 QTSL_RPS=$(echo "${QTSL_RESULT}" | grep "Requests per second" | awk '{print $4}')
 QTSL_LATENCY=$(echo "${QTSL_RESULT}" | grep "Time per request" | head -1 | awk '{print $4}')
 
-echo "  Q-TSL RPS: ${QTSL_RPS}"
-echo "  Q-TSL Latency: ${QTSL_LATENCY} ms"
+echo "  Q-TLS RPS: ${QTSL_RPS}"
+echo "  Q-TLS Latency: ${QTSL_LATENCY} ms"
 
 # TLS 1.3 benchmark
 echo ""
@@ -796,10 +796,10 @@ echo "========================================="
 RPS_DIFF=$(echo "scale=2; (${TLS_RPS} - ${QTSL_RPS}) / ${TLS_RPS} * 100" | bc)
 LATENCY_DIFF=$(echo "scale=2; (${QTSL_LATENCY} - ${TLS_LATENCY}) / ${TLS_LATENCY} * 100" | bc)
 
-echo "RPS Difference: ${RPS_DIFF}% (Q-TSL is slower)"
-echo "Latency Difference: +${LATENCY_DIFF}% (Q-TSL is slower)"
+echo "RPS Difference: ${RPS_DIFF}% (Q-TLS is slower)"
+echo "Latency Difference: +${LATENCY_DIFF}% (Q-TLS is slower)"
 echo ""
-echo "Note: Q-TSL overhead is expected due to larger key sizes"
+echo "Note: Q-TLS overhead is expected due to larger key sizes"
 echo "      and additional PQC operations."
 ```
 
@@ -811,7 +811,7 @@ echo "      and additional PQC operations."
 
 ```bash
 #!/bin/bash
-# interoperability-tests.sh - Test Q-TSL with various clients
+# interoperability-tests.sh - Test Q-TLS with various clients
 
 set -e
 
@@ -819,7 +819,7 @@ SERVER="https://api.qsign.local"
 CA_CERT="/opt/qsign/certs/ca/root-ca.crt"
 
 echo "========================================="
-echo "Q-TSL Interoperability Tests"
+echo "Q-TLS Interoperability Tests"
 echo "========================================="
 echo ""
 
@@ -1069,7 +1069,7 @@ echo "========================================="
 
 ```javascript
 // k6-load-test.js
-// K6 Load Testing Script for Q-TSL
+// K6 Load Testing Script for Q-TLS
 
 import http from 'k6/http';
 import { check, sleep } from 'k6';
@@ -1140,7 +1140,7 @@ export default function () {
 
 // Setup function (runs once)
 export function setup() {
-    console.log('Starting Q-TSL load test...');
+    console.log('Starting Q-TLS load test...');
 }
 
 // Teardown function (runs once)
@@ -1298,9 +1298,9 @@ echo "  Alerts JSON: ${RESULTS_DIR}/zap-alerts.json"
 
 ```yaml
 # .github/workflows/qtsl-tests.yml
-# GitHub Actions workflow for Q-TSL testing
+# GitHub Actions workflow for Q-TLS testing
 
-name: Q-TSL Tests
+name: Q-TLS Tests
 
 on:
   push:
@@ -1326,7 +1326,7 @@ jobs:
         run: |
           ./scripts/generate-test-certs.sh
 
-      - name: Start Q-TSL server
+      - name: Start Q-TLS server
         run: |
           docker-compose -f docker-compose-test.yml up -d
 
@@ -1401,7 +1401,7 @@ RESULTS_DIR="/tmp/qtsl-automated-tests-$(date +%Y%m%d%H%M%S)"
 mkdir -p "${RESULTS_DIR}"
 
 echo "========================================="
-echo "Q-TSL Automated Test Suite"
+echo "Q-TLS Automated Test Suite"
 echo "========================================="
 echo "Results directory: ${RESULTS_DIR}"
 echo ""
@@ -1488,7 +1488,7 @@ echo ""
 echo "Generating summary report..."
 
 cat > "${RESULTS_DIR}/SUMMARY.md" << EOF
-# Q-TSL Test Summary
+# Q-TLS Test Summary
 
 **Date**: $(date -Iseconds)
 
@@ -1542,7 +1542,7 @@ cat "${RESULTS_DIR}/SUMMARY.md"
 
 ### 8.1 성능 메트릭 예시
 
-| 메트릭 | Q-TSL (Hybrid) | TLS 1.3 (ECDHE) | 차이 |
+| 메트릭 | Q-TLS (Hybrid) | TLS 1.3 (ECDHE) | 차이 |
 |--------|---------------|-----------------|------|
 | **Handshake Time** | 82ms | 28ms | +193% |
 | **Session Resumption** | 12ms | 8ms | +50% |
@@ -1556,7 +1556,7 @@ cat "${RESULTS_DIR}/SUMMARY.md"
 
 ### 8.2 보안 점수 비교
 
-| 항목 | Q-TSL | TLS 1.3 | 점수 |
+| 항목 | Q-TLS | TLS 1.3 | 점수 |
 |------|-------|---------|------|
 | **프로토콜 지원** | TLS 1.3 only | TLS 1.2/1.3 | A+ / A |
 | **키 교환** | ECDHE + Kyber1024 | ECDHE P-384 | A+ / A |
@@ -1570,7 +1570,7 @@ cat "${RESULTS_DIR}/SUMMARY.md"
 
 ### 8.3 호환성 매트릭스
 
-| 클라이언트 | 버전 | Q-TSL Support | TLS 1.3 Support | 테스트 결과 |
+| 클라이언트 | 버전 | Q-TLS Support | TLS 1.3 Support | 테스트 결과 |
 |-----------|------|---------------|----------------|------------|
 | **OpenSSL** | 3.2.0 + OQS | ✓ | ✓ | PASS |
 | **cURL** | 8.x | ✓ (with OQS) | ✓ | PASS |
@@ -1602,7 +1602,7 @@ Latency (ms)
          100   200   500  1000  2000  5000
 
 범례:
-─── Q-TSL (Hybrid)
+─── Q-TLS (Hybrid)
 ─ ─ TLS 1.3 (ECDHE)
 ```
 
@@ -1610,8 +1610,8 @@ Latency (ms)
 
 ## 관련 문서
 
-- [Q-TSL-OVERVIEW.md](./Q-TSL-OVERVIEW.md) - Q-TSL 개요
-- [Q-TSL-ARCHITECTURE.md](./Q-TSL-ARCHITECTURE.md) - 아키텍처
+- [Q-TLS-OVERVIEW.md](./Q-TLS-OVERVIEW.md) - Q-TLS 개요
+- [Q-TLS-ARCHITECTURE.md](./Q-TLS-ARCHITECTURE.md) - 아키텍처
 - [IMPLEMENTATION-GUIDE.md](./IMPLEMENTATION-GUIDE.md) - 구현 가이드
 - [SEQUENCE-DIAGRAMS.md](./SEQUENCE-DIAGRAMS.md) - 시퀀스 다이어그램
 - [INTEGRATION.md](./INTEGRATION.md) - 시스템 통합

@@ -1,10 +1,10 @@
-# Q-TSL Sequence Diagrams
+# Q-TLS Sequence Diagrams
 
-Q-TSL (Quantum-resistant Transport Security Layer) 프로토콜의 주요 시퀀스 다이어그램 모음입니다.
+Q-TLS (Quantum-resistant Transport Security Layer) 프로토콜의 주요 시퀀스 다이어그램 모음입니다.
 
 ## 목차
 
-1. [전체 Q-TSL Hybrid 핸드셰이크](#1-전체-q-tsl-hybrid-핸드셰이크)
+1. [전체 Q-TLS Hybrid 핸드셰이크](#1-전체-q-tls-hybrid-핸드셰이크)
 2. [키 교환 상세 흐름 (KYBER1024 KEM)](#2-키-교환-상세-흐름-kyber1024-kem)
 3. [인증서 검증 흐름](#3-인증서-검증-흐름)
 4. [Session Resumption (Session ID)](#4-session-resumption-session-id)
@@ -17,9 +17,9 @@ Q-TSL (Quantum-resistant Transport Security Layer) 프로토콜의 주요 시퀀
 
 ---
 
-## 1. 전체 Q-TSL Hybrid 핸드셰이크
+## 1. 전체 Q-TLS Hybrid 핸드셰이크
 
-Q-TSL Hybrid 모드의 전체 핸드셰이크 프로세스 (30+ steps)
+Q-TLS Hybrid 모드의 전체 핸드셰이크 프로세스 (30+ steps)
 
 ```mermaid
 sequenceDiagram
@@ -95,7 +95,7 @@ sequenceDiagram
 
 ### 핸드셰이크 메시지 크기
 
-| 메시지 | 전통 TLS 1.3 | Q-TSL Hybrid | 증가율 |
+| 메시지 | 전통 TLS 1.3 | Q-TLS Hybrid | 증가율 |
 |--------|-------------|--------------|--------|
 | ClientHello | ~200 bytes | ~400 bytes | 2x |
 | ServerHello | ~150 bytes | ~300 bytes | 2x |
@@ -548,7 +548,7 @@ sequenceDiagram
 
 ## 7. 에러 처리 시나리오
 
-Q-TSL Alert 프로토콜 및 에러 복구
+Q-TLS Alert 프로토콜 및 에러 복구
 
 ```mermaid
 sequenceDiagram
@@ -1124,15 +1124,15 @@ sequenceDiagram
 |---------|----------|-----------------|-----------|----------|
 | TLS 1.3 (RSA) | No | No | 중간 | 레거시 호환 |
 | TLS 1.3 (ECDHE) | No | Yes | 중간 | 일반 웹 |
-| Q-TSL Hybrid | Yes | Yes | 높음 | 엔터프라이즈 |
-| Q-TSL PQC Only | Yes | Yes | 최고 | 정부/금융 |
+| Q-TLS Hybrid | Yes | Yes | 높음 | 엔터프라이즈 |
+| Q-TLS PQC Only | Yes | Yes | 최고 | 정부/금융 |
 
 ---
 
 ## 관련 문서
 
-- [Q-TSL-OVERVIEW.md](./Q-TSL-OVERVIEW.md) - Q-TSL 개요
-- [Q-TSL-ARCHITECTURE.md](./Q-TSL-ARCHITECTURE.md) - 아키텍처 설계
+- [Q-TLS-OVERVIEW.md](./Q-TLS-OVERVIEW.md) - Q-TLS 개요
+- [Q-TLS-ARCHITECTURE.md](./Q-TLS-ARCHITECTURE.md) - 아키텍처 설계
 - [HANDSHAKE-PROTOCOL.md](./HANDSHAKE-PROTOCOL.md) - 핸드셰이크 프로토콜 상세
 - [CIPHER-SUITES.md](./CIPHER-SUITES.md) - 암호화 스위트
 - [CERTIFICATE-MANAGEMENT.md](./CERTIFICATE-MANAGEMENT.md) - 인증서 관리

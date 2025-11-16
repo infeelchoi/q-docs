@@ -1,6 +1,6 @@
-# Q-TSL 아키텍처 (Q-TSL Architecture)
+# Q-TLS 아키텍처 (Q-TLS Architecture)
 
-> **Q-TSL (Quantum-resistant Transport Security Layer)** 전체 아키텍처 및 계층 구조 설계 문서
+> **Q-TLS (Quantum-resistant Transport Security Layer)** 전체 아키텍처 및 계층 구조 설계 문서
 
 ---
 
@@ -20,7 +20,7 @@
 
 ## 1. 전체 아키텍처 개요
 
-### 1.1 Q-TSL 아키텍처 전체 다이어그램
+### 1.1 Q-TLS 아키텍처 전체 다이어그램
 
 ```mermaid
 graph TB
@@ -30,12 +30,12 @@ graph TB
         CL3[API Client<br/>curl, Postman, SDK]
     end
 
-    subgraph "Q-TSL Protocol Stack"
+    subgraph "Q-TLS Protocol Stack"
         subgraph "Presentation Layer"
             APP[Application Protocol<br/>HTTP/2, gRPC, WebSocket]
         end
 
-        subgraph "Q-TSL Layer (Security)"
+        subgraph "Q-TLS Layer (Security)"
             subgraph "Handshake Protocol"
                 HS_NEG[Cipher Suite Negotiation]
                 HS_KE[Key Exchange<br/>KYBER1024 + ECDHE]
@@ -67,7 +67,7 @@ graph TB
 
     subgraph "Server Layer (QSIGN)"
         subgraph "Q-Gateway (APISIX)"
-            GW_TLS[Q-TSL Termination]
+            GW_TLS[Q-TLS Termination]
             GW_ROUTE[Routing]
             GW_JWT[JWT Verification]
         end
@@ -113,13 +113,13 @@ graph TB
     style HSM fill:#ffff99,stroke:#ff9900,stroke-width:4px
 ```
 
-### 1.2 Q-TSL 시스템 컴포넌트
+### 1.2 Q-TLS 시스템 컴포넌트
 
 ```mermaid
 graph TB
-    subgraph "Q-TSL System Components"
+    subgraph "Q-TLS System Components"
         subgraph "Core Components"
-            CORE1[Q-TSL Protocol Engine]
+            CORE1[Q-TLS Protocol Engine]
             CORE2[Crypto Library<br/>liboqs + OpenSSL]
             CORE3[Certificate Manager<br/>X.509v3]
             CORE4[Session Manager]
@@ -184,14 +184,14 @@ graph TB
 sequenceDiagram
     autonumber
     participant Client
-    participant Gateway as Q-Gateway<br/>(Q-TSL)
+    participant Gateway as Q-Gateway<br/>(Q-TLS)
     participant Keycloak as Q-Sign<br/>(Keycloak)
     participant Vault as Q-KMS<br/>(Vault)
     participant HSM as Luna HSM
 
-    Note over Client,Gateway: 1. Q-TSL Handshake
+    Note over Client,Gateway: 1. Q-TLS Handshake
     Client->>Gateway: ClientHello<br/>(kyber1024, dilithium3)
-    Gateway->>Vault: Get Signing Key (Q-TSL)
+    Gateway->>Vault: Get Signing Key (Q-TLS)
     Vault->>HSM: PKCS#11 GetPublicKey
     HSM-->>Vault: Public Key
     Vault-->>Gateway: Certificate Chain (Hybrid)
@@ -210,23 +210,23 @@ sequenceDiagram
 
     Note over Client,Keycloak: 2. Authentication
     Client->>Gateway: POST /auth/login (encrypted)
-    Gateway->>Keycloak: Forward (Q-TSL mTLS)
+    Gateway->>Keycloak: Forward (Q-TLS mTLS)
     Keycloak->>Keycloak: Verify Credentials
 
     Note over Keycloak,Vault: 3. JWT Signing
-    Keycloak->>Vault: Sign JWT with DILITHIUM3 (Q-TSL)
+    Keycloak->>Vault: Sign JWT with DILITHIUM3 (Q-TLS)
     Vault->>HSM: PKCS#11 C_Sign
     HSM-->>Vault: DILITHIUM3 Signature
     Vault-->>Keycloak: Signed JWT
 
-    Keycloak-->>Gateway: JWT Token (Q-TSL)
+    Keycloak-->>Gateway: JWT Token (Q-TLS)
     Gateway-->>Client: JWT Token (encrypted)
 
     Note over Client,Gateway: 4. API Calls
     Client->>Gateway: GET /api/resource<br/>Authorization: Bearer JWT
     Gateway->>Gateway: Verify DILITHIUM3 Signature
     Gateway->>Gateway: Check JWT Claims
-    Gateway->>Keycloak: Forward (Q-TSL)
+    Gateway->>Keycloak: Forward (Q-TLS)
     Keycloak-->>Gateway: Response
     Gateway-->>Client: Response (encrypted)
 ```
@@ -235,11 +235,11 @@ sequenceDiagram
 
 ## 2. 계층 구조 (OSI 모델 기반)
 
-### 2.1 OSI 7계층과 Q-TSL 매핑
+### 2.1 OSI 7계층과 Q-TLS 매핑
 
 ```mermaid
 graph TB
-    subgraph "OSI 7 Layer Model + Q-TSL"
+    subgraph "OSI 7 Layer Model + Q-TLS"
         subgraph "Layer 7: Application"
             L7_HTTP[HTTP/2, HTTP/3]
             L7_GRPC[gRPC]
@@ -256,7 +256,7 @@ graph TB
             L5_RESUME[Session Resumption]
         end
 
-        subgraph "Q-TSL Layer (4.5)"
+        subgraph "Q-TLS Layer (4.5)"
             subgraph "Handshake Sublayer"
                 QTSL_HS[Handshake Protocol]
                 QTSL_NEG[Cipher Negotiation]
@@ -326,10 +326,10 @@ graph TB
     style QTSL_ENC fill:#fff9c4,stroke:#f57f17,stroke-width:2px
 ```
 
-### 2.2 Q-TSL 프로토콜 스택 상세
+### 2.2 Q-TLS 프로토콜 스택 상세
 
 ```yaml
-Q-TSL 프로토콜 스택:
+Q-TLS 프로토콜 스택:
 
   Application Layer (Layer 7):
     프로토콜:
@@ -360,7 +360,7 @@ Q-TSL 프로토콜 스택:
       - 세션 재개 (Session Resumption)
       - 0-RTT 데이터 전송
 
-  Q-TSL Layer (Layer 4.5):
+  Q-TLS Layer (Layer 4.5):
     서브레이어:
       1. Handshake Protocol:
          - Cipher Suite 협상
@@ -407,7 +407,7 @@ Q-TSL 프로토콜 스택:
     - 물리적 전송 매체
 ```
 
-### 2.3 Q-TSL 상태 머신
+### 2.3 Q-TLS 상태 머신
 
 ```mermaid
 stateDiagram-v2
@@ -445,7 +445,7 @@ stateDiagram-v2
     Closed --> [*]
 
     note right of ClientHello
-        Q-TSL Extensions:
+        Q-TLS Extensions:
         - supported_groups: kyber1024
         - signature_algorithms: dilithium3
         - key_share: KYBER public key
@@ -579,7 +579,7 @@ graph TB
 #### 권장 하이브리드 조합
 
 ```yaml
-Q-TSL 권장 Hybrid 설정:
+Q-TLS 권장 Hybrid 설정:
 
   Tier 1: Maximum Security (권장)
     키 교환:
@@ -821,7 +821,7 @@ KYBER1024 키 캡슐화 메커니즘 (KEM):
     - Encapsulate: ~0.15 ms (~8,000 ops/sec)
     - Decapsulate: ~0.18 ms (~8,000 ops/sec)
 
-  Q-TSL 사용:
+  Q-TLS 사용:
     - 각 TLS 세션마다 새로운 KYBER1024 키 쌍 생성 (Ephemeral)
     - 세션 종료 후 즉시 키 삭제
     - HSM에서 하드웨어 가속
@@ -862,7 +862,7 @@ ECDHE (Elliptic Curve Diffie-Hellman Ephemeral):
     - KeyGen: ~0.5 ms
     - Shared Secret 계산: ~0.8 ms
 
-  Q-TSL에서 역할:
+  Q-TLS에서 역할:
     - Hybrid 모드에서 Classical 백업
     - KYBER가 미래에 파괴되어도 현재는 안전
     - 레거시 시스템 호환성
@@ -906,7 +906,7 @@ def hybrid_key_derivation(
     )  # 48 bytes (SHA-384 output)
 
     # Step 4: HKDF-Expand for Master Secret
-    info_master = b"Q-TSL 1.0 master secret"
+    info_master = b"Q-TLS 1.0 master secret"
     master_secret = hkdf_expand_sha384(
         prk=prk,
         info=info_master,
@@ -914,7 +914,7 @@ def hybrid_key_derivation(
     )
 
     # Step 5: HKDF-Expand for Session Keys
-    info_keys = b"Q-TSL 1.0 key expansion"
+    info_keys = b"Q-TLS 1.0 key expansion"
     key_material = hkdf_expand_sha384(
         prk=master_secret,
         info=info_keys + client_random + server_random,
@@ -1106,7 +1106,7 @@ DILITHIUM3 디지털 서명 알고리즘:
     - 양자 컴퓨터 내성
     - Stateless (상태 없음, 관리 간소)
 
-  Q-TSL 사용처:
+  Q-TLS 사용처:
     - 서버 인증서 서명 (Certificate)
     - CertificateVerify 메시지 서명
     - Finished 메시지 서명
@@ -1151,7 +1151,7 @@ ECDSA (Elliptic Curve Digital Signature Algorithm):
     - 양자 컴퓨터에 취약 (Shor's Algorithm)
     - Classical 컴퓨터에는 안전
 
-  Q-TSL에서 역할:
+  Q-TLS에서 역할:
     - Hybrid 모드에서 Classical 백업
     - 레거시 클라이언트 호환성
 ```
@@ -1216,7 +1216,7 @@ graph TB
     style REJECT fill:#ffebee,stroke:#c62828,stroke-width:3px
 ```
 
-**Q-TSL 기본 정책: Policy 1 (Require Both)**
+**Q-TLS 기본 정책: Policy 1 (Require Both)**
 
 ```yaml
 Policy 1: Require Both (최대 보안):
@@ -1319,7 +1319,7 @@ graph TB
 ### 6.2 지원 암호화 스위트 목록
 
 ```yaml
-Q-TSL 지원 Cipher Suites (우선순위 순):
+Q-TLS 지원 Cipher Suites (우선순위 순):
 
   Tier 1: Pure PQC Hybrid (최고 보안)
     1. TLS_KYBER1024_DILITHIUM3_WITH_AES_256_GCM_SHA384
@@ -1526,7 +1526,7 @@ http {
     server {
         listen 443 ssl http2;
 
-        # Q-TSL 암호화 스위트
+        # Q-TLS 암호화 스위트
         ssl_ciphers "KYBER1024-DILITHIUM3-AES256-GCM-SHA384:ECDHE-KYBER1024-ECDSA-DILITHIUM3-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384";
 
         ssl_prefer_server_ciphers on;
@@ -1565,7 +1565,7 @@ graph TB
         end
 
         subgraph "Subject & Issuer"
-            S1[Issuer DN<br/>CN=Q-TSL Root CA]
+            S1[Issuer DN<br/>CN=Q-TLS Root CA]
             S2[Subject DN<br/>CN=q-sign.local]
             S3[Subject Alternative Names<br/>DNS, IP]
         end
@@ -1617,14 +1617,14 @@ graph TB
 
 ```mermaid
 graph TB
-    subgraph "Q-TSL PKI Hierarchy"
+    subgraph "Q-TLS PKI Hierarchy"
         subgraph "Root CA (Offline)"
-            ROOT[Q-TSL Root CA<br/>Self-Signed<br/>Hybrid: DILITHIUM3 + ECDSA<br/>Validity: 20 years]
+            ROOT[Q-TLS Root CA<br/>Self-Signed<br/>Hybrid: DILITHIUM3 + ECDSA<br/>Validity: 20 years]
         end
 
         subgraph "Intermediate CA (Online)"
-            INT1[Q-TSL Intermediate CA 1<br/>Server Certificates<br/>Validity: 10 years]
-            INT2[Q-TSL Intermediate CA 2<br/>Client Certificates<br/>Validity: 10 years]
+            INT1[Q-TLS Intermediate CA 1<br/>Server Certificates<br/>Validity: 10 years]
+            INT2[Q-TLS Intermediate CA 2<br/>Client Certificates<br/>Validity: 10 years]
         end
 
         subgraph "End-Entity Certificates"
@@ -1793,7 +1793,7 @@ sequenceDiagram
 stateDiagram-v2
     [*] --> Initial: Client 연결 요청
 
-    Initial --> Handshake: Q-TSL Handshake 시작
+    Initial --> Handshake: Q-TLS Handshake 시작
     Handshake --> KeyExchange: 키 교환 (KYBER + ECDHE)
     KeyExchange --> Authentication: 서버 인증 (DILITHIUM + ECDSA)
     Authentication --> Finished: Finished 메시지 교환
@@ -2058,8 +2058,8 @@ graph TB
             VAULT[Vault KMS]
         end
 
-        subgraph "Q-TSL Layer"
-            QTSL[Q-TSL Engine]
+        subgraph "Q-TLS Layer"
+            QTSL[Q-TLS Engine]
             CRYPTO[Crypto Library<br/>liboqs + OpenSSL]
         end
 
@@ -2336,8 +2336,8 @@ Luna HSM 보안 구성:
 
 ### 관련 문서
 
-- [Q-TSL-OVERVIEW.md](./Q-TSL-OVERVIEW.md) - Q-TSL 개요
-- [Q-TSL-DESIGN.md](./Q-TSL-DESIGN.md) - 상세 설계
+- [Q-TLS-OVERVIEW.md](./Q-TLS-OVERVIEW.md) - Q-TLS 개요
+- [Q-TLS-DESIGN.md](./Q-TLS-DESIGN.md) - 상세 설계
 - [PQC-ARCHITECTURE.md](../01-architecture/PQC-ARCHITECTURE.md) - PQC 아키텍처
 
 ---
@@ -2346,7 +2346,7 @@ Luna HSM 보안 구성:
 
 | 항목 | 내용 |
 |------|------|
-| **문서명** | Q-TSL 아키텍처 (Q-TSL Architecture) |
+| **문서명** | Q-TLS 아키텍처 (Q-TLS Architecture) |
 | **버전** | 1.0.0 |
 | **작성일** | 2025-11-16 |
 | **상태** | Final |

@@ -1,14 +1,14 @@
-# Q-TSL System Integration Guide
+# Q-TLS System Integration Guide
 
-Q-TSL (Quantum-resistant Transport Security Layer)을 QSIGN 시스템의 각 컴포넌트에 통합하는 가이드입니다.
+Q-TLS (Quantum-resistant Transport Security Layer)을 QSIGN 시스템의 각 컴포넌트에 통합하는 가이드입니다.
 
 ## 목차
 
 1. [Q-Gateway (APISIX) 통합](#1-q-gateway-apisix-통합)
 2. [Keycloak PQC 연동](#2-keycloak-pqc-연동)
-3. [Vault HSM Q-TSL 통합](#3-vault-hsm-q-tsl-통합)
-4. [Kubernetes Ingress Q-TSL 설정](#4-kubernetes-ingress-q-tsl-설정)
-5. [애플리케이션 레벨 Q-TSL 적용](#5-애플리케이션-레벨-q-tsl-적용)
+3. [Vault HSM Q-TLS 통합](#3-vault-hsm-q-tls-통합)
+4. [Kubernetes Ingress Q-TLS 설정](#4-kubernetes-ingress-q-tls-설정)
+5. [애플리케이션 레벨 Q-TLS 적용](#5-애플리케이션-레벨-q-tls-적용)
 6. [레거시 시스템 호환성](#6-레거시-시스템-호환성)
 7. [마이그레이션 전략](#7-마이그레이션-전략)
 
@@ -27,7 +27,7 @@ graph TB
     end
 
     subgraph GATEWAY["Q-Gateway (APISIX)"]
-        LB[Load Balancer<br/>Q-TSL Termination]
+        LB[Load Balancer<br/>Q-TLS Termination]
         ROUTER[API Router]
         AUTH[Authentication]
         RATE[Rate Limiting]
@@ -40,29 +40,29 @@ graph TB
         APP2[Application 2]
     end
 
-    WEB -->|Q-TSL 1.3| LB
-    MOBILE -->|Q-TSL 1.3| LB
-    API_CLIENT -->|Q-TSL 1.3| LB
+    WEB -->|Q-TLS 1.3| LB
+    MOBILE -->|Q-TLS 1.3| LB
+    API_CLIENT -->|Q-TLS 1.3| LB
 
     LB --> ROUTER
     ROUTER --> AUTH
     AUTH --> RATE
 
-    RATE -->|Q-TSL| KEYCLOAK
-    RATE -->|Q-TSL| VAULT
-    RATE -->|Q-TSL| APP1
-    RATE -->|Q-TSL| APP2
+    RATE -->|Q-TLS| KEYCLOAK
+    RATE -->|Q-TLS| VAULT
+    RATE -->|Q-TLS| APP1
+    RATE -->|Q-TLS| APP2
 
     style CLIENT fill:#e3f2fd
     style GATEWAY fill:#fff9c4
     style BACKEND fill:#c8e6c9
 ```
 
-### 1.2 APISIX Q-TSL 설정
+### 1.2 APISIX Q-TLS 설정
 
 ```yaml
 # /opt/apisix/config/config.yaml
-# Q-Gateway APISIX Configuration with Q-TSL
+# Q-Gateway APISIX Configuration with Q-TLS
 
 apisix:
   node_listen:
@@ -122,7 +122,7 @@ plugins:
   - skywalking
   - http-logger
 
-  # Q-TSL specific
+  # Q-TLS specific
   - ssl-client-verify  # mTLS support
 
 plugin_attr:
@@ -141,7 +141,7 @@ plugin_attr:
 
 nginx_config:
   http_server_configuration_snippet: |
-    # Q-TSL Server Configuration
+    # Q-TLS Server Configuration
     ssl_certificate /opt/certs/server/gateway-bundle.crt;
     ssl_certificate_key /opt/certs/server/gateway.key;
     ssl_trusted_certificate /opt/certs/ca/root-ca.crt;
@@ -367,14 +367,14 @@ curl -s "${ADMIN_API}/apisix/admin/routes" \
   -H "X-API-KEY: ${ADMIN_KEY}" | jq '.list.total'
 
 echo ""
-echo "✓ APISIX Q-TSL routes configured successfully!"
+echo "✓ APISIX Q-TLS routes configured successfully!"
 ```
 
 ---
 
 ## 2. Keycloak PQC 연동
 
-### 2.1 Keycloak Q-TSL 아키텍처
+### 2.1 Keycloak Q-TLS 아키텍처
 
 ```mermaid
 graph TB
@@ -385,10 +385,10 @@ graph TB
     end
 
     subgraph GATEWAY["Q-Gateway"]
-        APISIX[APISIX<br/>Q-TSL Termination]
+        APISIX[APISIX<br/>Q-TLS Termination]
     end
 
-    subgraph KEYCLOAK["Keycloak (Q-TSL Enabled)"]
+    subgraph KEYCLOAK["Keycloak (Q-TLS Enabled)"]
         REALM[Realm: qsign]
         OIDC[OIDC Endpoint]
         USER_DB[(User Database)]
@@ -400,11 +400,11 @@ graph TB
         SIGNING[Digital Signing]
     end
 
-    WEB -->|Q-TSL| APISIX
-    MOBILE -->|Q-TSL| APISIX
-    SERVICE -->|Q-TSL mTLS| APISIX
+    WEB -->|Q-TLS| APISIX
+    MOBILE -->|Q-TLS| APISIX
+    SERVICE -->|Q-TLS mTLS| APISIX
 
-    APISIX -->|Q-TSL| OIDC
+    APISIX -->|Q-TLS| OIDC
     OIDC --> REALM
     REALM --> USER_DB
     REALM --> HSM_CONN
@@ -422,7 +422,7 @@ graph TB
 
 ```xml
 <!-- /opt/keycloak/conf/standalone.xml -->
-<!-- Keycloak Server Configuration with Q-TSL -->
+<!-- Keycloak Server Configuration with Q-TLS -->
 
 <server xmlns="urn:jboss:domain:18.0">
     <extensions>
@@ -430,7 +430,7 @@ graph TB
     </extensions>
 
     <system-properties>
-        <!-- Q-TSL Configuration -->
+        <!-- Q-TLS Configuration -->
         <property name="javax.net.ssl.keyStore" value="/opt/qsign/certs/keycloak/keystore.p12"/>
         <property name="javax.net.ssl.keyStorePassword" value="changeit"/>
         <property name="javax.net.ssl.trustStore" value="/opt/qsign/certs/ca/truststore.jks"/>
@@ -449,7 +449,7 @@ graph TB
                                redirect-socket="https"
                                enable-http2="true"/>
 
-                <!-- Q-TSL HTTPS Listener -->
+                <!-- Q-TLS HTTPS Listener -->
                 <https-listener name="https"
                                 socket-binding="https"
                                 security-realm="ApplicationRealm"
@@ -628,9 +628,9 @@ echo "✓ Keycloak realm configured successfully!"
 
 ---
 
-## 3. Vault HSM Q-TSL 통합
+## 3. Vault HSM Q-TLS 통합
 
-### 3.1 Vault Q-TSL 아키텍처
+### 3.1 Vault Q-TLS 아키텍처
 
 ```mermaid
 graph TB
@@ -641,7 +641,7 @@ graph TB
     end
 
     subgraph VAULT["HashiCorp Vault"]
-        API[Vault API<br/>Q-TSL Endpoint]
+        API[Vault API<br/>Q-TLS Endpoint]
         SECRETS[Secrets Engine]
         PKI[PKI Engine]
         TRANSIT[Transit Engine]
@@ -654,9 +654,9 @@ graph TB
         SIGNING[Signing Operations]
     end
 
-    APP1 -->|Q-TSL mTLS| API
-    APP2 -->|Q-TSL mTLS| API
-    KEYCLOAK -->|Q-TSL mTLS| API
+    APP1 -->|Q-TLS mTLS| API
+    APP2 -->|Q-TLS mTLS| API
+    KEYCLOAK -->|Q-TLS mTLS| API
 
     API --> SECRETS
     API --> PKI
@@ -676,7 +676,7 @@ graph TB
 
 ```hcl
 # /opt/vault/config/vault.hcl
-# Vault Configuration with Q-TSL and HSM Integration
+# Vault Configuration with Q-TLS and HSM Integration
 
 # Storage backend (Raft for HA)
 storage "raft" {
@@ -691,12 +691,12 @@ storage "raft" {
   }
 }
 
-# Q-TSL Listener
+# Q-TLS Listener
 listener "tcp" {
   address = "0.0.0.0:8200"
   cluster_address = "0.0.0.0:8201"
 
-  # Q-TSL Configuration
+  # Q-TLS Configuration
   tls_disable = false
   tls_cert_file = "/opt/qsign/certs/server/vault.crt"
   tls_key_file = "/opt/qsign/certs/server/vault.key"
@@ -897,9 +897,9 @@ echo "✓ Vault Transit configured successfully!"
 
 ---
 
-## 4. Kubernetes Ingress Q-TSL 설정
+## 4. Kubernetes Ingress Q-TLS 설정
 
-### 4.1 Kubernetes Q-TSL 아키텍처
+### 4.1 Kubernetes Q-TLS 아키텍처
 
 ```mermaid
 graph TB
@@ -909,7 +909,7 @@ graph TB
 
     subgraph K8S["Kubernetes Cluster"]
         subgraph INGRESS["Ingress Layer"]
-            NGINX_IC[Nginx Ingress Controller<br/>Q-TSL Termination]
+            NGINX_IC[Nginx Ingress Controller<br/>Q-TLS Termination]
             CERT_MGR[Cert-Manager<br/>Certificate Automation]
         end
 
@@ -926,7 +926,7 @@ graph TB
         end
     end
 
-    CLIENT -->|Q-TSL| NGINX_IC
+    CLIENT -->|Q-TLS| NGINX_IC
     CERT_MGR -.->|Provision Certs| NGINX_IC
 
     NGINX_IC -->|Route| GATEWAY_SVC
@@ -947,7 +947,7 @@ graph TB
 
 ```yaml
 # nginx-ingress-qtsl-values.yaml
-# Helm values for Nginx Ingress Controller with Q-TSL
+# Helm values for Nginx Ingress Controller with Q-TLS
 
 controller:
   replicaCount: 3
@@ -957,7 +957,7 @@ controller:
     tag: "3.3.0-alpine"
 
   config:
-    # Q-TSL Configuration
+    # Q-TLS Configuration
     ssl-protocols: "TLSv1.3"
     ssl-ciphers: "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256"
     ssl-prefer-server-ciphers: "true"
@@ -1029,7 +1029,7 @@ controller:
 
 ```yaml
 # api-ingress-qtsl.yaml
-# Ingress resource with Q-TSL configuration
+# Ingress resource with Q-TLS configuration
 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -1040,7 +1040,7 @@ metadata:
     # Ingress class
     kubernetes.io/ingress.class: "nginx"
 
-    # Q-TSL Configuration
+    # Q-TLS Configuration
     nginx.ingress.kubernetes.io/ssl-protocols: "TLSv1.3"
     nginx.ingress.kubernetes.io/ssl-ciphers: "TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256"
     nginx.ingress.kubernetes.io/ssl-prefer-server-ciphers: "true"
@@ -1183,13 +1183,13 @@ spec:
 
 ---
 
-## 5. 애플리케이션 레벨 Q-TSL 적용
+## 5. 애플리케이션 레벨 Q-TLS 적용
 
 ### 5.1 Spring Boot 애플리케이션
 
 ```yaml
 # application.yml
-# Spring Boot with Q-TSL
+# Spring Boot with Q-TLS
 
 server:
   port: 8443
@@ -1274,7 +1274,7 @@ public class SecurityConfig {
 
 ```javascript
 // app.js
-// Express.js with Q-TSL
+// Express.js with Q-TLS
 
 const express = require('express');
 const https = require('https');
@@ -1282,7 +1282,7 @@ const fs = require('fs');
 
 const app = express();
 
-// Q-TSL Configuration
+// Q-TLS Configuration
 const httpsOptions = {
     // Server certificate
     cert: fs.readFileSync('/opt/qsign/certs/server/server.crt'),
@@ -1366,13 +1366,13 @@ server.listen(8443, () => {
 ```mermaid
 graph TB
     subgraph CLIENTS["Clients"]
-        MODERN[Modern Clients<br/>Q-TSL Support]
+        MODERN[Modern Clients<br/>Q-TLS Support]
         LEGACY[Legacy Clients<br/>TLS 1.2/1.3]
     end
 
     subgraph LB["Load Balancer / Proxy"]
         DETECT[Protocol Detection]
-        QTSL_TERM[Q-TSL Termination<br/>Port 9443]
+        QTSL_TERM[Q-TLS Termination<br/>Port 9443]
         TLS_TERM[TLS 1.2/1.3 Termination<br/>Port 8443]
     end
 
@@ -1380,10 +1380,10 @@ graph TB
         APP[Application]
     end
 
-    MODERN -->|Q-TSL 1.3| DETECT
+    MODERN -->|Q-TLS 1.3| DETECT
     LEGACY -->|TLS 1.2/1.3| DETECT
 
-    DETECT -->|Q-TSL| QTSL_TERM
+    DETECT -->|Q-TLS| QTSL_TERM
     DETECT -->|TLS| TLS_TERM
 
     QTSL_TERM --> APP
@@ -1398,7 +1398,7 @@ graph TB
 
 ```nginx
 # nginx-dual-port.conf
-# Nginx with both Q-TSL and legacy TLS support
+# Nginx with both Q-TLS and legacy TLS support
 
 http {
     # ... (common configuration)
@@ -1408,12 +1408,12 @@ http {
         server backend.qsign.local:8080;
     }
 
-    # Q-TSL Server (Port 9443)
+    # Q-TLS Server (Port 9443)
     server {
         listen 9443 ssl http2;
         server_name api.qsign.local;
 
-        # Q-TSL Configuration
+        # Q-TLS Configuration
         ssl_protocols TLSv1.3;
         ssl_ciphers TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256;
         ssl_prefer_server_ciphers on;
@@ -1427,7 +1427,7 @@ http {
 
         location / {
             proxy_pass http://backend;
-            proxy_set_header X-TLS-Version "Q-TSL-1.3";
+            proxy_set_header X-TLS-Version "Q-TLS-1.3";
             proxy_set_header X-Client-Cert-CN $ssl_client_s_dn_cn;
         }
     }
@@ -1465,7 +1465,7 @@ http {
 
 ```mermaid
 gantt
-    title Q-TSL Migration Timeline
+    title Q-TLS Migration Timeline
     dateFormat YYYY-MM-DD
     section Phase 1: Preparation
     Infrastructure Setup           :2025-01-01, 30d
@@ -1495,7 +1495,7 @@ gantt
 
 cat << 'EOF'
 ========================================
-Q-TSL Migration Checklist
+Q-TLS Migration Checklist
 ========================================
 
 Phase 1: Preparation
@@ -1509,8 +1509,8 @@ Phase 1: Preparation
 Phase 2: Infrastructure
   [ ] Q-Gateway (APISIX) configured
   [ ] Nginx/Load Balancer updated
-  [ ] Keycloak Q-TSL enabled
-  [ ] Vault Q-TSL endpoints active
+  [ ] Keycloak Q-TLS enabled
+  [ ] Vault Q-TLS endpoints active
   [ ] Kubernetes Ingress updated
   [ ] DNS records updated
 
@@ -1554,7 +1554,7 @@ ENVIRONMENT="${1:-staging}"  # staging | production
 TRAFFIC_PERCENTAGE="${2:-10}"  # 10, 25, 50, 75, 100
 
 echo "========================================="
-echo "Q-TSL Migration Script"
+echo "Q-TLS Migration Script"
 echo "========================================="
 echo "Environment: ${ENVIRONMENT}"
 echo "Traffic Percentage: ${TRAFFIC_PERCENTAGE}%"
@@ -1684,8 +1684,8 @@ EOF
 
 ## 관련 문서
 
-- [Q-TSL-OVERVIEW.md](./Q-TSL-OVERVIEW.md) - Q-TSL 개요
-- [Q-TSL-ARCHITECTURE.md](./Q-TSL-ARCHITECTURE.md) - 아키텍처
+- [Q-TLS-OVERVIEW.md](./Q-TLS-OVERVIEW.md) - Q-TLS 개요
+- [Q-TLS-ARCHITECTURE.md](./Q-TLS-ARCHITECTURE.md) - 아키텍처
 - [IMPLEMENTATION-GUIDE.md](./IMPLEMENTATION-GUIDE.md) - 구현 가이드
 - [SEQUENCE-DIAGRAMS.md](./SEQUENCE-DIAGRAMS.md) - 시퀀스 다이어그램
 - [TESTING-VALIDATION.md](./TESTING-VALIDATION.md) - 테스트 및 검증

@@ -2,7 +2,7 @@
 
 ## 📘 개요
 
-Q-TSL의 핵심인 TLS-PQC Hybrid 핸드셰이크 프로토콜에 대한 상세 문서입니다. TLS 1.3을 기반으로 KYBER1024 키 교환 및 DILITHIUM3 서명을 통합한 양자 내성 핸드셰이크를 설명합니다.
+Q-TLS의 핵심인 TLS-PQC Hybrid 핸드셰이크 프로토콜에 대한 상세 문서입니다. TLS 1.3을 기반으로 KYBER1024 키 교환 및 DILITHIUM3 서명을 통합한 양자 내성 핸드셰이크를 설명합니다.
 
 ## 🔐 TLS 1.3 핸드셰이크 기본
 
@@ -77,12 +77,12 @@ TLS 1.3 Messages:
     - HMAC of handshake transcript
 ```
 
-## 🚀 Q-TSL Hybrid 핸드셰이크 확장
+## 🚀 Q-TLS Hybrid 핸드셰이크 확장
 
 ### Hybrid 핸드셰이크 개요
 
 ```yaml
-Q-TSL Enhancements:
+Q-TLS Enhancements:
 
   Key Exchange:
     Classical: ECDHE P-384
@@ -114,7 +114,7 @@ sequenceDiagram
     participant C as Client
     participant S as Q-Gateway Server
 
-    Note over C,S: Q-TSL Hybrid Handshake
+    Note over C,S: Q-TLS Hybrid Handshake
 
     C->>S: ClientHello (Extended)
     Note right of C: + supported_groups:<br/>  - kyber1024<br/>  - p384<br/>+ signature_algorithms:<br/>  - dilithium3<br/>  - rsa_pss_rsae_sha384<br/>+ pqc_hybrid_mode: true
@@ -156,7 +156,7 @@ sequenceDiagram
 ### ClientHello 구조
 
 ```yaml
-ClientHello (Q-TSL Extended):
+ClientHello (Q-TLS Extended):
 
   legacy_version: 0x0303 (TLS 1.2 for compatibility)
   random: [32 bytes]
@@ -222,7 +222,7 @@ ClientHello (Q-TSL Extended):
 ```python
 def create_client_hello():
     """
-    Q-TSL ClientHello 메시지 생성
+    Q-TLS ClientHello 메시지 생성
     """
     client_hello = TLSClientHello()
 
@@ -351,7 +351,7 @@ graph TB
 ### ServerHello 구조
 
 ```yaml
-ServerHello (Q-TSL):
+ServerHello (Q-TLS):
 
   legacy_version: 0x0303
   random: [32 bytes]

@@ -1,14 +1,14 @@
-# Q-TSL Implementation Guide
+# Q-TLS Implementation Guide
 
-Q-TSL (Quantum-resistant Transport Security Layer) 구현을 위한 실용적인 가이드입니다.
+Q-TLS (Quantum-resistant Transport Security Layer) 구현을 위한 실용적인 가이드입니다.
 
 ## 목차
 
 1. [OpenSSL + OQS 설치 및 빌드](#1-openssl--oqs-설치-및-빌드)
-2. [APISIX Gateway Q-TSL 설정](#2-apisix-gateway-q-tsl-설정)
-3. [Nginx Q-TSL 모듈 설정](#3-nginx-q-tsl-모듈-설정)
+2. [APISIX Gateway Q-TLS 설정](#2-apisix-gateway-q-tls-설정)
+3. [Nginx Q-TLS 모듈 설정](#3-nginx-q-tls-모듈-설정)
 4. [클라이언트 라이브러리](#4-클라이언트-라이브러리)
-5. [Golang Q-TSL 클라이언트](#5-golang-q-tsl-클라이언트)
+5. [Golang Q-TLS 클라이언트](#5-golang-q-tls-클라이언트)
 6. [테스트 스크립트](#6-테스트-스크립트)
 7. [성능 튜닝](#7-성능-튜닝)
 8. [트러블슈팅 가이드](#8-트러블슈팅-가이드)
@@ -491,13 +491,13 @@ echo "Verifying certificates..."
 
 ---
 
-## 2. APISIX Gateway Q-TSL 설정
+## 2. APISIX Gateway Q-TLS 설정
 
 ### 2.1 APISIX 설치 스크립트
 
 ```bash
 #!/bin/bash
-# install-apisix-qtsl.sh - Install APISIX with Q-TSL support
+# install-apisix-qtsl.sh - Install APISIX with Q-TLS support
 
 set -e
 
@@ -535,11 +535,11 @@ echo "  Admin API: http://localhost:9180"
 echo "  Gateway: http://localhost:9080 (HTTP), https://localhost:9443 (HTTPS)"
 ```
 
-### 2.2 APISIX Q-TSL 설정 파일
+### 2.2 APISIX Q-TLS 설정 파일
 
 ```yaml
 # /opt/apisix/config/config.yaml
-# APISIX Q-TSL Configuration
+# APISIX Q-TLS Configuration
 
 apisix:
   node_listen:
@@ -558,7 +558,7 @@ apisix:
         ssl_session_tickets: true
         ssl_stapling: true
         ssl_stapling_verify: true
-        # Q-TSL Hybrid Mode (requires custom build with OQS)
+        # Q-TLS Hybrid Mode (requires custom build with OQS)
         ssl_ecdh_curve: "X25519:prime256v1:secp384r1"
 
   enable_admin: true
@@ -591,7 +591,7 @@ plugin_attr:
       ip: "0.0.0.0"
       port: 9091
 
-# Q-TSL specific configuration
+# Q-TLS specific configuration
 nginx_config:
   http:
     custom_lua_shared_dict:
@@ -599,7 +599,7 @@ nginx_config:
       qtsl-ocsp-cache: 10m
 
   http_server_configuration_snippet: |
-    # Q-TSL Configuration
+    # Q-TLS Configuration
     ssl_certificate /opt/certs/server/server-bundle.crt;
     ssl_certificate_key /opt/certs/server/server-rsa.key;
 
@@ -634,7 +634,7 @@ nginx_config:
 
 ```bash
 #!/bin/bash
-# configure-apisix-routes.sh - Configure APISIX routes with Q-TSL
+# configure-apisix-routes.sh - Configure APISIX routes with Q-TLS
 
 set -e
 
@@ -677,7 +677,7 @@ curl -X PUT "${ADMIN_API}/apisix/admin/upstreams/1" \
   }'
 
 echo ""
-echo "[3/4] Creating route with Q-TSL..."
+echo "[3/4] Creating route with Q-TLS..."
 
 curl -X PUT "${ADMIN_API}/apisix/admin/routes/1" \
   -H "X-API-KEY: ${ADMIN_KEY}" \
@@ -724,7 +724,7 @@ echo "  curl -k https://api.qsign.local:9443/api/health"
 
 ---
 
-## 3. Nginx Q-TSL 모듈 설정
+## 3. Nginx Q-TLS 모듈 설정
 
 ### 3.1 Nginx 빌드 스크립트
 
@@ -785,7 +785,7 @@ sudo make install
 # Create systemd service
 sudo tee /etc/systemd/system/nginx-qtsl.service > /dev/null << EOF
 [Unit]
-Description=Nginx Q-TSL Web Server
+Description=Nginx Q-TLS Web Server
 After=network.target
 
 [Service]
@@ -806,7 +806,7 @@ EOF
 sudo systemctl daemon-reload
 
 echo ""
-echo "✓ Nginx Q-TSL built successfully!"
+echo "✓ Nginx Q-TLS built successfully!"
 echo "  Installation Path: ${INSTALL_DIR}"
 echo "  Binary: ${INSTALL_DIR}/sbin/nginx"
 echo "  Config: ${INSTALL_DIR}/conf/nginx.conf"
@@ -815,11 +815,11 @@ echo "Start service: sudo systemctl start nginx-qtsl"
 echo "Enable service: sudo systemctl enable nginx-qtsl"
 ```
 
-### 3.2 Nginx Q-TSL 설정 파일
+### 3.2 Nginx Q-TLS 설정 파일
 
 ```nginx
 # /opt/nginx-qtsl/conf/nginx.conf
-# Nginx Q-TSL Configuration
+# Nginx Q-TLS Configuration
 
 user www-data;
 worker_processes auto;
@@ -914,7 +914,7 @@ http {
         listen [::]:443 ssl http2;
         server_name api.qsign.local;
 
-        # Q-TSL Certificates
+        # Q-TLS Certificates
         ssl_certificate /opt/qsign/certs/server/server-bundle.crt;
         ssl_certificate_key /opt/qsign/certs/server/server-rsa.key;
         ssl_trusted_certificate /opt/qsign/certs/ca/root-ca.crt;
@@ -1014,11 +1014,11 @@ echo "✓ Session ticket key generated: ${TICKET_KEY_FILE}"
 
 ## 4. 클라이언트 라이브러리
 
-### 4.1 Python Q-TSL 클라이언트
+### 4.1 Python Q-TLS 클라이언트
 
 ```python
 #!/usr/bin/env python3
-# qtsl_client.py - Python Q-TSL Client
+# qtsl_client.py - Python Q-TLS Client
 
 import ssl
 import socket
@@ -1026,7 +1026,7 @@ import certifi
 from typing import Optional
 
 class QtslClient:
-    """Q-TSL HTTPS Client with PQC support"""
+    """Q-TLS HTTPS Client with PQC support"""
 
     def __init__(
         self,
@@ -1036,7 +1036,7 @@ class QtslClient:
         verify_mode: int = ssl.CERT_REQUIRED
     ):
         """
-        Initialize Q-TSL client
+        Initialize Q-TLS client
 
         Args:
             ca_cert: Path to CA certificate for verification
@@ -1050,7 +1050,7 @@ class QtslClient:
         self.verify_mode = verify_mode
 
     def create_ssl_context(self) -> ssl.SSLContext:
-        """Create SSL context with Q-TSL settings"""
+        """Create SSL context with Q-TLS settings"""
 
         # Create context (TLS 1.3 only)
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
@@ -1084,7 +1084,7 @@ class QtslClient:
         timeout: float = 30.0
     ) -> ssl.SSLSocket:
         """
-        Establish Q-TSL connection
+        Establish Q-TLS connection
 
         Args:
             hostname: Server hostname
@@ -1167,10 +1167,10 @@ if __name__ == "__main__":
     main()
 ```
 
-### 4.2 Node.js Q-TSL 클라이언트
+### 4.2 Node.js Q-TLS 클라이언트
 
 ```javascript
-// qtsl-client.js - Node.js Q-TSL Client
+// qtsl-client.js - Node.js Q-TLS Client
 
 const tls = require('tls');
 const https = require('https');
@@ -1321,10 +1321,10 @@ if (require.main === module) {
 module.exports = QtslClient;
 ```
 
-### 4.3 Java Q-TSL 클라이언트
+### 4.3 Java Q-TLS 클라이언트
 
 ```java
-// QtslClient.java - Java Q-TSL Client
+// QtslClient.java - Java Q-TLS Client
 
 import javax.net.ssl.*;
 import java.io.*;
@@ -1452,12 +1452,12 @@ public class QtslClient {
 
 ---
 
-## 5. Golang Q-TSL 클라이언트
+## 5. Golang Q-TLS 클라이언트
 
-### 5.1 Go Q-TSL 클라이언트 예제
+### 5.1 Go Q-TLS 클라이언트 예제
 
 ```go
-// qtsl_client.go - Golang Q-TSL Client
+// qtsl_client.go - Golang Q-TLS Client
 
 package main
 
@@ -1607,7 +1607,7 @@ func getCipherSuiteName(cipherSuite uint16) string {
 }
 
 func main() {
-    // Create Q-TSL client
+    // Create Q-TLS client
     client, err := NewQtslClient(
         "/opt/qsign/certs/ca/root-ca.crt",
         "",  // Client cert (for mTLS)
@@ -1651,7 +1651,7 @@ func main() {
 
 ```bash
 #!/bin/bash
-# test-qtsl-openssl.sh - Test Q-TSL with OpenSSL s_client
+# test-qtsl-openssl.sh - Test Q-TLS with OpenSSL s_client
 
 set -e
 
@@ -1664,7 +1664,7 @@ CLIENT_CERT="/opt/qsign/certs/client/client.crt"
 CLIENT_KEY="/opt/qsign/certs/client/client.key"
 
 echo "========================================="
-echo "Q-TSL Connection Test with OpenSSL"
+echo "Q-TLS Connection Test with OpenSSL"
 echo "========================================="
 echo ""
 
@@ -1750,7 +1750,7 @@ echo "✓ All tests completed!"
 
 ```bash
 #!/bin/bash
-# test-qtsl-curl.sh - Test Q-TSL with cURL
+# test-qtsl-curl.sh - Test Q-TLS with cURL
 
 set -e
 
@@ -1760,7 +1760,7 @@ CLIENT_CERT="/opt/qsign/certs/client/client.crt"
 CLIENT_KEY="/opt/qsign/certs/client/client.key"
 
 echo "========================================="
-echo "Q-TSL HTTP Test with cURL"
+echo "Q-TLS HTTP Test with cURL"
 echo "========================================="
 echo ""
 
@@ -1826,7 +1826,7 @@ CONNECTIONS=100
 DURATION="30s"
 
 echo "========================================="
-echo "Q-TSL Performance Benchmark (wrk)"
+echo "Q-TLS Performance Benchmark (wrk)"
 echo "========================================="
 echo ""
 echo "Configuration:"
@@ -1856,7 +1856,7 @@ echo "✓ Benchmark completed!"
 
 ```bash
 #!/bin/bash
-# get-qtsl-connection-info.sh - Extract Q-TSL connection details
+# get-qtsl-connection-info.sh - Extract Q-TLS connection details
 
 set -e
 
@@ -1867,7 +1867,7 @@ PORT="${2:-443}"
 CA_CERT="/opt/qsign/certs/ca/root-ca.crt"
 
 echo "========================================="
-echo "Q-TSL Connection Information"
+echo "Q-TLS Connection Information"
 echo "========================================="
 echo ""
 echo "Server: ${SERVER}:${PORT}"
@@ -1918,11 +1918,11 @@ echo "✓ Connection information extracted!"
 
 ```bash
 #!/bin/bash
-# tune-system-for-qtsl.sh - System-level tuning for Q-TSL
+# tune-system-for-qtsl.sh - System-level tuning for Q-TLS
 
 set -e
 
-echo "Applying system-level tuning for Q-TSL..."
+echo "Applying system-level tuning for Q-TLS..."
 
 # Kernel parameters
 sudo tee /etc/sysctl.d/99-qtsl.conf > /dev/null << 'EOF'
@@ -1976,20 +1976,20 @@ echo "⚠ Reboot required for some changes to take effect"
 
 ```bash
 #!/bin/bash
-# tune-nginx-qtsl.sh - Nginx-specific tuning for Q-TSL
+# tune-nginx-qtsl.sh - Nginx-specific tuning for Q-TLS
 
 set -e
 
 NGINX_CONF="/opt/nginx-qtsl/conf/nginx.conf"
 
-echo "Applying Nginx tuning for Q-TSL..."
+echo "Applying Nginx tuning for Q-TLS..."
 
 # Backup original configuration
 sudo cp "${NGINX_CONF}" "${NGINX_CONF}.bak.$(date +%Y%m%d%H%M%S)"
 
 # Create optimized configuration snippet
 sudo tee /opt/nginx-qtsl/conf/qtsl-performance.conf > /dev/null << 'EOF'
-# Q-TSL Performance Tuning
+# Q-TLS Performance Tuning
 
 # Worker Processes
 worker_processes auto;
@@ -2073,7 +2073,7 @@ echo "Include this in your nginx.conf or apply settings manually."
 
 ```yaml
 # /opt/apisix/config/performance-tuning.yaml
-# APISIX Performance Tuning for Q-TSL
+# APISIX Performance Tuning for Q-TLS
 
 nginx_config:
   worker_processes: auto
@@ -2138,12 +2138,12 @@ custom_lua_shared_dict:
 
 ```bash
 #!/bin/bash
-# troubleshoot-qtsl.sh - Q-TSL Troubleshooting Tool
+# troubleshoot-qtsl.sh - Q-TLS Troubleshooting Tool
 
 set -e
 
 echo "========================================="
-echo "Q-TSL Troubleshooting Tool"
+echo "Q-TLS Troubleshooting Tool"
 echo "========================================="
 echo ""
 
@@ -2284,14 +2284,14 @@ echo "========================================="
 
 ```bash
 #!/bin/bash
-# analyze-qtsl-logs.sh - Analyze Q-TSL connection logs
+# analyze-qtsl-logs.sh - Analyze Q-TLS connection logs
 
 set -e
 
 LOG_FILE="${1:-/var/log/nginx/access.log}"
 
 echo "========================================="
-echo "Q-TSL Log Analysis"
+echo "Q-TLS Log Analysis"
 echo "========================================="
 echo ""
 echo "Log File: ${LOG_FILE}"
@@ -2349,8 +2349,8 @@ echo "✓ Log analysis complete!"
 
 ## 관련 문서
 
-- [Q-TSL-OVERVIEW.md](./Q-TSL-OVERVIEW.md) - Q-TSL 개요
-- [Q-TSL-ARCHITECTURE.md](./Q-TSL-ARCHITECTURE.md) - 아키텍처
+- [Q-TLS-OVERVIEW.md](./Q-TLS-OVERVIEW.md) - Q-TLS 개요
+- [Q-TLS-ARCHITECTURE.md](./Q-TLS-ARCHITECTURE.md) - 아키텍처
 - [CERTIFICATE-MANAGEMENT.md](./CERTIFICATE-MANAGEMENT.md) - 인증서 관리
 - [SEQUENCE-DIAGRAMS.md](./SEQUENCE-DIAGRAMS.md) - 시퀀스 다이어그램
 - [INTEGRATION.md](./INTEGRATION.md) - 시스템 통합

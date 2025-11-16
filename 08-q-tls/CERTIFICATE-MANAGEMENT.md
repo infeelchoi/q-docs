@@ -2,7 +2,7 @@
 
 ## 📘 개요
 
-Q-TSL에서 사용하는 PQC 인증서 관리 시스템에 대한 상세 문서입니다. X.509v3 표준을 기반으로 하이브리드 인증서 체인(Classical + PQC) 구조를 구현하며, Luna HSM을 통한 안전한 키 보호를 제공합니다.
+Q-TLS에서 사용하는 PQC 인증서 관리 시스템에 대한 상세 문서입니다. X.509v3 표준을 기반으로 하이브리드 인증서 체인(Classical + PQC) 구조를 구현하며, Luna HSM을 통한 안전한 키 보호를 제공합니다.
 
 ## 🔐 PQC 인증서 구조
 
@@ -30,7 +30,7 @@ X.509v3 Certificate Structure:
   Subject:
     CN: q-gateway.qsign.local
     O: Q-Sign Corporation
-    OU: Q-TSL Services
+    OU: Q-TLS Services
 
   Subject Public Key Info:
     Algorithm: dilithium3
@@ -309,14 +309,14 @@ openssl req -new \
   -out /etc/pki/csr/server-dilithium3.csr \
   -provider oqsprovider \
   -provider default \
-  -subj "/C=KR/O=Q-Sign/OU=Q-TSL/CN=q-gateway.qsign.local" \
+  -subj "/C=KR/O=Q-Sign/OU=Q-TLS/CN=q-gateway.qsign.local" \
   -addext "subjectAltName=DNS:q-gateway.qsign.local,DNS:*.qsign.local"
 
 # 4. Classical CSR 생성
 openssl req -new \
   -key /etc/pki/private/server-rsa.key \
   -out /etc/pki/csr/server-rsa.csr \
-  -subj "/C=KR/O=Q-Sign/OU=Q-TSL/CN=q-gateway.qsign.local" \
+  -subj "/C=KR/O=Q-Sign/OU=Q-TLS/CN=q-gateway.qsign.local" \
   -addext "subjectAltName=DNS:q-gateway.qsign.local,DNS:*.qsign.local"
 
 # 5. OpenSSL CA 설정 파일 생성
@@ -561,7 +561,7 @@ spec:
     organizations:
       - Q-Sign Corporation
     organizationalUnits:
-      - Q-TSL Services
+      - Q-TLS Services
 
   commonName: q-gateway.qsign.local
 

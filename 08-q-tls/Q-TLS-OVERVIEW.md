@@ -1,28 +1,28 @@
-# Q-TSL 개요 (Q-TSL Overview)
+# Q-TLS 개요 (Q-TLS Overview)
 
-> **Q-TSL (Quantum-resistant Transport Security Layer)** - 양자 내성 전송 보안 계층
+> **Q-TLS (Quantum-resistant Transport Security Layer)** - 양자 내성 전송 보안 계층
 > Post-Quantum Cryptography를 적용한 차세대 TLS/SSL 프로토콜
 
 ---
 
 ## 📑 목차
 
-1. [Q-TSL이란 무엇인가](#1-q-tsl이란-무엇인가)
+1. [Q-TLS이란 무엇인가](#1-q-tls이란-무엇인가)
 2. [양자 위협과 PQC의 필요성](#2-양자-위협과-pqc의-필요성)
 3. [TLS-PQC Hybrid Mode](#3-tls-pqc-hybrid-mode)
-4. [Q-TSL vs 전통적 TLS 1.3 비교](#4-q-tsl-vs-전통적-tls-13-비교)
-5. [QSIGN에서의 Q-TSL 역할](#5-qsign에서의-q-tsl-역할)
+4. [Q-TLS vs 전통적 TLS 1.3 비교](#4-q-tls-vs-전통적-tls-13-비교)
+5. [QSIGN에서의 Q-TLS 역할](#5-qsign에서의-q-tls-역할)
 6. [핵심 이점 및 특징](#6-핵심-이점-및-특징)
 7. [기술적 배경](#7-기술적-배경)
 8. [마이그레이션 전략](#8-마이그레이션-전략)
 
 ---
 
-## 1. Q-TSL이란 무엇인가
+## 1. Q-TLS이란 무엇인가
 
 ### 1.1 정의
 
-**Q-TSL (Quantum-resistant Transport Security Layer)** 또는 **Q-SSL (Quantum-resistant Secure Sockets Layer)** 은 QSIGN 시스템에서 사용하는 양자 내성(Quantum-resistant) 전송 보안 계층 프로토콜입니다.
+**Q-TLS (Quantum-resistant Transport Security Layer)** 또는 **Q-SSL (Quantum-resistant Secure Sockets Layer)** 은 QSIGN 시스템에서 사용하는 양자 내성(Quantum-resistant) 전송 보안 계층 프로토콜입니다.
 
 ```mermaid
 graph TB
@@ -33,8 +33,8 @@ graph TB
         AES[AES-128/256-GCM]
     end
 
-    subgraph "Q-TSL 보안 계층"
-        QTSL[Q-TSL Protocol]
+    subgraph "Q-TLS 보안 계층"
+        QTSL[Q-TLS Protocol]
         HYBRID[Hybrid Cryptography]
         PQC[Post-Quantum Algorithms]
         BACKWARD[Backward Compatibility]
@@ -108,10 +108,10 @@ sequenceDiagram
 - 하이브리드 모드로 점진적 전환하여 호환성 유지
 - 장기 보관 데이터는 PQC로 재암호화
 
-### 1.3 Q-TSL의 핵심 개념
+### 1.3 Q-TLS의 핵심 개념
 
 ```yaml
-Q-TSL 핵심 개념:
+Q-TLS 핵심 개념:
 
   1. Hybrid Cryptography (하이브리드 암호화):
      목적: 전통 암호 + PQC 동시 사용으로 안전성 극대화
@@ -140,7 +140,7 @@ Q-TSL 핵심 개념:
        - 순수 RSA/ECDSA 인증서 허용
        - Graceful Degradation
      협상 프로세스:
-       - 클라이언트가 PQC 지원 → Q-TSL Hybrid
+       - 클라이언트가 PQC 지원 → Q-TLS Hybrid
        - 클라이언트가 PQC 미지원 → TLS 1.3 Classical
        - 서버 정책에 따라 강제 가능
 
@@ -150,13 +150,13 @@ Q-TSL 핵심 개념:
        - 각 세션마다 임시 키 쌍 생성
        - 세션 종료 후 즉시 키 삭제
        - 장기 키로부터 세션 키 유도 불가
-     Q-TSL에서:
+     Q-TLS에서:
        - KYBER1024 KEM: 임시 공개키 사용
        - ECDHE: 임시 ECDH 키 사용
        - 양쪽 모두 Perfect Forward Secrecy 제공
 ```
 
-### 1.4 Q-TSL 프로토콜 스택
+### 1.4 Q-TLS 프로토콜 스택
 
 ```mermaid
 graph TB
@@ -165,7 +165,7 @@ graph TB
         L6[Layer 6: Presentation<br/>Data Encoding/Decoding]
         L5[Layer 5: Session<br/>Session Management]
 
-        subgraph QTSL["Q-TSL Layer (세션/전송 사이)"]
+        subgraph QTSL["Q-TLS Layer (세션/전송 사이)"]
             HS[Handshake Protocol<br/>키 교환, 인증, 협상]
             REC[Record Protocol<br/>암호화, 무결성, 재전송 방지]
             ALERT[Alert Protocol<br/>에러 및 경고]
@@ -194,10 +194,10 @@ graph TB
     style REC fill:#fff9c4,stroke:#f57f17,stroke-width:2px
 ```
 
-### 1.5 Q-TSL 설계 원칙
+### 1.5 Q-TLS 설계 원칙
 
 ```yaml
-Q-TSL 설계 원칙:
+Q-TLS 설계 원칙:
 
   1. Security First (보안 최우선):
      - NIST 승인 알고리즘만 사용
@@ -408,7 +408,7 @@ KYBER (Module Learning with Errors - Key Encapsulation Mechanism):
       공개키: 1,184 bytes
       암호문: 1,088 bytes
 
-    KYBER1024:  # Q-TSL 기본 사용
+    KYBER1024:  # Q-TLS 기본 사용
       보안 수준: NIST Level 5 (AES-256 equivalent)
       공개키: 1,568 bytes
       암호문: 1,568 bytes
@@ -419,7 +419,7 @@ KYBER (Module Learning with Errors - Key Encapsulation Mechanism):
     캡슐화: ~8,000 ops/sec
     역캡슐화: ~8,000 ops/sec
 
-  Q-TSL 사용처:
+  Q-TLS 사용처:
     - TLS 핸드셰이크 키 교환
     - Perfect Forward Secrecy 제공
     - 세션 키 생성
@@ -441,7 +441,7 @@ DILITHIUM (Module Lattice-based Digital Signature Algorithm):
       공개키: 1,312 bytes
       서명: ~2,420 bytes
 
-    DILITHIUM3:  # Q-TSL 기본 사용
+    DILITHIUM3:  # Q-TLS 기본 사용
       보안 수준: NIST Level 3 (AES-192 equivalent)
       공개키: 1,952 bytes
       서명: ~3,293 bytes
@@ -457,7 +457,7 @@ DILITHIUM (Module Lattice-based Digital Signature Algorithm):
     서명 생성: ~700 signs/sec
     서명 검증: ~1,400 verifies/sec
 
-  Q-TSL 사용처:
+  Q-TLS 사용처:
     - 서버 인증서 서명
     - 클라이언트 인증
     - Finished 메시지 서명
@@ -480,7 +480,7 @@ SPHINCS+ (Stateless Hash-based Signature Scheme):
       공개키: 32 bytes
       서명: ~17,088 bytes
 
-    SPHINCS+-192f:  # Q-TSL 백업용
+    SPHINCS+-192f:  # Q-TLS 백업용
       보안 수준: NIST Level 3
       공개키: 48 bytes
       서명: ~35,664 bytes
@@ -495,7 +495,7 @@ SPHINCS+ (Stateless Hash-based Signature Scheme):
     서명 생성: ~10 signs/sec (느림!)
     서명 검증: ~200 verifies/sec
 
-  Q-TSL 사용처:
+  Q-TLS 사용처:
     - DILITHIUM 백업 서명 (고가용성)
     - 장기 보관용 서명
     - 코드 서명, 펌웨어 서명
@@ -524,7 +524,7 @@ graph TB
         R4[표준 준수]
     end
 
-    subgraph "Q-TSL 솔루션"
+    subgraph "Q-TLS 솔루션"
         S1[Hybrid Cryptography<br/>즉시 배포 가능]
         S2[NIST 표준 알고리즘<br/>검증된 보안]
         S3[점진적 마이그레이션<br/>호환성 유지]
@@ -690,7 +690,7 @@ def derive_master_secret(kyber_shared_secret, ecdhe_shared_secret,
     prk = HMAC-SHA384(salt=entropy, ikm=combined_secret)  # 48 bytes
 
     # HKDF-Expand
-    info = b"Q-TSL 1.0 master secret"
+    info = b"Q-TLS 1.0 master secret"
     master_secret = HKDF-Expand-SHA384(prk, info, length=48)
 
     return master_secret
@@ -788,7 +788,7 @@ graph TB
     style FAIL fill:#ffebee,stroke:#c62828,stroke-width:3px
 ```
 
-**Q-TSL 기본 정책: Require Both (최대 보안)**
+**Q-TLS 기본 정책: Require Both (최대 보안)**
 
 ```yaml
 Hybrid 서명 검증 정책:
@@ -833,7 +833,7 @@ Hybrid 서명 검증 정책:
 
 apisix:
   ssl:
-    # Q-TSL Hybrid 모드 활성화
+    # Q-TLS Hybrid 모드 활성화
     enable_qtsl: true
     qtsl_mode: "hybrid"  # hybrid | pqc_only | classical_fallback
 
@@ -885,21 +885,21 @@ apisix:
       ticket_key_rotation: 86400   # 24시간
 ```
 
-#### Nginx Q-TSL 설정
+#### Nginx Q-TLS 설정
 
 ```nginx
 # /etc/nginx/nginx.conf
 
 http {
-    # Q-TSL 모듈 로드
+    # Q-TLS 모듈 로드
     load_module modules/ngx_qtsl_module.so;
 
-    # Upstream (백엔드 서비스도 Q-TSL 사용)
+    # Upstream (백엔드 서비스도 Q-TLS 사용)
     upstream keycloak_backend {
         server keycloak-0.keycloak.q-sign.svc.cluster.local:8443 max_fails=3 fail_timeout=30s;
         server keycloak-1.keycloak.q-sign.svc.cluster.local:8443 max_fails=3 fail_timeout=30s;
 
-        # Q-TSL 백엔드 설정
+        # Q-TLS 백엔드 설정
         qtsl on;
         qtsl_verify on;
         qtsl_verify_depth 2;
@@ -910,7 +910,7 @@ http {
         listen [::]:443 ssl http2;
         server_name q-sign.local;
 
-        # Q-TSL 활성화
+        # Q-TLS 활성화
         qtsl on;
         qtsl_protocols TLSv1.3;
 
@@ -959,7 +959,7 @@ http {
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto https;
 
-            # Q-TSL 정보 전달
+            # Q-TLS 정보 전달
             proxy_set_header X-QTSL-Cipher $qtsl_cipher;
             proxy_set_header X-QTSL-Protocol $qtsl_protocol;
             proxy_set_header X-Client-Cert-DN $qtsl_client_s_dn;
@@ -978,11 +978,11 @@ http {
 
 ---
 
-## 4. Q-TSL vs 전통적 TLS 1.3 비교
+## 4. Q-TLS vs 전통적 TLS 1.3 비교
 
 ### 4.1 비교표
 
-| 항목 | TLS 1.3 (Classical) | Q-TSL (Hybrid) | Q-TSL (PQC Only) |
+| 항목 | TLS 1.3 (Classical) | Q-TLS (Hybrid) | Q-TLS (PQC Only) |
 |------|-------------------|----------------|------------------|
 | **키 교환** | ECDHE (P-256, P-384, x25519) | ECDHE + KYBER1024 | KYBER1024 |
 | **서명 알고리즘** | RSA-PSS, ECDSA (P-256, P-384) | ECDSA + DILITHIUM3 | DILITHIUM3, SPHINCS+ |
@@ -996,7 +996,7 @@ http {
 | **인증서 크기** | ~2 KB | ~5-6 KB | ~4 KB |
 | **CPU 사용량** | 낮음 | 중간 | 높음 |
 | **메모리 사용량** | ~4 KB | ~24 KB | ~48 KB |
-| **호환성** | ✅ 모든 클라이언트 | ✅ TLS 1.3 클라이언트 | ⚠️ Q-TSL 클라이언트만 |
+| **호환성** | ✅ 모든 클라이언트 | ✅ TLS 1.3 클라이언트 | ⚠️ Q-TLS 클라이언트만 |
 | **표준 준수** | RFC 8446 (TLS 1.3) | NIST FIPS 203/204/205 + RFC 8446 | NIST FIPS 203/204/205 |
 | **배포 준비도** | ✅ 완료 | ✅ 준비됨 (2024+) | ⚠️ 개발 중 |
 
@@ -1021,7 +1021,7 @@ graph TB
         C1R5[✅ 안전<br/>인증서 검증]
     end
 
-    subgraph "Q-TSL Hybrid"
+    subgraph "Q-TLS Hybrid"
         H1[ECDHE+KYBER1024<br/>ECDSA+DILITHIUM3]
         H1R1[✅ 안전]
         H1R2[✅ 안전<br/>PQC 보호]
@@ -1030,7 +1030,7 @@ graph TB
         H1R5[✅ 안전<br/>이중 검증]
     end
 
-    subgraph "Q-TSL PQC Only"
+    subgraph "Q-TLS PQC Only"
         P1[KYBER1024<br/>DILITHIUM3]
         P1R1[✅ 안전]
         P1R2[✅ 완전 안전]
@@ -1074,14 +1074,14 @@ graph TB
             C_BW[대역폭: 2-4KB]
         end
 
-        subgraph "Q-TSL Hybrid"
+        subgraph "Q-TLS Hybrid"
             H_HS[핸드셰이크: 60-100ms]
             H_CPU[CPU: ⭐⭐⭐☆☆<br/>중간]
             H_MEM[메모리: 24KB]
             H_BW[대역폭: 6-8KB]
         end
 
-        subgraph "Q-TSL PQC Only"
+        subgraph "Q-TLS PQC Only"
             P_HS[핸드셰이크: 100-150ms]
             P_CPU[CPU: ⭐⭐⭐⭐☆<br/>높음]
             P_MEM[메모리: 48KB]
@@ -1099,7 +1099,7 @@ graph TB
 
 #### 벤치마크 상세 (Intel Xeon Gold 6248R @ 3.0GHz)
 
-| 작업 | TLS 1.3 | Q-TSL Hybrid | Q-TSL PQC Only | 오버헤드 |
+| 작업 | TLS 1.3 | Q-TLS Hybrid | Q-TLS PQC Only | 오버헤드 |
 |------|---------|--------------|----------------|---------|
 | **핸드셰이크** |
 | 키 교환 (Key Exchange) | 0.8 ms | 2.5 ms | 4.2 ms | +3.13x / +5.25x |
@@ -1120,7 +1120,7 @@ graph TB
 
 **최적화 효과 (Session Resumption 사용 시)**
 
-| 시나리오 | TLS 1.3 | Q-TSL Hybrid | 개선율 |
+| 시나리오 | TLS 1.3 | Q-TLS Hybrid | 개선율 |
 |---------|---------|--------------|--------|
 | 초기 핸드셰이크 | 35 ms | 75 ms | -114% (느림) |
 | 재개 핸드셰이크 (Session ID) | 8 ms | 12 ms | -50% (느림) |
@@ -1144,7 +1144,7 @@ graph TB
 
         subgraph "모던 클라이언트"
             M1[TLS 1.3 + PQC<br/>Hybrid Support]
-            M2[Q-TSL Native<br/>Full PQC]
+            M2[Q-TLS Native<br/>Full PQC]
         end
     end
 
@@ -1156,14 +1156,14 @@ graph TB
             S1_M2[❌ 불가]
         end
 
-        subgraph "Q-TSL Hybrid"
+        subgraph "Q-TLS Hybrid"
             S2_L1[⚠️ Downgrade<br/>TLS 1.2]
             S2_L2[✅ Fallback<br/>TLS 1.3]
             S2_M1[✅ Hybrid]
             S2_M2[✅ Hybrid]
         end
 
-        subgraph "Q-TSL PQC Only"
+        subgraph "Q-TLS PQC Only"
             S3_L1[❌ 불가]
             S3_L2[❌ 불가]
             S3_M1[✅ PQC]
@@ -1194,14 +1194,14 @@ graph TB
     style S3_L2 fill:#ffebee,stroke:#c62828,stroke-width:2px
 ```
 
-**권장 전략: Q-TSL Hybrid 모드**
+**권장 전략: Q-TLS Hybrid 모드**
 - 최대 호환성: 레거시 클라이언트도 TLS 1.3 Fallback 지원
 - 점진적 전환: PQC 지원 클라이언트는 Hybrid 모드 사용
 - 미래 대비: 양자 컴퓨터 시대 대비
 
 ---
 
-## 5. QSIGN에서의 Q-TSL 역할
+## 5. QSIGN에서의 Q-TLS 역할
 
 ### 5.1 QSIGN 시스템 아키텍처
 
@@ -1211,25 +1211,25 @@ graph TB
         CLIENT[Client<br/>Web/Mobile/API]
     end
 
-    subgraph "QSIGN System - Q-TSL 적용 범위"
+    subgraph "QSIGN System - Q-TLS 적용 범위"
         subgraph "Q-Gateway Layer"
-            APISIX[APISIX Gateway<br/>Q-TSL Termination]
+            APISIX[APISIX Gateway<br/>Q-TLS Termination]
         end
 
         subgraph "Q-Sign Layer"
-            KC[Keycloak PQC<br/>Q-TSL Server]
+            KC[Keycloak PQC<br/>Q-TLS Server]
             KC_DB[(PostgreSQL)]
         end
 
         subgraph "Q-KMS Layer"
-            VAULT[Vault<br/>Q-TSL Server]
+            VAULT[Vault<br/>Q-TLS Server]
             HSM[Luna HSM<br/>PQC Key Storage]
         end
 
         subgraph "Application Layer"
-            APP1[App1<br/>Q-TSL Client]
-            APP2[App2<br/>Q-TSL Client]
-            APP3[App3<br/>Q-TSL Client]
+            APP1[App1<br/>Q-TLS Client]
+            APP2[App2<br/>Q-TLS Client]
+            APP3[App3<br/>Q-TLS Client]
         end
 
         subgraph "Monitoring Layer"
@@ -1239,21 +1239,21 @@ graph TB
         end
     end
 
-    CLIENT -->|Q-TSL<br/>Hybrid| APISIX
+    CLIENT -->|Q-TLS<br/>Hybrid| APISIX
 
-    APISIX -->|Q-TSL<br/>mTLS| KC
-    APISIX -->|Q-TSL| VAULT
-    APISIX -->|Q-TSL| APP1
-    APISIX -->|Q-TSL| APP2
-    APISIX -->|Q-TSL| APP3
+    APISIX -->|Q-TLS<br/>mTLS| KC
+    APISIX -->|Q-TLS| VAULT
+    APISIX -->|Q-TLS| APP1
+    APISIX -->|Q-TLS| APP2
+    APISIX -->|Q-TLS| APP3
 
-    KC -->|Q-TSL<br/>Token Signing| VAULT
+    KC -->|Q-TLS<br/>Token Signing| VAULT
     KC -.->|Encrypted| KC_DB
 
     VAULT -->|PKCS#11<br/>PQC Keys| HSM
 
-    APP1 & APP2 & APP3 -->|Q-TSL| KC
-    APP1 & APP2 & APP3 -->|Q-TSL| VAULT
+    APP1 & APP2 & APP3 -->|Q-TLS| KC
+    APP1 & APP2 & APP3 -->|Q-TLS| VAULT
 
     APISIX & KC & VAULT -.->|Metrics| PROM
     PROM -.-> GRAF
@@ -1265,7 +1265,7 @@ graph TB
     style HSM fill:#ffff99,stroke:#ff9900,stroke-width:4px
 ```
 
-### 5.2 Q-TSL 적용 시나리오
+### 5.2 Q-TLS 적용 시나리오
 
 #### 시나리오 1: 사용자 인증 플로우
 
@@ -1273,12 +1273,12 @@ graph TB
 sequenceDiagram
     autonumber
     participant User as 사용자<br/>(Browser)
-    participant GW as Q-Gateway<br/>(APISIX + Q-TSL)
-    participant KC as Keycloak PQC<br/>(Q-TSL Server)
-    participant Vault as Q-KMS Vault<br/>(Q-TSL Server)
+    participant GW as Q-Gateway<br/>(APISIX + Q-TLS)
+    participant KC as Keycloak PQC<br/>(Q-TLS Server)
+    participant Vault as Q-KMS Vault<br/>(Q-TLS Server)
     participant HSM as Luna HSM
 
-    Note over User,GW: Q-TSL Hybrid 핸드셰이크
+    Note over User,GW: Q-TLS Hybrid 핸드셰이크
     User->>GW: ClientHello (KYBER1024, DILITHIUM3)
     GW->>User: ServerHello + Certificate (Hybrid)
     User->>GW: KeyExchange (KYBER + ECDHE)
@@ -1288,38 +1288,38 @@ sequenceDiagram
     Note over User,GW: 암호화된 채널 수립 완료
 
     User->>GW: GET /auth/login
-    GW->>KC: Forward Request (Q-TSL)
+    GW->>KC: Forward Request (Q-TLS)
 
-    Note over GW,KC: Q-Gateway ↔ Keycloak Q-TSL
-    GW->>KC: Q-TSL Handshake (mTLS)
+    Note over GW,KC: Q-Gateway ↔ Keycloak Q-TLS
+    GW->>KC: Q-TLS Handshake (mTLS)
     KC->>GW: Certificate (DILITHIUM3 + ECDSA)
 
     KC-->>GW: Login Page (HTML)
-    GW-->>User: Login Page (Q-TSL Encrypted)
+    GW-->>User: Login Page (Q-TLS Encrypted)
 
     User->>GW: POST /auth/login<br/>(username, password)
-    GW->>KC: Forward Credentials (Q-TSL)
+    GW->>KC: Forward Credentials (Q-TLS)
 
     KC->>KC: Verify Credentials
 
-    Note over KC,Vault: Keycloak → Vault Q-TSL
-    KC->>Vault: Request JWT Signing Key (Q-TSL)
+    Note over KC,Vault: Keycloak → Vault Q-TLS
+    KC->>Vault: Request JWT Signing Key (Q-TLS)
 
     Note over Vault,HSM: Vault → HSM PKCS#11
     Vault->>HSM: DILITHIUM3 Sign Request
     HSM->>HSM: Sign with PQC Key
     HSM-->>Vault: PQC Signature
 
-    Vault-->>KC: Signed JWT Token (Q-TSL)
+    Vault-->>KC: Signed JWT Token (Q-TLS)
 
     KC-->>GW: JWT Token + Refresh Token
-    GW-->>User: Tokens (Q-TSL Encrypted)
+    GW-->>User: Tokens (Q-TLS Encrypted)
 
     Note over User: 사용자는 PQC로 보호된<br/>JWT 토큰을 획득
 ```
 
 **보안 특성**:
-1. **End-to-End PQC 보호**: 사용자부터 HSM까지 전 구간 Q-TSL
+1. **End-to-End PQC 보호**: 사용자부터 HSM까지 전 구간 Q-TLS
 2. **mTLS 인증**: Q-Gateway와 Keycloak 간 상호 인증
 3. **HSM 키 보호**: 모든 PQC 개인키는 HSM에 저장
 4. **Perfect Forward Secrecy**: 각 세션마다 새로운 키 교환
@@ -1335,8 +1335,8 @@ sequenceDiagram
     participant Vault as Q-KMS Vault
     participant HSM as Luna HSM
 
-    Note over Client,GW: Q-TSL 세션 재개 (0-RTT)
-    Client->>GW: GET /api/resource<br/>Authorization: Bearer <JWT><br/>(Q-TSL Session Ticket)
+    Note over Client,GW: Q-TLS 세션 재개 (0-RTT)
+    Client->>GW: GET /api/resource<br/>Authorization: Bearer <JWT><br/>(Q-TLS Session Ticket)
 
     Note over GW: JWT 검증
     GW->>GW: Extract JWT from Header
@@ -1345,7 +1345,7 @@ sequenceDiagram
     alt JWT in Cache
         GW->>GW: Use Cached Public Key
     else JWT Not in Cache
-        GW->>Vault: GET /transit/keys/dilithium3-key (Q-TSL)
+        GW->>Vault: GET /transit/keys/dilithium3-key (Q-TLS)
         Vault-->>GW: Public Key (DILITHIUM3)
         GW->>GW: Cache Public Key (1시간)
     end
@@ -1354,10 +1354,10 @@ sequenceDiagram
 
     alt Signature Valid
         GW->>GW: Check Expiration, Audience, Issuer
-        GW->>App: Forward Request (Q-TSL)<br/>X-User-ID, X-Roles
+        GW->>App: Forward Request (Q-TLS)<br/>X-User-ID, X-Roles
         App->>App: Process Business Logic
-        App-->>GW: Response (Q-TSL)
-        GW-->>Client: Response (Q-TSL)
+        App-->>GW: Response (Q-TLS)
+        GW-->>Client: Response (Q-TLS)
     else Signature Invalid
         GW-->>Client: 401 Unauthorized
     end
@@ -1382,7 +1382,7 @@ sequenceDiagram
 
     Note over Admin,Vault: 90일마다 자동 키 순환
 
-    Admin->>Vault: Trigger Key Rotation<br/>(Q-TSL mTLS)
+    Admin->>Vault: Trigger Key Rotation<br/>(Q-TLS mTLS)
 
     Vault->>Vault: Check Current Key Age
 
@@ -1398,13 +1398,13 @@ sequenceDiagram
         Vault-->>Admin: Key Rotation Success
 
         Note over Admin: 키 순환 알림
-        Admin->>KC: Update JWT Signing Key (Q-TSL)
+        Admin->>KC: Update JWT Signing Key (Q-TLS)
         KC->>Vault: GET /transit/keys/dilithium3-key-v2
         Vault-->>KC: New Public Key
         KC->>KC: Update Key Cache
 
         Admin->>GW: Reload JWT Verification Keys
-        GW->>Vault: GET /transit/keys (Q-TSL)
+        GW->>Vault: GET /transit/keys (Q-TLS)
         Vault-->>GW: New + Archived Public Keys
         GW->>GW: Update Key Cache
 
@@ -1415,10 +1415,10 @@ sequenceDiagram
     end
 ```
 
-### 5.3 Q-TSL 보안 정책
+### 5.3 Q-TLS 보안 정책
 
 ```yaml
-QSIGN Q-TSL 보안 정책:
+QSIGN Q-TLS 보안 정책:
 
   암호 스위트 정책:
     필수 (Mandatory):
@@ -1524,21 +1524,21 @@ QSIGN Q-TSL 보안 정책:
       - Alert 발생 빈도
 ```
 
-### 5.4 Q-TSL 통합 흐름
+### 5.4 Q-TLS 통합 흐름
 
 ```mermaid
 graph TB
-    subgraph "Q-TSL 통합 레이어"
+    subgraph "Q-TLS 통합 레이어"
         subgraph "외부 통신"
-            EXT1[Internet ↔ Q-Gateway<br/>Q-TSL Hybrid]
+            EXT1[Internet ↔ Q-Gateway<br/>Q-TLS Hybrid]
         end
 
         subgraph "내부 통신 (East-West)"
-            INT1[Q-Gateway ↔ Keycloak<br/>Q-TSL mTLS]
-            INT2[Q-Gateway ↔ Vault<br/>Q-TSL mTLS]
-            INT3[Q-Gateway ↔ Apps<br/>Q-TSL]
-            INT4[Keycloak ↔ Vault<br/>Q-TSL mTLS]
-            INT5[Apps ↔ Vault<br/>Q-TSL]
+            INT1[Q-Gateway ↔ Keycloak<br/>Q-TLS mTLS]
+            INT2[Q-Gateway ↔ Vault<br/>Q-TLS mTLS]
+            INT3[Q-Gateway ↔ Apps<br/>Q-TLS]
+            INT4[Keycloak ↔ Vault<br/>Q-TLS mTLS]
+            INT5[Apps ↔ Vault<br/>Q-TLS]
         end
 
         subgraph "HSM 통신"
@@ -1546,7 +1546,7 @@ graph TB
         end
 
         subgraph "모니터링"
-            MON1[Prometheus<br/>Q-TSL Metrics]
+            MON1[Prometheus<br/>Q-TLS Metrics]
             MON2[Grafana<br/>Dashboard]
             MON3[AlertManager<br/>보안 알림]
         end
@@ -1581,7 +1581,7 @@ graph TB
 
 ```mermaid
 graph TB
-    subgraph "Q-TSL 보안 이점"
+    subgraph "Q-TLS 보안 이점"
         B1[양자 내성<br/>Quantum Resistance]
         B2[하이브리드 보호<br/>Dual Algorithm Security]
         B3[Perfect Forward Secrecy<br/>전방향 안전성]
@@ -1652,7 +1652,7 @@ graph TB
 ### 6.2 운영 이점
 
 ```yaml
-Q-TSL 운영 이점:
+Q-TLS 운영 이점:
 
   1. 호환성 (Compatibility):
      레거시 지원:
@@ -2016,7 +2016,7 @@ graph TB
 - 약한 암호 스위트 제거 (RC4, 3DES, MD5, SHA1 등)
 - 간소화된 협상 과정
 
-**Q-TSL 확장**:
+**Q-TLS 확장**:
 - `supported_groups`: `kyber1024`, `kyber768` 추가
 - `signature_algorithms`: `dilithium3`, `dilithium2` 추가
 - `key_share`: KYBER 공개키 포함
@@ -2030,13 +2030,13 @@ graph TB
 
 ```mermaid
 gantt
-    title Q-TSL 마이그레이션 로드맵 (6개월)
+    title Q-TLS 마이그레이션 로드맵 (6개월)
     dateFormat YYYY-MM-DD
 
     section Phase 1: 준비 (1개월)
     인프라 구축 (HSM, Vault)           :p1_1, 2025-01-01, 15d
-    Q-TSL 라이브러리 통합               :p1_2, 2025-01-10, 20d
-    개발 환경 Q-TSL 배포                :p1_3, 2025-01-20, 10d
+    Q-TLS 라이브러리 통합               :p1_2, 2025-01-10, 20d
+    개발 환경 Q-TLS 배포                :p1_3, 2025-01-20, 10d
 
     section Phase 2: 파일럿 (1개월)
     내부 API 전환 (5%)                 :p2_1, 2025-02-01, 15d
@@ -2049,7 +2049,7 @@ gantt
     외부 API 전환 (80%)                :p3_3, 2025-04-01, 20d
 
     section Phase 4: 전체 전환 (1개월)
-    모든 서비스 Q-TSL 적용              :p4_1, 2025-05-01, 20d
+    모든 서비스 Q-TLS 적용              :p4_1, 2025-05-01, 20d
     레거시 TLS 1.3 Fallback 유지       :p4_2, 2025-05-15, 15d
 
     section Phase 5: 최적화 (1개월)
@@ -2063,7 +2063,7 @@ gantt
 #### Phase 1: 준비 (1개월)
 
 ```yaml
-목표: Q-TSL 인프라 구축 및 개발 환경 준비
+목표: Q-TLS 인프라 구축 및 개발 환경 준비
 
 작업 항목:
 
@@ -2073,34 +2073,34 @@ gantt
      - DILITHIUM3, KYBER1024 키 생성
      - 테스트 키 발급
 
-  2. Q-TSL 라이브러리 통합:
+  2. Q-TLS 라이브러리 통합:
      - OpenSSL + liboqs 빌드
-     - APISIX Q-TSL 모듈 컴파일
-     - Nginx Q-TSL 모듈 준비
+     - APISIX Q-TLS 모듈 컴파일
+     - Nginx Q-TLS 모듈 준비
      - 클라이언트 SDK 개발 (Go, Java, Python)
 
   3. 개발 환경 배포:
-     - 개발 Kubernetes 클러스터에 Q-TSL 배포
-     - Q-Gateway (APISIX) Q-TSL 설정
-     - Keycloak PQC Q-TSL 설정
+     - 개발 Kubernetes 클러스터에 Q-TLS 배포
+     - Q-Gateway (APISIX) Q-TLS 설정
+     - Keycloak PQC Q-TLS 설정
      - 테스트 애플리케이션 배포
 
   4. 모니터링 구성:
-     - Prometheus Q-TSL 메트릭
+     - Prometheus Q-TLS 메트릭
      - Grafana 대시보드
      - AlertManager 알림 규칙
 
 산출물:
   ✅ HSM PQC 키 생성 완료
-  ✅ Q-TSL 라이브러리 빌드 완료
-  ✅ 개발 환경 Q-TSL 작동
+  ✅ Q-TLS 라이브러리 빌드 완료
+  ✅ 개발 환경 Q-TLS 작동
   ✅ 모니터링 대시보드 구축
 ```
 
 #### Phase 2: 파일럿 (1개월)
 
 ```yaml
-목표: 소규모 내부 API로 Q-TSL 검증
+목표: 소규모 내부 API로 Q-TLS 검증
 
 대상:
   - Q-Admin Dashboard (내부 관리자만 사용)
@@ -2108,8 +2108,8 @@ gantt
   - 테스트 애플리케이션 (App1-3)
 
 작업:
-  1. Q-TSL Hybrid 모드 활성화:
-     - APISIX에서 내부 API 경로 Q-TSL 활성화
+  1. Q-TLS Hybrid 모드 활성화:
+     - APISIX에서 내부 API 경로 Q-TLS 활성화
      - 인증서 발급 (Hybrid: DILITHIUM3 + ECDSA)
      - mTLS 설정
 
@@ -2148,11 +2148,11 @@ KPI:
     - 프로필 조회 API (READ-only)
 
   방법:
-    - APISIX Route Weight: 20% Q-TSL, 80% TLS 1.3
-    - 신규 사용자에게 Q-TSL 우선 제공
+    - APISIX Route Weight: 20% Q-TLS, 80% TLS 1.3
+    - 신규 사용자에게 Q-TLS 우선 제공
 
   모니터링:
-    - 에러율 비교 (Q-TSL vs TLS 1.3)
+    - 에러율 비교 (Q-TLS vs TLS 1.3)
     - 성능 비교
     - 사용자 피드백
 
@@ -2163,7 +2163,7 @@ KPI:
     - 주요 비즈니스 API
 
   방법:
-    - Route Weight: 50% Q-TSL, 50% TLS 1.3
+    - Route Weight: 50% Q-TLS, 50% TLS 1.3
     - A/B 테스트
 
   검증:
@@ -2175,7 +2175,7 @@ KPI:
     - 거의 모든 API
 
   방법:
-    - Route Weight: 80% Q-TSL, 20% TLS 1.3
+    - Route Weight: 80% Q-TLS, 20% TLS 1.3
     - 레거시 클라이언트만 TLS 1.3
 
 롤백 계획:
@@ -2187,18 +2187,18 @@ KPI:
 #### Phase 4: 전체 전환 (1개월)
 
 ```yaml
-목표: 100% Q-TSL 전환, Fallback 유지
+목표: 100% Q-TLS 전환, Fallback 유지
 
 작업:
-  1. 모든 서비스 Q-TSL 활성화:
-     - Q-Gateway: 모든 라우트 Q-TSL
-     - Keycloak: Q-TSL만 허용
-     - Vault: Q-TSL만 허용
-     - Applications: Q-TSL 필수
+  1. 모든 서비스 Q-TLS 활성화:
+     - Q-Gateway: 모든 라우트 Q-TLS
+     - Keycloak: Q-TLS만 허용
+     - Vault: Q-TLS만 허용
+     - Applications: Q-TLS 필수
 
   2. Fallback 정책:
      - 레거시 클라이언트: TLS 1.3 Classical 허용
-     - 신규 클라이언트: Q-TSL 필수
+     - 신규 클라이언트: Q-TLS 필수
      - Graceful Degradation
 
   3. 인증서 전환:
@@ -2212,8 +2212,8 @@ KPI:
      - 트러블슈팅 가이드
 
 완료 조건:
-  ✅ 모든 내부 통신 Q-TSL
-  ✅ 99% 외부 트래픽 Q-TSL (레거시 1%)
+  ✅ 모든 내부 통신 Q-TLS
+  ✅ 99% 외부 트래픽 Q-TLS (레거시 1%)
   ✅ 7일간 장애 없음
   ✅ 성능 저하 < 10%
 ```
@@ -2236,7 +2236,7 @@ KPI:
      - 자동 알림 규칙
 
   3. 교육 및 문서화:
-     - 개발팀 Q-TSL 교육
+     - 개발팀 Q-TLS 교육
      - 운영팀 트러블슈팅 교육
      - 보안팀 감사 프로세스 교육
 
@@ -2245,7 +2245,7 @@ KPI:
      - Classical-only 암호 스위트 제거 계획
 
 최종 목표:
-  - Q-TSL 트래픽 비율: > 95%
+  - Q-TLS 트래픽 비율: > 95%
   - 평균 핸드셰이크 시간: < 80ms
   - Session Resumption 비율: > 80%
   - 장애 발생률: < 0.1%
@@ -2300,12 +2300,12 @@ graph TB
 자동 롤백 트리거:
   - 에러율 > 5% (5분 지속)
   - 평균 응답 시간 > 2x baseline
-  - Q-TSL 핸드셰이크 실패율 > 10%
+  - Q-TLS 핸드셰이크 실패율 > 10%
   - HSM 연결 실패 > 50%
 
 롤백 단계:
   1. APISIX Route Weight 조정:
-     - Q-TSL: 0%
+     - Q-TLS: 0%
      - TLS 1.3: 100%
      - 즉시 적용 (< 1분)
 
@@ -2315,7 +2315,7 @@ graph TB
      - 관리자
 
   3. 로그 수집:
-     - Q-TSL 핸드셰이크 로그
+     - Q-TLS 핸드셰이크 로그
      - 에러 로그
      - 성능 메트릭
 
@@ -2389,8 +2389,8 @@ Open Quantum Safe (OQS):
 - [PQC-ARCHITECTURE.md](../01-architecture/PQC-ARCHITECTURE.md) - PQC 아키텍처 개요
 - [SECURITY-DESIGN.md](../01-architecture/SECURITY-DESIGN.md) - 보안 설계
 - [HSM-SETUP.md](../02-setup/HSM-SETUP.md) - Luna HSM 설정
-- [Q-TSL-ARCHITECTURE.md](./Q-TSL-ARCHITECTURE.md) - Q-TSL 아키텍처 상세
-- [Q-TSL-DESIGN.md](./Q-TSL-DESIGN.md) - Q-TSL 프로토콜 상세 설계
+- [Q-TLS-ARCHITECTURE.md](./Q-TLS-ARCHITECTURE.md) - Q-TLS 아키텍처 상세
+- [Q-TLS-DESIGN.md](./Q-TLS-DESIGN.md) - Q-TLS 프로토콜 상세 설계
 
 ---
 
@@ -2398,7 +2398,7 @@ Open Quantum Safe (OQS):
 
 | 항목 | 내용 |
 |------|------|
-| **문서명** | Q-TSL 개요 (Q-TSL Overview) |
+| **문서명** | Q-TLS 개요 (Q-TLS Overview) |
 | **버전** | 1.0.0 |
 | **작성일** | 2025-11-16 |
 | **상태** | Final |

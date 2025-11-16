@@ -1,6 +1,6 @@
-# Q-TSL 상세 설계 (Q-TSL Detailed Design)
+# Q-TLS 상세 설계 (Q-TLS Detailed Design)
 
-> **Q-TSL (Quantum-resistant Transport Security Layer)** 프로토콜 메시지 포맷 및 상세 설계 명세
+> **Q-TLS (Quantum-resistant Transport Security Layer)** 프로토콜 메시지 포맷 및 상세 설계 명세
 
 ---
 
@@ -19,10 +19,10 @@
 
 ## 1. 프로토콜 메시지 포맷 (바이트 레벨)
 
-### 1.1 Q-TSL 레코드 헤더
+### 1.1 Q-TLS 레코드 헤더
 
 ```
-Q-TSL Record Header (5 bytes):
+Q-TLS Record Header (5 bytes):
 +--------+--------+--------+--------+--------+
 | Type   | Version         | Length          |
 | 1 byte | 2 bytes         | 2 bytes         |
@@ -37,13 +37,13 @@ Field Descriptions:
 
   Version (2 bytes):
     Major: 0x03 (TLS 1.x)
-    Minor: 0x04 (TLS 1.3) or 0x05 (Q-TSL 1.0)
-    Example: 0x0304 = TLS 1.3, 0x0305 = Q-TSL 1.0
+    Minor: 0x04 (TLS 1.3) or 0x05 (Q-TLS 1.0)
+    Example: 0x0304 = TLS 1.3, 0x0305 = Q-TLS 1.0
 
   Length (2 bytes):
     Big-endian uint16
     Maximum: 2^14 = 16,384 bytes (per TLS 1.3)
-    Q-TSL extension: Up to 2^16 for PQC signatures
+    Q-TLS extension: Up to 2^16 for PQC signatures
 ```
 
 **바이트 배치 예시**:
@@ -129,8 +129,8 @@ Offset  Description                              Size    Value
 0x00XX  Cipher Suites                        N*2        List of supported cipher suites:
                                                           0x1301 - TLS_AES_128_GCM_SHA256
                                                           0x1302 - TLS_AES_256_GCM_SHA384
-                                                          0x13F1 - TLS_KYBER1024_DILITHIUM3_AES256_GCM_SHA384 (Q-TSL)
-                                                          0x13F2 - TLS_ECDHE_KYBER1024_ECDSA_DILITHIUM3_AES256_GCM_SHA384 (Q-TSL)
+                                                          0x13F1 - TLS_KYBER1024_DILITHIUM3_AES256_GCM_SHA384 (Q-TLS)
+                                                          0x13F2 - TLS_ECDHE_KYBER1024_ECDSA_DILITHIUM3_AES256_GCM_SHA384 (Q-TLS)
 0x00XX  Compression Methods Length               1       0x01
 0x00XX  Compression Methods                      1       0x00 (NULL, no compression)
 
@@ -142,8 +142,8 @@ Offset  Description                              Size    Value
 0x00XX  Extension Length                         2       0xXXXX
 0x00XX  Supported Groups Length                  2       0xXXXX
 0x00XX  Named Groups                          N*2        List:
-                                                          0x0100 - kyber1024 (Q-TSL)
-                                                          0x0101 - kyber768 (Q-TSL)
+                                                          0x0100 - kyber1024 (Q-TLS)
+                                                          0x0101 - kyber768 (Q-TLS)
                                                           0x001D - x25519
                                                           0x0018 - secp384r1
 
@@ -152,8 +152,8 @@ Offset  Description                              Size    Value
 0x00XX  Extension Length                         2       0xXXXX
 0x00XX  Signature Algorithms Length              2       0xXXXX
 0x00XX  Signature Schemes                     N*2        List:
-                                                          0x0900 - dilithium3 (Q-TSL)
-                                                          0x0901 - dilithium2 (Q-TSL)
+                                                          0x0900 - dilithium3 (Q-TLS)
+                                                          0x0901 - dilithium2 (Q-TLS)
                                                           0x0403 - ecdsa_secp384r1_sha384
                                                           0x0804 - rsa_pss_rsae_sha384
 
@@ -216,7 +216,7 @@ Offset  Description                              Size    Value
 0x000B  Server Random                           32       <random bytes>
 0x002B  Session ID Length                        1       0x00 or 0x20
 0x002C  Session ID                            0~32       <session id>
-0x00XX  Cipher Suite                             2       0x13F2 (Selected Q-TSL Hybrid suite)
+0x00XX  Cipher Suite                             2       0x13F2 (Selected Q-TLS Hybrid suite)
 0x00XX  Compression Method                       1       0x00 (NULL)
 
 // Extensions
@@ -240,7 +240,7 @@ Offset  Description                              Size    Value
 ### 1.4 Certificate 메시지 (Hybrid)
 
 ```
-Certificate Message Format (Q-TSL Hybrid):
+Certificate Message Format (Q-TLS Hybrid):
 
 Offset  Description                              Size    Value
 ------  ---------------------------------------  ------  -------------
@@ -286,7 +286,7 @@ Offset  Description                              Size    Value
 ### 1.5 CertificateVerify 메시지 (Hybrid Signature)
 
 ```
-CertificateVerify Message Format (Q-TSL Hybrid):
+CertificateVerify Message Format (Q-TLS Hybrid):
 
 Offset  Description                              Size    Value
 ------  ---------------------------------------  ------  -------------
@@ -466,7 +466,7 @@ def HKDF_Expand_Label(secret, label, context, length):
 
 ## 2. 핸드셰이크 프로토콜 상세 설계
 
-### 2.1 전체 핸드셰이크 시퀀스 (Q-TSL Hybrid)
+### 2.1 전체 핸드셰이크 시퀀스 (Q-TLS Hybrid)
 
 ```mermaid
 sequenceDiagram
@@ -481,7 +481,7 @@ sequenceDiagram
     C->>C: Generate KYBER1024 keypair<br/>kyber_client_pk, kyber_client_sk
     C->>C: Generate ECDHE keypair<br/>ecdhe_client_pk, ecdhe_client_sk
 
-    C->>S: ClientHello<br/>- client_random<br/>- cipher_suites (Q-TSL Hybrid)<br/>- supported_groups (kyber1024, x25519)<br/>- signature_algorithms (dilithium3, ecdsa)<br/>- key_share (kyber_client_pk, ecdhe_client_pk)
+    C->>S: ClientHello<br/>- client_random<br/>- cipher_suites (Q-TLS Hybrid)<br/>- supported_groups (kyber1024, x25519)<br/>- signature_algorithms (dilithium3, ecdsa)<br/>- key_share (kyber_client_pk, ecdhe_client_pk)
 
     Note over C,S: Flight 2: Server → Client
 
@@ -611,12 +611,12 @@ stateDiagram-v2
 ```python
 class QTSLKeySchedule:
     """
-    Q-TSL Key Schedule (TLS 1.3 기반 + PQC 확장)
+    Q-TLS Key Schedule (TLS 1.3 기반 + PQC 확장)
     """
 
     def __init__(self, cipher_suite):
         """
-        cipher_suite: Selected Q-TSL cipher suite
+        cipher_suite: Selected Q-TLS cipher suite
         """
         self.cipher_suite = cipher_suite
         self.hash_algo = self._get_hash_algo(cipher_suite)
@@ -893,7 +893,7 @@ def HKDF_Expand_SHA384(prk, info, length):
 
 ```mermaid
 graph TB
-    subgraph "Q-TSL Record Protocol Stack"
+    subgraph "Q-TLS Record Protocol Stack"
         subgraph "Input Layer"
             INPUT[Application Data<br/>Max 2^14 bytes]
         end
@@ -963,7 +963,7 @@ encrypted_record = AEAD-Encrypt(
 
 ```python
 class QTSLRecordProtocol:
-    """Q-TSL Record Protocol Implementation"""
+    """Q-TLS Record Protocol Implementation"""
 
     def __init__(self, write_key, write_iv):
         """
@@ -1154,7 +1154,7 @@ Anti-Replay 보호:
 
   최대 레코드 크기:
     TLS 1.3 표준: 2^14 (16,384) bytes (plaintext)
-    Q-TSL 확장: 2^14 bytes (동일, PQC 서명은 핸드셰이크에만 영향)
+    Q-TLS 확장: 2^14 bytes (동일, PQC 서명은 핸드셰이크에만 영향)
 
   단편화 (Fragmentation):
     규칙:
@@ -1220,7 +1220,7 @@ Offset  Description                              Size    Value
 ### 4.2 Alert 코드 및 설명
 
 ```yaml
-Alert Codes (Q-TSL):
+Alert Codes (Q-TLS):
 
   Warning Alerts (Level 1):
     0: close_notify
@@ -1235,7 +1235,7 @@ Alert Codes (Q-TSL):
        설명: 클라이언트 인증서 없음 (요청 시)
        조치: 서버 정책에 따라 계속 또는 종료
 
-    90: (Q-TSL) pqc_negotiation_failure
+    90: (Q-TLS) pqc_negotiation_failure
        설명: PQC 알고리즘 협상 실패
        조치: Classical 암호로 Fallback 시도
 
@@ -1312,15 +1312,15 @@ Alert Codes (Q-TSL):
        설명: 부적절한 다운그레이드 시도 감지
        조치: 즉시 연결 종료, 공격 의심
 
-    90: (Q-TSL) pqc_signature_failure
+    90: (Q-TLS) pqc_signature_failure
        설명: PQC 서명 검증 실패
        조치: 연결 종료, 보안 이벤트 기록
 
-    91: (Q-TSL) pqc_key_exchange_failure
+    91: (Q-TLS) pqc_key_exchange_failure
        설명: PQC 키 교환 실패
        조치: 연결 종료
 
-    92: (Q-TSL) hsm_error
+    92: (Q-TLS) hsm_error
        설명: HSM 오류
        조치: 연결 종료, HSM 상태 확인
 
@@ -1460,10 +1460,10 @@ ExtensionType: uint16
 extension_data: Length (2 bytes) + Data (variable)
 ```
 
-### 5.2 Q-TSL 커스텀 확장
+### 5.2 Q-TLS 커스텀 확장
 
 ```yaml
-Q-TSL Custom Extensions:
+Q-TLS Custom Extensions:
 
   1. pqc_supported_algorithms (0xFF01):
      용도: PQC 알고리즘 지원 표시
@@ -1562,13 +1562,13 @@ Q-TSL Custom Extensions:
        - 압축 후: ~2,500 bytes (zstd, 약 60% 압축)
 ```
 
-### 5.3 표준 TLS 1.3 확장 (Q-TSL 사용)
+### 5.3 표준 TLS 1.3 확장 (Q-TLS 사용)
 
 ```yaml
-TLS 1.3 Standard Extensions (used in Q-TSL):
+TLS 1.3 Standard Extensions (used in Q-TLS):
 
   1. supported_groups (0x000A):
-     Q-TSL 추가 값:
+     Q-TLS 추가 값:
        - kyber1024 (0x0100)
        - kyber768 (0x0101)
        - kyber512 (0x0102)
@@ -1578,7 +1578,7 @@ TLS 1.3 Standard Extensions (used in Q-TSL):
        - secp384r1 (0x0018)
 
   2. signature_algorithms (0x000D):
-     Q-TSL 추가 값:
+     Q-TLS 추가 값:
        - dilithium3 (0x0900)
        - dilithium2 (0x0901)
        - dilithium5 (0x0902)
@@ -1589,7 +1589,7 @@ TLS 1.3 Standard Extensions (used in Q-TSL):
        - rsa_pss_rsae_sha384 (0x0804)
 
   3. key_share (0x0033):
-     Q-TSL 키 교환 데이터:
+     Q-TLS 키 교환 데이터:
        - KYBER1024 public key: 1,568 bytes
        - KYBER768 public key: 1,184 bytes
        - x25519 public key: 32 bytes
@@ -1599,15 +1599,15 @@ TLS 1.3 Standard Extensions (used in Q-TSL):
      예시: q-sign.local, q-gateway.local
 
   5. application_layer_protocol_negotiation (0x0010):
-     Q-TSL 지원 프로토콜:
+     Q-TLS 지원 프로토콜:
        - h2 (HTTP/2)
        - http/1.1
        - grpc
 
   6. supported_versions (0x002B):
-     Q-TSL 버전:
+     Q-TLS 버전:
        - 0x0304 (TLS 1.3)
-       - 0x0305 (Q-TSL 1.0, experimental)
+       - 0x0305 (Q-TLS 1.0, experimental)
 
   7. psk_key_exchange_modes (0x002D):
      모드:
@@ -2159,7 +2159,7 @@ graph TB
         P5[Open Design<br/>공개 설계]
         P6[Separation of Duties<br/>직무 분리]
 
-        subgraph "Q-TSL Implementation"
+        subgraph "Q-TLS Implementation"
             I1[Hybrid Cryptography]
             I2[HSM Key Protection]
             I3[Alert on Failure]
@@ -2372,8 +2372,8 @@ graph TB
 
 ### 관련 문서
 
-- [Q-TSL-OVERVIEW.md](./Q-TSL-OVERVIEW.md) - Q-TSL 개요
-- [Q-TSL-ARCHITECTURE.md](./Q-TSL-ARCHITECTURE.md) - 아키텍처
+- [Q-TLS-OVERVIEW.md](./Q-TLS-OVERVIEW.md) - Q-TLS 개요
+- [Q-TLS-ARCHITECTURE.md](./Q-TLS-ARCHITECTURE.md) - 아키텍처
 - [PQC-ARCHITECTURE.md](../01-architecture/PQC-ARCHITECTURE.md) - PQC 아키텍처
 
 ---
@@ -2382,7 +2382,7 @@ graph TB
 
 | 항목 | 내용 |
 |------|------|
-| **문서명** | Q-TSL 상세 설계 (Q-TSL Detailed Design) |
+| **문서명** | Q-TLS 상세 설계 (Q-TLS Detailed Design) |
 | **버전** | 1.0.0 |
 | **작성일** | 2025-11-16 |
 | **상태** | Final |

@@ -1,10 +1,10 @@
-# Q-TSL (Q-SSL) 설계 문서
+# Q-TLS (Q-SSL) 설계 문서
 
-Q-Sign™ On-Premises Edition의 Q-TSL (Quantum-resistant Transport Security Layer) / Q-SSL 아키텍처 및 설계 문서입니다.
+Q-Sign™ On-Premises Edition의 Q-TLS (Quantum-resistant Transport Security Layer) / Q-SSL 아키텍처 및 설계 문서입니다.
 
 ## 📘 개요
 
-Q-TSL은 QSIGN 시스템에서 사용하는 양자 내성 전송 보안 계층으로, 전통적인 TLS/SSL에 Post-Quantum Cryptography (PQC)를 하이브리드 방식으로 통합한 차세대 보안 프로토콜입니다.
+Q-TLS은 QSIGN 시스템에서 사용하는 양자 내성 전송 보안 계층으로, 전통적인 TLS/SSL에 Post-Quantum Cryptography (PQC)를 하이브리드 방식으로 통합한 차세대 보안 프로토콜입니다.
 
 ### 핵심 특징
 
@@ -15,24 +15,24 @@ Q-TSL은 QSIGN 시스템에서 사용하는 양자 내성 전송 보안 계층�
 
 ## 📖 문서 목록
 
-### 1. [Q-TSL-OVERVIEW.md](./Q-TSL-OVERVIEW.md)
-Q-TSL/Q-SSL 개요 및 배경
-- Q-TSL이란 무엇인가
+### 1. [Q-TLS-OVERVIEW.md](./Q-TLS-OVERVIEW.md)
+Q-TLS/Q-SSL 개요 및 배경
+- Q-TLS이란 무엇인가
 - 양자 위협과 PQC의 필요성
 - TLS-PQC Hybrid Mode 소개
-- Q-TSL vs 전통적 TLS 비교
-- QSIGN에서의 Q-TSL 역할
+- Q-TLS vs 전통적 TLS 비교
+- QSIGN에서의 Q-TLS 역할
 
-### 2. [Q-TSL-ARCHITECTURE.md](./Q-TSL-ARCHITECTURE.md)
-Q-TSL 아키텍처 설계
+### 2. [Q-TLS-ARCHITECTURE.md](./Q-TLS-ARCHITECTURE.md)
+Q-TLS 아키텍처 설계
 - 전체 아키텍처 다이어그램
-- 계층 구조 (Application → Q-TSL → Transport → Network)
+- 계층 구조 (Application → Q-TLS → Transport → Network)
 - 하이브리드 암호화 모델
 - 키 교환 메커니즘 (Kyber1024 + ECDHE)
 - 서명 알고리즘 (Dilithium3 + ECDSA)
 - 암호화 스위트 구성
 
-### 3. [Q-TSL-DESIGN.md](./Q-TSL-DESIGN.md)
+### 3. [Q-TLS-DESIGN.md](./Q-TLS-DESIGN.md)
 상세 설계 문서
 - 프로토콜 메시지 포맷
 - 핸드셰이크 프로토콜 상세
@@ -70,7 +70,7 @@ TLS-PQC Hybrid 핸드셰이크 프로토콜
 - 권장 설정
 
 ### 7. [SEQUENCE-DIAGRAMS.md](./SEQUENCE-DIAGRAMS.md)
-Q-TSL 시퀀스 다이어그램
+Q-TLS 시퀀스 다이어그램
 - 전체 TLS-PQC Hybrid 핸드셰이크
 - 키 교환 상세 흐름
 - 인증서 검증 흐름
@@ -79,10 +79,10 @@ Q-TSL 시퀀스 다이어그램
 - 에러 처리 시나리오
 
 ### 8. [IMPLEMENTATION-GUIDE.md](./IMPLEMENTATION-GUIDE.md)
-Q-TSL 구현 가이드
+Q-TLS 구현 가이드
 - OpenSSL + OQS (Open Quantum Safe) 통합
-- APISIX Gateway Q-TSL 설정
-- Nginx Q-TSL 모듈 설정
+- APISIX Gateway Q-TLS 설정
+- Nginx Q-TLS 모듈 설정
 - 클라이언트 라이브러리 구현
 - 테스트 및 검증 방법
 - 성능 튜닝
@@ -105,13 +105,13 @@ Q-TSL 구현 가이드
 - 부하 테스트 (Load Testing)
 - 침투 테스트 (Penetration Testing)
 
-## 🔐 Q-TSL 핵심 개념
+## 🔐 Q-TLS 핵심 개념
 
 ### Hybrid Cryptography Model
 
 ```mermaid
 graph TB
-    subgraph QTSL["Q-TSL Hybrid Cryptography"]
+    subgraph QTSL["Q-TLS Hybrid Cryptography"]
         subgraph CLASSICAL["Classical Cryptography"]
             CL1[ECDHE P-384<br/>키 교환]
             CL2[RSA-4096 / ECDSA<br/>서명]
@@ -144,13 +144,13 @@ graph TB
     style HYBRID fill:#ffccbc
 ```
 
-### Q-TSL Protocol Stack
+### Q-TLS Protocol Stack
 
 ```mermaid
 graph TB
-    subgraph STACK["Q-TSL Protocol Stack"]
+    subgraph STACK["Q-TLS Protocol Stack"]
         APP[Application Layer<br/>HTTP/2, gRPC, WebSocket]
-        QTSL[Q-TSL Layer<br/>Handshake + Record Protocol]
+        QTSL[Q-TLS Layer<br/>Handshake + Record Protocol]
         TCP[Transport Layer<br/>TCP]
         IP[Network Layer<br/>IP]
     end
@@ -191,24 +191,24 @@ graph TB
 
 ## 🎯 적용 범위
 
-### QSIGN 시스템 내 Q-TSL 적용
+### QSIGN 시스템 내 Q-TLS 적용
 
 ```mermaid
 graph LR
     CLIENT[Client<br/>Web/Mobile App]
 
     subgraph QSIGN["QSIGN System"]
-        GATEWAY[Q-Gateway<br/>APISIX + Q-TSL]
+        GATEWAY[Q-Gateway<br/>APISIX + Q-TLS]
         KEYCLOAK[Q-Sign<br/>Keycloak PQC]
         VAULT[Q-KMS<br/>Vault HSM]
         APP[Applications<br/>Q-App]
     end
 
-    CLIENT -->|Q-TSL| GATEWAY
-    GATEWAY -->|Q-TSL| KEYCLOAK
-    GATEWAY -->|Q-TSL| VAULT
-    GATEWAY -->|Q-TSL| APP
-    KEYCLOAK -->|Q-TSL| VAULT
+    CLIENT -->|Q-TLS| GATEWAY
+    GATEWAY -->|Q-TLS| KEYCLOAK
+    GATEWAY -->|Q-TLS| VAULT
+    GATEWAY -->|Q-TLS| APP
+    KEYCLOAK -->|Q-TLS| VAULT
 
     style CLIENT fill:#e3f2fd
     style GATEWAY fill:#fff9c4
@@ -221,7 +221,7 @@ graph LR
 
 1. **External Communication** (외부 통신)
    - Client ↔ Q-Gateway: 인터넷을 통한 모든 통신
-   - 최우선 Q-TSL 적용 대상
+   - 최우선 Q-TLS 적용 대상
 
 2. **Internal Communication** (내부 통신)
    - Q-Gateway ↔ Keycloak: 인증 토큰 발급
@@ -240,8 +240,8 @@ graph LR
 |---------|----------------|-----------|--------|
 | TLS 1.3 (RSA-2048) | ~50ms | 낮음 | 8KB |
 | TLS 1.3 (ECDHE P-256) | ~30ms | 낮음 | 4KB |
-| **Q-TSL Hybrid** | **~80ms** | **중간** | **24KB** |
-| Q-TSL PQC Only | ~120ms | 높음 | 48KB |
+| **Q-TLS Hybrid** | **~80ms** | **중간** | **24KB** |
+| Q-TLS PQC Only | ~120ms | 높음 | 48KB |
 
 ### 최적화 전략
 

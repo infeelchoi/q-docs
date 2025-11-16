@@ -2,9 +2,9 @@
 
 ## 📘 개요
 
-Q-TSL에서 지원하는 암호화 스위트(Cipher Suites) 및 PQC 알고리즘 조합에 대한 상세 문서입니다. 보안 수준, 성능 특성, 권장 설정을 포함합니다.
+Q-TLS에서 지원하는 암호화 스위트(Cipher Suites) 및 PQC 알고리즘 조합에 대한 상세 문서입니다. 보안 수준, 성능 특성, 권장 설정을 포함합니다.
 
-## 🔐 Q-TSL 지원 Cipher Suites 전체 목록
+## 🔐 Q-TLS 지원 Cipher Suites 전체 목록
 
 ### Cipher Suite 명명 규칙
 
@@ -39,7 +39,7 @@ Cipher Suite Naming Convention:
 ### 지원 Cipher Suites 목록
 
 ```yaml
-Q-TSL Supported Cipher Suites:
+Q-TLS Supported Cipher Suites:
 
   # Tier 1: Hybrid PQC+Classical (Recommended)
   - TLS_HYBRID_ECDHE_KYBER1024_RSA_DILITHIUM3_WITH_AES_256_GCM_SHA384
@@ -622,7 +622,7 @@ Optimization Recommendations:
 ### Production 환경
 
 ```yaml
-# /etc/q-tsl/production.yaml
+# /etc/q-tls/production.yaml
 cipher_suite_config:
   environment: production
 
@@ -678,7 +678,7 @@ cipher_suite_config:
 ### Development 환경
 
 ```yaml
-# /etc/q-tsl/development.yaml
+# /etc/q-tls/development.yaml
 cipher_suite_config:
   environment: development
 
@@ -731,7 +731,7 @@ cipher_suite_config:
 ### Testing 환경
 
 ```yaml
-# /etc/q-tsl/testing.yaml
+# /etc/q-tls/testing.yaml
 cipher_suite_config:
   environment: testing
 
@@ -774,13 +774,13 @@ cipher_suite_config:
 
 ## 🔧 APISIX 설정 예제
 
-### APISIX Q-TSL Configuration
+### APISIX Q-TLS Configuration
 
 ```yaml
 # /etc/apisix/config.yaml
 apisix:
   ssl:
-    # Enable Q-TSL
+    # Enable Q-TLS
     enable_pqc: true
 
     # Cipher Suite Configuration
@@ -856,10 +856,10 @@ apisix:
     ssl_session_cache_size: 10m
 ```
 
-### APISIX Route with Q-TSL
+### APISIX Route with Q-TLS
 
 ```yaml
-# Route configuration for Q-TSL
+# Route configuration for Q-TLS
 routes:
   - uri: /api/v1/*
     name: secure-api-route
@@ -876,7 +876,7 @@ routes:
         "backend-1.qsign.local:8443": 1
         "backend-2.qsign.local:8443": 1
 
-      # Upstream SSL (Q-TSL to backend)
+      # Upstream SSL (Q-TLS to backend)
       scheme: https
       tls:
         client_cert: /etc/apisix/certs/upstream-client-dilithium3.crt
@@ -913,7 +913,7 @@ routes:
 
 ## 🌐 Nginx 설정 예제
 
-### Nginx Q-TSL Configuration
+### Nginx Q-TLS Configuration
 
 ```nginx
 # /etc/nginx/nginx.conf
@@ -932,12 +932,12 @@ http {
     # OpenSSL Engine Configuration
     ssl_engine oqs;
 
-    # Q-TSL Server Block
+    # Q-TLS Server Block
     server {
         listen 443 ssl http2;
         server_name q-gateway.qsign.local;
 
-        # Q-TSL Configuration
+        # Q-TLS Configuration
         ssl_protocols TLSv1.3;
 
         # Cipher Suites (Hybrid PQC)
@@ -979,14 +979,14 @@ http {
         add_header X-Content-Type-Options "nosniff" always;
 
         # Logging
-        access_log /var/log/nginx/q-tsl-access.log;
-        error_log /var/log/nginx/q-tsl-error.log;
+        access_log /var/log/nginx/q-tls-access.log;
+        error_log /var/log/nginx/q-tls-error.log;
 
         # Proxy to Backend
         location / {
             proxy_pass https://backend.qsign.local:8443;
 
-            # Proxy SSL (Q-TSL to backend)
+            # Proxy SSL (Q-TLS to backend)
             proxy_ssl_protocols TLSv1.3;
             proxy_ssl_ciphers TLS_HYBRID_ECDHE_KYBER1024_RSA_DILITHIUM3_WITH_AES_256_GCM_SHA384;
             proxy_ssl_certificate /etc/nginx/certs/proxy-client-dilithium3.crt;
