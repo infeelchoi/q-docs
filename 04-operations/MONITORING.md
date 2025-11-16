@@ -17,37 +17,49 @@ QSIGN 시스템의 모니터링 구성 및 운영 가이드입니다.
 
 ### 전체 구조
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        QSIGN Services                       │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐   │
-│  │   API    │  │Signature │  │   HSM    │  │  Vault   │   │
-│  │  Server  │  │ Service  │  │ Adapter  │  │          │   │
-│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘   │
-│       │             │              │             │          │
-│       └─────────────┴──────────────┴─────────────┘          │
-│                         │                                    │
-└─────────────────────────┼────────────────────────────────────┘
-                          │
-        ┌─────────────────┼─────────────────┐
-        │                 │                 │
-        ▼                 ▼                 ▼
-  ┌──────────┐      ┌──────────┐      ┌──────────┐
-  │Prometheus│      │SkyWalking│      │   Loki   │
-  │ Metrics  │      │   APM    │      │   Logs   │
-  └────┬─────┘      └────┬─────┘      └────┬─────┘
-       │                 │                 │
-       └─────────────────┼─────────────────┘
-                         │
-                    ┌────▼─────┐
-                    │ Grafana  │
-                    │Dashboard │
-                    └──────────┘
-                         │
-                    ┌────▼─────┐
-                    │AlertMgr  │
-                    │  Slack   │
-                    └──────────┘
+```mermaid
+graph TB
+    subgraph QSIGN["QSIGN Services"]
+        API[API<br/>Server]
+        SIG[Signature<br/>Service]
+        HSM[HSM<br/>Adapter]
+        VAULT[Vault]
+    end
+
+    PROM[Prometheus<br/>Metrics]
+    SKY[SkyWalking<br/>APM]
+    LOKI[Loki<br/>Logs]
+    GRAF[Grafana<br/>Dashboard]
+    ALERT[AlertMgr<br/>Slack]
+
+    API --> PROM
+    API --> SKY
+    API --> LOKI
+    SIG --> PROM
+    SIG --> SKY
+    SIG --> LOKI
+    HSM --> PROM
+    HSM --> SKY
+    HSM --> LOKI
+    VAULT --> PROM
+    VAULT --> SKY
+    VAULT --> LOKI
+
+    PROM --> GRAF
+    SKY --> GRAF
+    LOKI --> GRAF
+    GRAF --> ALERT
+
+    style QSIGN fill:#e1f5ff,stroke:#01579b,stroke-width:2px
+    style API fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    style SIG fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    style HSM fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    style VAULT fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    style PROM fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style SKY fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style LOKI fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style GRAF fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style ALERT fill:#ffccbc,stroke:#d84315,stroke-width:2px
 ```
 
 ### 모니터링 스택 배포

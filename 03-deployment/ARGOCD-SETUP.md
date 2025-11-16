@@ -26,12 +26,19 @@ ArgoCD는 Kubernetes를 위한 선언적 GitOps CD(Continuous Deployment) 도구
 
 ### QSIGN 프로젝트 구성
 
-```
-ArgoCD
-├── q-sign (Keycloak + PQC)
-├── q-kms (Vault + Luna HSM)
-├── q-app (Application Services)
-└── monitoring (Grafana + Prometheus)
+```mermaid
+graph TD
+    ArgoCD["ArgoCD"]
+    ArgoCD --> QSIGN["q-sign<br/>(Keycloak + PQC)"]
+    ArgoCD --> QKMS["q-kms<br/>(Vault + Luna HSM)"]
+    ArgoCD --> QAPP["q-app<br/>(Application Services)"]
+    ArgoCD --> MON["monitoring<br/>(Grafana + Prometheus)"]
+
+    style ArgoCD fill:#ff6f00,stroke:#e65100,stroke-width:3px,color:#fff
+    style QSIGN fill:#1976d2,stroke:#0d47a1,stroke-width:2px,color:#fff
+    style QKMS fill:#388e3c,stroke:#1b5e20,stroke-width:2px,color:#fff
+    style QAPP fill:#7b1fa2,stroke:#4a148c,stroke-width:2px,color:#fff
+    style MON fill:#c2185b,stroke:#880e4f,stroke-width:2px,color:#fff
 ```
 
 ## 설치 및 초기 설정

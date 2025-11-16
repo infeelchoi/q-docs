@@ -17,31 +17,76 @@ QSIGN 시스템의 수평/수직 확장 및 성능 최적화 가이드입니다.
 
 ### 확장 결정 트리
 
-```
-트래픽 증가 감지
-    │
-    ├─ CPU 사용률 > 70%
-    │   └─ HPA로 수평 확장
-    │
-    ├─ 메모리 사용률 > 80%
-    │   └─ VPA로 수직 확장 또는 메모리 최적화
-    │
-    ├─ 응답 시간 > SLA
-    │   ├─ Database 병목
-    │   │   ├─ Connection Pool 확장
-    │   │   ├─ Read Replica 추가
-    │   │   └─ 쿼리 최적화
-    │   │
-    │   ├─ HSM 병목
-    │   │   ├─ HSM Adapter Pod 증가
-    │   │   └─ HSM Connection Pool 확장
-    │   │
-    │   └─ Network 병목
-    │       └─ Ingress Controller 확장
-    │
-    └─ Disk I/O 병목
-        ├─ SSD로 업그레이드
-        └─ PVC 크기 확장
+```mermaid
+graph TD
+    START[트래픽 증가 감지]
+
+    CPU[CPU 사용률 > 70%]
+    CPU_ACT[HPA로 수평 확장]
+
+    MEM[메모리 사용률 > 80%]
+    MEM_ACT[VPA로 수직 확장<br/>또는 메모리 최적화]
+
+    RT[응답 시간 > SLA]
+
+    DB[Database 병목]
+    DB_ACT1[Connection Pool 확장]
+    DB_ACT2[Read Replica 추가]
+    DB_ACT3[쿼리 최적화]
+
+    HSM_BTL[HSM 병목]
+    HSM_ACT1[HSM Adapter Pod 증가]
+    HSM_ACT2[HSM Connection Pool 확장]
+
+    NET[Network 병목]
+    NET_ACT[Ingress Controller 확장]
+
+    DISK[Disk I/O 병목]
+    DISK_ACT1[SSD로 업그레이드]
+    DISK_ACT2[PVC 크기 확장]
+
+    START --> CPU
+    START --> MEM
+    START --> RT
+    START --> DISK
+
+    CPU --> CPU_ACT
+    MEM --> MEM_ACT
+
+    RT --> DB
+    RT --> HSM_BTL
+    RT --> NET
+
+    DB --> DB_ACT1
+    DB --> DB_ACT2
+    DB --> DB_ACT3
+
+    HSM_BTL --> HSM_ACT1
+    HSM_BTL --> HSM_ACT2
+
+    NET --> NET_ACT
+
+    DISK --> DISK_ACT1
+    DISK --> DISK_ACT2
+
+    style START fill:#e3f2fd,stroke:#1565c0,stroke-width:3px
+    style CPU fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style MEM fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style RT fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style DISK fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style CPU_ACT fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style MEM_ACT fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style DB fill:#ffccbc,stroke:#d84315,stroke-width:2px
+    style HSM_BTL fill:#ffccbc,stroke:#d84315,stroke-width:2px
+    style NET fill:#ffccbc,stroke:#d84315,stroke-width:2px
+    style DB_ACT1 fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style DB_ACT2 fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style DB_ACT3 fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style HSM_ACT1 fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style HSM_ACT2 fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style NET_ACT fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style DISK_ACT1 fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
+    style DISK_ACT2 fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
 ```
 
 ### 확장 우선순위

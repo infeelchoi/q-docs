@@ -26,12 +26,20 @@ Helm은 Kubernetes 패키지 관리자로, 복잡한 애플리케이션을 쉽�
 
 ### QSIGN 프로젝트 Helm Charts
 
-```
-QSIGN Helm Charts
-├── keycloak-pqc (Keycloak + PQC)
-├── vault-hsm (Vault + Luna HSM)
-├── q-sign-app (Full Stack Application)
-└── monitoring (Grafana + Prometheus)
+```mermaid
+graph TD
+    ROOT["QSIGN Helm Charts"]
+
+    ROOT --> KC["keycloak-pqc<br/>(Keycloak + PQC)"]
+    ROOT --> VH["vault-hsm<br/>(Vault + Luna HSM)"]
+    ROOT --> APP["q-sign-app<br/>(Full Stack Application)"]
+    ROOT --> MON["monitoring<br/>(Grafana + Prometheus)"]
+
+    style ROOT fill:#ff6f00,stroke:#e65100,stroke-width:3px,color:#fff
+    style KC fill:#1976d2,stroke:#0d47a1,stroke-width:2px,color:#fff
+    style VH fill:#388e3c,stroke:#1b5e20,stroke-width:2px,color:#fff
+    style APP fill:#7b1fa2,stroke:#4a148c,stroke-width:2px,color:#fff
+    style MON fill:#c2185b,stroke:#880e4f,stroke-width:2px,color:#fff
 ```
 
 ## Helm Chart 구조

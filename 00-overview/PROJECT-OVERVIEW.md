@@ -72,44 +72,70 @@ graph TB
 
 ### 주요 컴포넌트
 
-```
-QSIGN
-├── Q-SIGN (Keycloak PQC)
-│   ├── Keycloak 26.0.0 + PQC Provider
-│   ├── PostgreSQL Database
-│   └── Namespace: q-sign
-│
-├── Q-KMS (Key Management Service)
-│   ├── HashiCorp Vault 1.21.0
-│   ├── Luna HSM Integration
-│   ├── Transit Engine (암호화/복호화)
-│   ├── KV Secret Engine (키 저장)
-│   └── Namespace: q-kms
-│
-├── PQC-SSO (SSO Testing)
-│   ├── Keycloak HSM
-│   ├── SSO Test Applications
-│   └── Namespace: pqc-sso
-│
-├── Q-GATEWAY (API Gateway)
-│   ├── Apache APISIX 3.10.0
-│   ├── APISIX Dashboard
-│   └── Namespace: qsign-prod
-│
-├── Q-APP (Test Applications)
-│   ├── App1-7 (테스트 클라이언트)
-│   └── Namespace: q-app
-│
-├── Q-ADMIN (관리 도구)
-│   ├── Admin Dashboard
-│   ├── CI/CD Dashboard
-│   └── Namespace: qsign-prod, dashboard
-│
-└── Monitoring Stack
-    ├── Prometheus (메트릭)
-    ├── Grafana (대시보드)
-    ├── SkyWalking (APM)
-    └── Elasticsearch (로그)
+```mermaid
+graph TB
+    QSIGN["QSIGN"]
+
+    subgraph QSign["Q-SIGN (Keycloak PQC)"]
+        QS1["Keycloak 26.0.0 + PQC Provider"]
+        QS2["PostgreSQL Database"]
+        QS3["Namespace: q-sign"]
+    end
+
+    subgraph QKMS["Q-KMS (Key Management Service)"]
+        KMS1["HashiCorp Vault 1.21.0"]
+        KMS2["Luna HSM Integration"]
+        KMS3["Transit Engine (암호화/복호화)"]
+        KMS4["KV Secret Engine (키 저장)"]
+        KMS5["Namespace: q-kms"]
+    end
+
+    subgraph SSO["PQC-SSO (SSO Testing)"]
+        SSO1["Keycloak HSM"]
+        SSO2["SSO Test Applications"]
+        SSO3["Namespace: pqc-sso"]
+    end
+
+    subgraph Gateway["Q-GATEWAY (API Gateway)"]
+        GW1["Apache APISIX 3.10.0"]
+        GW2["APISIX Dashboard"]
+        GW3["Namespace: qsign-prod"]
+    end
+
+    subgraph QApp["Q-APP (Test Applications)"]
+        APP1["App1-7 (테스트 클라이언트)"]
+        APP2["Namespace: q-app"]
+    end
+
+    subgraph QAdmin["Q-ADMIN (관리 도구)"]
+        ADM1["Admin Dashboard"]
+        ADM2["CI/CD Dashboard"]
+        ADM3["Namespace: qsign-prod, dashboard"]
+    end
+
+    subgraph Monitor["Monitoring Stack"]
+        MON1["Prometheus (메트릭)"]
+        MON2["Grafana (대시보드)"]
+        MON3["SkyWalking (APM)"]
+        MON4["Elasticsearch (로그)"]
+    end
+
+    QSIGN --> QSign
+    QSIGN --> QKMS
+    QSIGN --> SSO
+    QSIGN --> Gateway
+    QSIGN --> QApp
+    QSIGN --> QAdmin
+    QSIGN --> Monitor
+
+    style QSIGN fill:#e8f5e9,stroke:#2e7d32,stroke-width:3px
+    style QSign fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    style QKMS fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style SSO fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style Gateway fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    style QApp fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style QAdmin fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    style Monitor fill:#ffccbc,stroke:#d84315,stroke-width:2px
 ```
 
 ## 🔐 PQC 알고리즘

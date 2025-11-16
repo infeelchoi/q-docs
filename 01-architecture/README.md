@@ -58,39 +58,48 @@ Post-Quantum Cryptography 아키텍처
 
 ### 시스템 구성 요소
 
-```
-┌─────────────────────────────────────────────────┐
-│           Q-Sign™ On-Premises Edition           │
-├─────────────────────────────────────────────────┤
-│                                                 │
-│  🌐 Q-Gateway™  - API Gateway (APISIX)         │
-│     • TLS-PQC Hybrid Mode                       │
-│     • Traffic Management                        │
-│     • API Control & Rate Limiting               │
-│                                                 │
-│  🔐 Q-Sign™     - SSO Authentication            │
-│     • Keycloak PQC (OIDC/OAuth 2.0)            │
-│     • PQC JWT Token Service                     │
-│     • Access Control & User Management          │
-│                                                 │
-│  🗝️ Q-KMS™      - Key Management                │
-│     • Vault Transit Engine (PQC Crypto)         │
-│     • Luna HSM (FIPS 140-2 Level 3)            │
-│     • Key Generation & Distribution             │
-│                                                 │
-│  🔄 Q-Deb™      - DevOps                        │
-│     • GitLab (Source Control)                   │
-│     • Jenkins (CI/CD)                           │
-│     • Harbor (Container Registry)               │
-│     • ArgoCD (GitOps Deployment)                │
-│                                                 │
-│  📊 Q-Admin™    - Monitoring & Management       │
-│     • Prometheus (Metrics)                      │
-│     • Grafana (Dashboards)                      │
-│     • SkyWalking (APM)                          │
-│     • Admin Dashboard                           │
-│                                                 │
-└─────────────────────────────────────────────────┘
+```mermaid
+graph TB
+    subgraph QSIGN["Q-Sign™ On-Premises Edition"]
+        subgraph GW["🌐 Q-Gateway™ - API Gateway (APISIX)"]
+            GW1[TLS-PQC Hybrid Mode]
+            GW2[Traffic Management]
+            GW3[API Control & Rate Limiting]
+        end
+
+        subgraph SIGN["🔐 Q-Sign™ - SSO Authentication"]
+            SIGN1[Keycloak PQC<br/>OIDC/OAuth 2.0]
+            SIGN2[PQC JWT Token Service]
+            SIGN3[Access Control &<br/>User Management]
+        end
+
+        subgraph KMS["🗝️ Q-KMS™ - Key Management"]
+            KMS1[Vault Transit Engine<br/>PQC Crypto]
+            KMS2[Luna HSM<br/>FIPS 140-2 Level 3]
+            KMS3[Key Generation &<br/>Distribution]
+        end
+
+        subgraph DEB["🔄 Q-Deb™ - DevOps"]
+            DEB1[GitLab - Source Control]
+            DEB2[Jenkins - CI/CD]
+            DEB3[Harbor - Container Registry]
+            DEB4[ArgoCD - GitOps Deployment]
+        end
+
+        subgraph ADMIN["📊 Q-Admin™ - Monitoring & Management"]
+            ADMIN1[Prometheus - Metrics]
+            ADMIN2[Grafana - Dashboards]
+            ADMIN3[SkyWalking - APM]
+            ADMIN4[Admin Dashboard]
+        end
+    end
+
+    style QSIGN fill:#e3f2fd
+    style GW fill:#fff9c4
+    style SIGN fill:#c8e6c9
+    style KMS fill:#ffccbc
+    style DEB fill:#d1c4e9
+    style ADMIN fill:#b2dfdb
 ```
 
 ### 핵심 아키텍처 원칙

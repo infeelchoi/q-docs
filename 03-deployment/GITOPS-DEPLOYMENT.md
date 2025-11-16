@@ -6,33 +6,38 @@ QSIGN 프로젝트는 **GitOps** 방법론을 사용하여 모든 인프라와 �
 
 ## 🏗️ GitOps 아키텍처
 
-```
-┌──────────────────────────────────────────────────────────┐
-│                    Git Repositories                       │
-│  ┌────────────┐  ┌────────────┐  ┌────────────────────┐ │
-│  │  Q-SIGN    │  │   Q-KMS    │  │    Q-APP/ADMIN     │ │
-│  │  Helm      │  │   Helm     │  │    Helm Charts     │ │
-│  │  Charts    │  │   Charts   │  │                    │ │
-│  └─────┬──────┘  └─────┬──────┘  └─────┬──────────────┘ │
-└────────┼────────────────┼────────────────┼────────────────┘
-         │                │                │
-         │      ┌─────────▼────────────────▼──────┐
-         └─────►│     ArgoCD Controller           │
-                │  ┌──────────────────────────┐   │
-                │  │  Application Sync        │   │
-                │  │  - Auto-sync Enabled     │   │
-                │  │  - Self-heal Enabled     │   │
-                │  │  - Prune Resources       │   │
-                │  └──────────────────────────┘   │
-                └──────────────┬──────────────────┘
-                               │
-                ┌──────────────▼──────────────────┐
-                │    Kubernetes Cluster           │
-                │  ┌───────────┐  ┌───────────┐  │
-                │  │ q-sign    │  │  q-kms    │  │
-                │  │ namespace │  │ namespace │  │
-                │  └───────────┘  └───────────┘  │
-                └─────────────────────────────────┘
+```mermaid
+graph TB
+    subgraph GitRepos["Git Repositories"]
+        QSIGN["Q-SIGN<br/>Helm Charts"]
+        QKMS["Q-KMS<br/>Helm Charts"]
+        QAPP["Q-APP/ADMIN<br/>Helm Charts"]
+    end
+
+    subgraph ArgoCD["ArgoCD Controller"]
+        AppSync["Application Sync<br/>- Auto-sync Enabled<br/>- Self-heal Enabled<br/>- Prune Resources"]
+    end
+
+    subgraph K8sCluster["Kubernetes Cluster"]
+        NS1["q-sign<br/>namespace"]
+        NS2["q-kms<br/>namespace"]
+    end
+
+    QSIGN --> AppSync
+    QKMS --> AppSync
+    QAPP --> AppSync
+    AppSync --> NS1
+    AppSync --> NS2
+
+    style GitRepos fill:#e1f5ff,stroke:#01579b,stroke-width:2px
+    style ArgoCD fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style K8sCluster fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    style QSIGN fill:#bbdefb,stroke:#1976d2
+    style QKMS fill:#bbdefb,stroke:#1976d2
+    style QAPP fill:#bbdefb,stroke:#1976d2
+    style AppSync fill:#ffe0b2,stroke:#f57c00
+    style NS1 fill:#e1bee7,stroke:#7b1fa2
+    style NS2 fill:#e1bee7,stroke:#7b1fa2
 ```
 
 ## 📁 Git 저장소 구조
@@ -201,39 +206,53 @@ git push origin main
 ```
 
 ### 2. ArgoCD 자동 감지
-```
-GitLab Webhook (Optional)
-  ↓
-ArgoCD Git Polling (3분마다)
-  ↓
-Detect Changes
-  ↓
-Start Sync Process
+```mermaid
+graph TD
+    A["GitLab Webhook<br/>(Optional)"] --> B["ArgoCD Git Polling<br/>(3분마다)"]
+    B --> C["Detect Changes"]
+    C --> D["Start Sync Process"]
+
+    style A fill:#fff9c4,stroke:#f57f17
+    style B fill:#c8e6c9,stroke:#2e7d32
+    style C fill:#b2dfdb,stroke:#00695c
+    style D fill:#b2ebf2,stroke:#00838f
 ```
 
 ### 3. 동기화 프로세스
-```
-1. Git Pull
-   ├─ Fetch latest commit
-   └─ Checkout main branch
+```mermaid
+graph TD
+    A["1. Git Pull"] --> A1["Fetch latest commit"]
+    A --> A2["Checkout main branch"]
 
-2. Helm Processing
-   ├─ Render templates
-   ├─ Apply values
-   └─ Generate manifests
+    A1 --> B["2. Helm Processing"]
+    A2 --> B
+    B --> B1["Render templates"]
+    B --> B2["Apply values"]
+    B --> B3["Generate manifests"]
 
-3. Diff Analysis
-   ├─ Compare current state
-   └─ Identify changes
+    B1 --> C["3. Diff Analysis"]
+    B2 --> C
+    B3 --> C
+    C --> C1["Compare current state"]
+    C --> C2["Identify changes"]
 
-4. Apply Changes
-   ├─ Create new resources
-   ├─ Update existing resources
-   └─ Delete obsolete resources (if prune=true)
+    C1 --> D["4. Apply Changes"]
+    C2 --> D
+    D --> D1["Create new resources"]
+    D --> D2["Update existing resources"]
+    D --> D3["Delete obsolete resources<br/>(if prune=true)"]
 
-5. Health Check
-   ├─ Wait for readiness
-   └─ Report status
+    D1 --> E["5. Health Check"]
+    D2 --> E
+    D3 --> E
+    E --> E1["Wait for readiness"]
+    E --> E2["Report status"]
+
+    style A fill:#e3f2fd,stroke:#1976d2,stroke-width:2px
+    style B fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style D fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style E fill:#fce4ec,stroke:#c2185b,stroke-width:2px
 ```
 
 ### 4. 롤링 업데이트
@@ -353,12 +372,14 @@ argocd app rollback q-sign <revision-id>
 ## 📚 모범 사례
 
 ### 1. Git 브랜치 전략
-```
-main (production)
-  ↑
-develop (staging)
-  ↑
-feature/* (개발)
+```mermaid
+graph BT
+    A["feature/*<br/>(개발)"] --> B["develop<br/>(staging)"]
+    B --> C["main<br/>(production)"]
+
+    style C fill:#ffcdd2,stroke:#c62828,stroke-width:3px
+    style B fill:#fff9c4,stroke:#f57f17,stroke-width:2px
+    style A fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
 ```
 
 ### 2. Helm Values 분리

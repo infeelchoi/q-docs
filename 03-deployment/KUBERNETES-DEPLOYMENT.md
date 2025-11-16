@@ -19,19 +19,37 @@ QSIGN 프로젝트의 Kubernetes 매니페스트 작성 가이드입니다. 모�
 
 ### 주요 컴포넌트
 
-```
-QSIGN Kubernetes Architecture
-├── q-sign (Namespace)
-│   ├── Keycloak (Deployment)
-│   ├── PostgreSQL (StatefulSet)
-│   └── Luna HSM Client (Deployment)
-├── q-kms (Namespace)
-│   ├── Vault (StatefulSet)
-│   ├── Luna HSM Simulator (Deployment)
-│   └── Etcd (StatefulSet)
-└── monitoring (Namespace)
-    ├── Prometheus (StatefulSet)
-    └── Grafana (Deployment)
+```mermaid
+graph TD
+    ROOT["QSIGN Kubernetes Architecture"]
+
+    ROOT --> NS1["q-sign<br/>(Namespace)"]
+    ROOT --> NS2["q-kms<br/>(Namespace)"]
+    ROOT --> NS3["monitoring<br/>(Namespace)"]
+
+    NS1 --> KC["Keycloak<br/>(Deployment)"]
+    NS1 --> PG["PostgreSQL<br/>(StatefulSet)"]
+    NS1 --> HSM1["Luna HSM Client<br/>(Deployment)"]
+
+    NS2 --> VAULT["Vault<br/>(StatefulSet)"]
+    NS2 --> HSM2["Luna HSM Simulator<br/>(Deployment)"]
+    NS2 --> ETCD["Etcd<br/>(StatefulSet)"]
+
+    NS3 --> PROM["Prometheus<br/>(StatefulSet)"]
+    NS3 --> GRAF["Grafana<br/>(Deployment)"]
+
+    style ROOT fill:#37474f,stroke:#263238,stroke-width:3px,color:#fff
+    style NS1 fill:#1976d2,stroke:#0d47a1,stroke-width:2px,color:#fff
+    style NS2 fill:#388e3c,stroke:#1b5e20,stroke-width:2px,color:#fff
+    style NS3 fill:#c2185b,stroke:#880e4f,stroke-width:2px,color:#fff
+    style KC fill:#bbdefb,stroke:#1976d2
+    style PG fill:#bbdefb,stroke:#1976d2
+    style HSM1 fill:#bbdefb,stroke:#1976d2
+    style VAULT fill:#c8e6c9,stroke:#388e3c
+    style HSM2 fill:#c8e6c9,stroke:#388e3c
+    style ETCD fill:#c8e6c9,stroke:#388e3c
+    style PROM fill:#f8bbd0,stroke:#c2185b
+    style GRAF fill:#f8bbd0,stroke:#c2185b
 ```
 
 ## Namespace 및 리소스 구조
