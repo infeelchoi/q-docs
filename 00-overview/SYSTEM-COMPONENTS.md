@@ -160,10 +160,11 @@ seal "pkcs11" {
 vaultInit:
   enabled: true
   unsealKeys:
-    key1: "<vault-unseal-key-1>"
-    key2: "<vault-unseal-key-2>"
-    key3: "<vault-unseal-key-3>"
-  rootToken: "<vault-root-token>"
+    # 예제 값 - 실제 배포 시 Vault init 출력값으로 교체 필요
+    key1: "EXAMPLE-UNSEAL-KEY-1-REPLACE-WITH-REAL-KEY"
+    key2: "EXAMPLE-UNSEAL-KEY-2-REPLACE-WITH-REAL-KEY"
+    key3: "EXAMPLE-UNSEAL-KEY-3-REPLACE-WITH-REAL-KEY"
+  rootToken: "EXAMPLE-ROOT-TOKEN-REPLACE-WITH-REAL-TOKEN"
 ```
 
 ---
