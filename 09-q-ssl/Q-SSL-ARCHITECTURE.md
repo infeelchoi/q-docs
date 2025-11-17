@@ -150,9 +150,9 @@ graph TB
 
         RECORD[Record Layer<br/>Fragmentation, Compression, Encryption, MAC]
 
-        TCP[TCP Layer<br/>Port 443 (HTTPS)]
+        TCP["TCP Layer<br/>Port 443 - HTTPS"]
 
-        IP[IP Layer<br/>IPv4/IPv6]
+        IP["IP Layer<br/>IPv4 / IPv6"]
     end
 
     APP --> HAND

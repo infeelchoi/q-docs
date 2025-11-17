@@ -282,7 +282,7 @@ graph TB
 
         subgraph "Layer 4: Transport"
             L4_TCP[TCP]
-            L4_UDP[UDP (QUIC)]
+            L4_UDP["UDP - QUIC"]
         end
 
         subgraph "Layer 3: Network"
@@ -476,7 +476,7 @@ graph TB
         subgraph "Key Exchange Layer"
             KE_CLASS[Classical KE<br/>ECDHE P-384]
             KE_PQC[PQC KE<br/>KYBER1024]
-            KE_COMB[Combined Shared Secret<br/>KDF(ECDHE || KYBER)]
+            KE_COMB["Combined Shared Secret<br/>KDF - ECDHE || KYBER"]
         end
 
         subgraph "Signature Layer"
@@ -970,7 +970,7 @@ graph TB
     subgraph "Hybrid Signature Architecture"
         subgraph "Signature Generation (Server)"
             SG1[서명 대상<br/>Message to Sign]
-            SG2[Hash<br/>SHA-384(message)]
+            SG2["Hash<br/>SHA-384 - message"]
 
             subgraph "PQC Path"
                 SG_PQC1[DILITHIUM3 Sign]

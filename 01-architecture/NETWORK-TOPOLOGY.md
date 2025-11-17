@@ -47,8 +47,8 @@ graph TB
         end
 
         subgraph STORAGE["Storage Layer"]
-            PG1[(PostgreSQL<br/>q-sign)]
-            PG2[(PostgreSQL<br/>pqc-sso)]
+            PG1["PostgreSQL<br/>q-sign"]
+            PG2["PostgreSQL<br/>pqc-sso"]
             PV[Persistent Volumes]
         end
     end

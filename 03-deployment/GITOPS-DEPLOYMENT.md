@@ -209,7 +209,7 @@ git push origin main
 ### 2. ArgoCD 자동 감지
 ```mermaid
 graph TD
-    A["GitLab Webhook<br/>(Optional)"] --> B["ArgoCD Git Polling<br/>(3분마다)"]
+    A["GitLab Webhook<br/>- Optional"] --> B["ArgoCD Git Polling<br/>- 3분마다"]
     B --> C["Detect Changes"]
     C --> D["Start Sync Process"]
 
@@ -375,8 +375,8 @@ argocd app rollback q-sign <revision-id>
 ### 1. Git 브랜치 전략
 ```mermaid
 graph BT
-    A["feature/*<br/>(개발)"] --> B["develop<br/>(staging)"]
-    B --> C["main<br/>(production)"]
+    A["feature/*<br/>- 개발"] --> B["develop<br/>- staging"]
+    B --> C["main<br/>- production"]
 
     style C fill:#ffcdd2,stroke:#c62828,stroke-width:3px
     style B fill:#fff9c4,stroke:#f57f17,stroke-width:2px

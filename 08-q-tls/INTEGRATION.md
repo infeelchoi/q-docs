@@ -391,7 +391,7 @@ graph TB
     subgraph KEYCLOAK["Keycloak (Q-TLS Enabled)"]
         REALM[Realm: qsign]
         OIDC[OIDC Endpoint]
-        USER_DB[(User Database)]
+        USER_DB["User Database"]
         HSM_CONN[HSM Connector]
     end
 

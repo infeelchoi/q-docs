@@ -237,7 +237,7 @@ graph LR
         KEYCLOAK[Q-Sign<br/>Keycloak]
         VAULT[Q-KMS<br/>Vault HSM]
         APP[Q-App<br/>Applications]
-        DB[(PostgreSQL<br/>Database)]
+        DB["PostgreSQL<br/>Database"]
     end
 
     CLIENT -->|HTTPS<br/>Q-SSL| GATEWAY

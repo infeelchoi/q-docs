@@ -903,7 +903,7 @@ graph TB
         end
 
         subgraph "Compression Layer (Optional)"
-            COMP[Compression<br/>NULL (disabled in TLS 1.3)]
+            COMP["Compression<br/>NULL - disabled in TLS 1.3"]
         end
 
         subgraph "Encryption Layer"

@@ -675,8 +675,8 @@ graph TB
         end
 
         subgraph DATA["Data Layer"]
-            POSTGRES[(PostgreSQL<br/>Q-SSL)]
-            REDIS[(Redis<br/>Q-SSL)]
+            POSTGRES["PostgreSQL<br/>Q-SSL"]
+            REDIS["Redis<br/>Q-SSL"]
         end
 
         HSM[Luna HSM<br/>PQC Operations]

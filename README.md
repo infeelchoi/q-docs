@@ -235,7 +235,7 @@ graph LR
 
     subgraph SSO["Q-Sign™<br/>Keycloak PQC 26.0.0"]
         KC_AUTH[인증 서버]
-        KC_DB[(PostgreSQL<br/>사용자 DB)]
+        KC_DB["PostgreSQL<br/>사용자 DB"]
         KC_TOKEN[Token Service]
     end
 

@@ -365,9 +365,9 @@ graph LR
     end
 
     subgraph "선정 알고리즘"
-        KEM[FIPS 203<br/>ML-KEM (Kyber)]
-        SIG1[FIPS 204<br/>ML-DSA (Dilithium)]
-        SIG2[FIPS 205<br/>SLH-DSA (SPHINCS+)]
+        KEM["FIPS 203<br/>ML-KEM / Kyber"]
+        SIG1["FIPS 204<br/>ML-DSA / Dilithium"]
+        SIG2["FIPS 205<br/>SLH-DSA / SPHINCS+"]
     end
 
     START --> R1
@@ -1218,7 +1218,7 @@ graph TB
 
         subgraph "Q-Sign Layer"
             KC[Keycloak PQC<br/>Q-TLS Server]
-            KC_DB[(PostgreSQL)]
+            KC_DB["PostgreSQL"]
         end
 
         subgraph "Q-KMS Layer"

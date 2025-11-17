@@ -63,7 +63,7 @@ graph TB
             SECRETS[Secret Storage]
         end
 
-        DB[(PostgreSQL<br/>TLS 1.3 + PQC)]
+        DB["PostgreSQL<br/>TLS 1.3 + PQC"]
     end
 
     subgraph OQS_LAYER["OQS Infrastructure"]
@@ -939,7 +939,7 @@ graph TB
     end
 
     subgraph VAULT_INT["Vault Integration"]
-        VAULT[Q-KMS (Vault)]
+        VAULT["Q-KMS - Vault"]
         TRANSIT[Transit Engine]
         PKI[PKI Engine]
     end
@@ -1835,7 +1835,7 @@ graph TB
     subgraph BACKEND["Backend Services"]
         KEYCLOAK[Keycloak]
         VAULT[Vault]
-        DB[(PostgreSQL)]
+        DB["PostgreSQL"]
         QUEUE[Message Queue<br/>RabbitMQ]
     end
 

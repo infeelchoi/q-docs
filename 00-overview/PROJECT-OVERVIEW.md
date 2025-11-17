@@ -85,8 +85,8 @@ graph TB
     subgraph QKMS["Q-KMS (Key Management Service)"]
         KMS1["HashiCorp Vault 1.21.0"]
         KMS2["Luna HSM Integration"]
-        KMS3["Transit Engine (암호화/복호화)"]
-        KMS4["KV Secret Engine (키 저장)"]
+        KMS3["Transit Engine - 암호화/복호화"]
+        KMS4["KV Secret Engine - 키 저장"]
         KMS5["Namespace: q-kms"]
     end
 
@@ -103,7 +103,7 @@ graph TB
     end
 
     subgraph QApp["Q-APP (Test Applications)"]
-        APP1["App1-7 (테스트 클라이언트)"]
+        APP1["App1-7 - 테스트 클라이언트"]
         APP2["Namespace: q-app"]
     end
 
@@ -114,10 +114,10 @@ graph TB
     end
 
     subgraph Monitor["Monitoring Stack"]
-        MON1["Prometheus (메트릭)"]
-        MON2["Grafana (대시보드)"]
-        MON3["SkyWalking (APM)"]
-        MON4["Elasticsearch (로그)"]
+        MON1["Prometheus - 메트릭"]
+        MON2["Grafana - 대시보드"]
+        MON3["SkyWalking - APM"]
+        MON4["Elasticsearch - 로그"]
     end
 
     QSIGN --> QSign

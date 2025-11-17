@@ -19,8 +19,8 @@ graph TB
         end
 
         subgraph Auth["Authentication & Authorization"]
-            KC_PQC["Keycloak PQC<br/>(Q-Sign)<br/>Namespace: q-sign<br/>Port: 30181"]
-            KC_HSM["Keycloak HSM<br/>(PQC-SSO)<br/>Namespace: pqc-sso<br/>Port: 30699"]
+            KC_PQC["Keycloak PQC<br/>- Q-Sign<br/>Namespace: q-sign<br/>Port: 30181"]
+            KC_HSM["Keycloak HSM<br/>- PQC-SSO<br/>Namespace: pqc-sso<br/>Port: 30699"]
         end
 
         subgraph KeyMgmt["Key Management Layer"]
@@ -51,8 +51,8 @@ graph TB
         end
 
         subgraph Storage["Storage & Database"]
-            PG1["PostgreSQL<br/>(Q-Sign)<br/>:5432"]
-            PG2["PostgreSQL<br/>(PQC-SSO)<br/>:5432"]
+            PG1["PostgreSQL<br/>- Q-Sign<br/>:5432"]
+            PG2["PostgreSQL<br/>- PQC-SSO<br/>:5432"]
             PV["Local Path PV<br/>Storage"]
         end
     end
