@@ -1441,7 +1441,7 @@ graph TB
 
         subgraph GUIDELINES["가이드라인"]
             CLA[CLA 서명]
-            STYLE[코딩 스타일 준수]
+            CODING_STYLE[코딩 스타일 준수]
             COMMIT[커밋 메시지 규칙]
             DCO[DCO Sign-off]
         end
@@ -1449,7 +1449,7 @@ graph TB
 
     CODE & DOCS & TEST --> P1
     P1 --> P2 --> P3 --> P4 --> P5 --> P6 --> P7
-    CLA & STYLE & COMMIT & DCO -.->|필수| P5
+    CLA & CODING_STYLE & COMMIT & DCO -.->|필수| P5
 
     style CODE fill:#c8e6c9,stroke:#2e7d32,stroke-width:3px
     style P7 fill:#bbdefb,stroke:#1565c0,stroke-width:3px

@@ -687,5 +687,5 @@ data:
 
 - [Monitoring Guide](./MONITORING.md)
 - [Backup & Recovery](./BACKUP-RECOVERY.md)
-- [Troubleshooting](../05-troubleshooting/COMMON-ISSUES.md)
+- [Troubleshooting](../06-troubleshooting/COMMON-ISSUES.md)
 - [Kubernetes Best Practices](https://kubernetes.io/docs/concepts/configuration/overview/)

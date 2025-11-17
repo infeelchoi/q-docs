@@ -770,5 +770,5 @@ kubectl drain <old-node> --ignore-daemonsets --delete-emptydir-data
 
 - [Debug Guide](DEBUG-GUIDE.md) - 상세한 디버깅 방법론
 - [FAQ](FAQ.md) - 자주 묻는 질문
-- [Monitoring Guide](../05-operations/MONITORING.md) - 모니터링 설정
-- [Backup & Recovery](../05-operations/BACKUP-RECOVERY.md) - 백업 및 복구
+- [Monitoring Guide](../04-operations/MONITORING.md) - 모니터링 설정
+- [Backup & Recovery](../04-operations/BACKUP-RECOVERY.md) - 백업 및 복구

@@ -330,18 +330,18 @@ http POST localhost:9080/api/documents \
 ## 관련 문서
 
 ### 설치 가이드
-- [Keycloak 설치](../02-installation-guides/KEYCLOAK.md)
-- [Vault 설치](../02-installation-guides/VAULT.md)
-- [APISIX 설치](../02-installation-guides/APISIX.md)
+- [Keycloak 설치](../02-setup/INSTALLATION.md)
+- [Vault 설치](../02-setup/INSTALLATION.md)
+- [APISIX 설치](../02-setup/INSTALLATION.md)
 
 ### 아키텍처
-- [인증/인가 아키텍처](../03-architecture/AUTHENTICATION.md)
-- [보안 아키텍처](../03-architecture/SECURITY.md)
-- [API Gateway 아키텍처](../03-architecture/API-GATEWAY.md)
+- [인증/인가 아키텍처](../01-architecture/ARCHITECTURE-OVERVIEW.md)
+- [보안 아키텍처](../01-architecture/SECURITY-DESIGN.md)
+- [API Gateway 아키텍처](../01-architecture/ARCHITECTURE-OVERVIEW.md)
 
 ### 사용자 가이드
-- [PQC 알고리즘 가이드](../04-user-guides/PQC-ALGORITHMS.md)
-- [문서 서명 가이드](../04-user-guides/DOCUMENT-SIGNING.md)
+- [PQC 알고리즘 가이드](../01-architecture/PQC-ARCHITECTURE.md)
+- [문서 서명 가이드](../01-architecture/ARCHITECTURE-OVERVIEW.md)
 
 ---
 
@@ -359,7 +359,7 @@ http POST localhost:9080/api/documents \
 
 API 사용 중 문제가 발생하면:
 1. 해당 컴포넌트의 로그 확인
-2. [Troubleshooting 가이드](../07-troubleshooting/README.md) 참조
+2. [Troubleshooting 가이드](../06-troubleshooting/README.md) 참조
 3. GitHub Issues에 문의
 
 **로그 확인:**

@@ -51,14 +51,13 @@ liboqs 통합 가이드
 - 알고리즘 선택 가이드
 - 성능 튜닝
 
-### 5. [OQS-PROVIDER-GUIDE.md](./OQS-PROVIDER-GUIDE.md)
-oqs-provider 통합 가이드
-- oqs-provider 설치 및 설정
-- OpenSSL 3.x 통합
-- 인증서 생성 (PQC/Hybrid)
-- TLS 서버/클라이언트 설정
-- APISIX, Nginx 통합
-- 성능 벤치마크
+### 5. [OPENSSL-OQS.md](./OPENSSL-OQS.md)
+OpenSSL 3.x 통합 (oqs-provider)
+- oqs-provider 아키텍처 및 설치
+- OpenSSL 3.x Provider interface
+- TLS 1.3 with PQC examples
+- X.509 PQC 인증서 생성
+- Hybrid 모드 설정
 
 ## 🔐 OQS 핵심 개념
 
@@ -408,7 +407,7 @@ NIST PQC Standards:
    - 빌드 및 설치
    - 코드 예제 실습
 
-5. **고급 설정** ([OQS-PROVIDER-GUIDE.md](./OQS-PROVIDER-GUIDE.md))
+5. **고급 설정** ([OPENSSL-OQS.md](./OPENSSL-OQS.md))
    - OpenSSL 통합
    - 프로덕션 배포
 

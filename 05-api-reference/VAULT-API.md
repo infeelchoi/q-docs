@@ -1065,9 +1065,9 @@ echo "API Key: ${API_KEY}"
 
 ## 관련 문서
 
-- [Vault 설치 가이드](../02-installation-guides/VAULT.md)
-- [보안 아키텍처](../03-architecture/SECURITY.md)
-- [PQC 알고리즘 가이드](../04-user-guides/PQC-ALGORITHMS.md)
+- [Vault 설치 가이드](../02-setup/INSTALLATION.md)
+- [보안 아키텍처](../01-architecture/SECURITY-DESIGN.md)
+- [PQC 알고리즘 가이드](../01-architecture/PQC-ARCHITECTURE.md)
 
 ## 참고 자료
 

@@ -1079,5 +1079,5 @@ tmux attach-session -t qsign-monitor
 
 - [Common Issues](COMMON-ISSUES.md) - 일반적인 문제 해결
 - [FAQ](FAQ.md) - 자주 묻는 질문
-- [Monitoring Guide](../05-operations/MONITORING.md) - 모니터링 설정
-- [Performance Tuning](../05-operations/PERFORMANCE-TUNING.md) - 성능 최적화
+- [Monitoring Guide](../04-operations/MONITORING.md) - 모니터링 설정
+- [Scaling Guide](../04-operations/SCALING.md) - 스케일링 및 성능 최적화

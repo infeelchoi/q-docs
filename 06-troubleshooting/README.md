@@ -257,7 +257,7 @@ kubectl rollout restart statefulset <statefulset-name> -n qsign
 - **EFK/ELK Stack**: 중앙 로그 수집 및 분석
 - **Alertmanager**: 알람 규칙 및 알림
 
-자세한 내용은 [Monitoring Guide](../05-operations/MONITORING.md)를 참조하세요.
+자세한 내용은 [Monitoring Guide](../04-operations/MONITORING.md)를 참조하세요.
 
 ## 지원 받기
 
@@ -370,11 +370,11 @@ kubectl get secret -n qsign  # 값은 포함하지 않음
 
 ## 관련 문서
 
-- [Operations Guide](../05-operations/README.md) - 일상적인 운영 작업
-- [Monitoring Guide](../05-operations/MONITORING.md) - 모니터링 설정
-- [Backup & Recovery](../05-operations/BACKUP-RECOVERY.md) - 백업 및 복구
-- [Performance Tuning](../05-operations/PERFORMANCE-TUNING.md) - 성능 최적화
-- [Security Guide](../04-security/README.md) - 보안 강화
+- [Operations Guide](../04-operations/README.md) - 일상적인 운영 작업
+- [Monitoring Guide](../04-operations/MONITORING.md) - 모니터링 설정
+- [Backup & Recovery](../04-operations/BACKUP-RECOVERY.md) - 백업 및 복구
+- [Performance Tuning](../04-operations/SCALING.md) - 성능 최적화
+- [Security Guide](../01-architecture/SECURITY-DESIGN.md) - 보안 강화
 
 ## 기여하기
 

@@ -1110,6 +1110,6 @@ data:
 ## 참고 자료
 
 - [Daily Operations](./DAILY-OPERATIONS.md)
-- [Disaster Recovery Runbook](../05-troubleshooting/DR-RUNBOOK.md)
+- [Disaster Recovery Runbook](../04-operations/BACKUP-RECOVERY.md)
 - [pgBackRest Documentation](https://pgbackrest.org/user-guide.html)
 - [Vault Backup Documentation](https://developer.hashicorp.com/vault/docs/commands/operator/raft)

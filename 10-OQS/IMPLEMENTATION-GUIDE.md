@@ -955,7 +955,7 @@ make install
 
 ## Usage
 
-See [docs/usage.md](docs/usage.md)
+See [./LIBOQS-INTEGRATION.md](./LIBOQS-INTEGRATION.md)
 EOF
 
 echo ""

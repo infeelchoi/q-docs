@@ -31,7 +31,7 @@ QSIGN 시스템에 대한 자주 묻는 질문과 답변을 정리합니다.
 - 외부 접근을 위한 Ingress Controller
 - LoadBalancer 서비스 지원 (선택사항)
 
-자세한 내용은 [Prerequisites](../01-getting-started/PREREQUISITES.md)를 참조하세요.
+자세한 내용은 [Prerequisites](../02-setup/PREREQUISITES.md)를 참조하세요.
 
 ### Q2. Helm을 사용하지 않고 설치할 수 있나요?
 
@@ -84,7 +84,7 @@ helm install qsign ./helm/qsign \
   --set resources.requests.memory=512Mi
 ```
 
-[Quick Start](../01-getting-started/QUICKSTART.md)에서 상세한 개발 환경 설정을 확인하세요.
+[Installation Guide](../02-setup/INSTALLATION.md)에서 상세한 설치 방법을 확인하세요.
 
 ### Q5. HSM 없이도 QSIGN을 사용할 수 있나요?
 
@@ -120,7 +120,7 @@ kubectl set image statefulset/signserver \
   -n qsign
 ```
 
-주요 버전 업그레이드 시에는 [Upgrade Guide](../05-operations/UPGRADE-GUIDE.md)를 먼저 확인하세요.
+주요 버전 업그레이드 시에는 [Backup & Recovery Guide](../04-operations/BACKUP-RECOVERY.md)에서 백업을 먼저 수행하세요.
 
 ### Q7. 백업은 어떻게 수행하나요?
 
@@ -144,7 +144,7 @@ kubectl exec -it postgres-0 -n qsign -- pg_dump -U keycloak keycloak > keycloak-
 kubectl exec -it signserver-0 -n qsign -- /opt/signserver/bin/signserver.sh dumpproperties > signserver-config-$(date +%Y%m%d).properties
 ```
 
-자세한 내용은 [Backup & Recovery](../05-operations/BACKUP-RECOVERY.md)를 참조하세요.
+자세한 내용은 [Backup & Recovery](../04-operations/BACKUP-RECOVERY.md)를 참조하세요.
 
 ### Q8. 로그는 어디서 확인하나요?
 
@@ -215,7 +215,7 @@ kubectl autoscale statefulset signserver \
 - 온프레미스: 민감한 서명 작업
 - 클라우드: 검증 및 관리 작업
 
-자세한 아키텍처는 [Multi-Cluster Setup](../03-architecture/MULTI-CLUSTER.md)을 참조하세요.
+자세한 아키텍처는 [Architecture Overview](../01-architecture/ARCHITECTURE-OVERVIEW.md)을 참조하세요.
 
 ## 보안 관련
 
@@ -228,7 +228,7 @@ kubectl autoscale statefulset signserver \
 - **Common Criteria**: EAL4+ 수준
 - **ISO/IEC 27001**: 정보보안 관리
 
-각 규정에 대한 준수 가이드는 [Compliance Guide](../04-security/COMPLIANCE.md)에서 확인하세요.
+각 규정에 대한 보안 설계는 [Security Design](../01-architecture/SECURITY-DESIGN.md)에서 확인하세요.
 
 ### Q12. 비밀번호와 인증서는 어떻게 관리하나요?
 
@@ -395,7 +395,7 @@ crypto.token.p11.poolsize=10
 database.pool.maxsize=100
 ```
 
-자세한 성능 튜닝은 [Performance Guide](../05-operations/PERFORMANCE-TUNING.md)를 참조하세요.
+자세한 성능 튜닝은 [Scaling Guide](../04-operations/SCALING.md)를 참조하세요.
 
 ### Q17. 병목 지점을 어떻게 찾나요?
 
@@ -560,7 +560,7 @@ curl https://signserver.qsign.example.com/signserver/rest/v1/workers/PDFSigner/s
 https://signserver.qsign.example.com/signserver/doc/api
 ```
 
-자세한 API 문서는 [API Reference](../02-configuration/API-REFERENCE.md)를 참조하세요.
+자세한 API 문서는 [API Reference](../05-api-reference/)를 참조하세요.
 
 ### Q22. 기존 애플리케이션과 통합하려면?
 
@@ -899,5 +899,5 @@ kubectl get configmap -n qsign -o yaml
 
 - [Common Issues](COMMON-ISSUES.md) - 일반적인 문제 해결
 - [Debug Guide](DEBUG-GUIDE.md) - 디버깅 방법론
-- [Operations Guide](../05-operations/README.md) - 운영 가이드
-- [Security Guide](../04-security/README.md) - 보안 가이드
+- [Operations Guide](../04-operations/README.md) - 운영 가이드
+- [Security Design](../01-architecture/SECURITY-DESIGN.md) - 보안 설계

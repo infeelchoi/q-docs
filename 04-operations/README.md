@@ -371,8 +371,8 @@ scripts/
 ### 내부 문서
 - [Architecture Overview](../01-architecture/README.md)
 - [Deployment Guide](../03-deployment/README.md)
-- [Troubleshooting](../05-troubleshooting/README.md)
-- [Security Guide](../06-security/README.md)
+- [Troubleshooting](../06-troubleshooting/README.md)
+- [Security Guide](../01-architecture/SECURITY-DESIGN.md)
 
 ### 외부 참조
 - [Kubernetes Best Practices](https://kubernetes.io/docs/concepts/configuration/overview/)

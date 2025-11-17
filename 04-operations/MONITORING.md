@@ -1257,7 +1257,7 @@ rate(qsign_hsm_errors_total[5m])
 ## 참고 자료
 
 - [Daily Operations](./DAILY-OPERATIONS.md)
-- [Alert Runbook](../05-troubleshooting/ALERT-RUNBOOK.md)
+- [Alert Runbook](../04-operations/MONITORING.md)
 - [Prometheus Documentation](https://prometheus.io/docs/)
 - [Grafana Documentation](https://grafana.com/docs/)
 - [SkyWalking Documentation](https://skywalking.apache.org/docs/)

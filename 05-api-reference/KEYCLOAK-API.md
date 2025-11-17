@@ -770,9 +770,9 @@ echo "User created"
 
 ## 관련 문서
 
-- [Keycloak 설치 가이드](../02-installation-guides/KEYCLOAK.md)
-- [인증/인가 아키텍처](../03-architecture/AUTHENTICATION.md)
-- [보안 가이드](../06-security/README.md)
+- [Keycloak 설치 가이드](../02-setup/INSTALLATION.md)
+- [인증/인가 아키텍처](../01-architecture/ARCHITECTURE-OVERVIEW.md)
+- [보안 가이드](../01-architecture/SECURITY-DESIGN.md)
 
 ## 참고 자료
 

@@ -1034,9 +1034,9 @@ list_routes
 
 ## 관련 문서
 
-- [APISIX 설치 가이드](../02-installation-guides/APISIX.md)
-- [API Gateway 아키텍처](../03-architecture/API-GATEWAY.md)
-- [인증/인가 설정](../04-user-guides/AUTHENTICATION.md)
+- [APISIX 설치 가이드](../02-setup/INSTALLATION.md)
+- [API Gateway 아키텍처](../01-architecture/ARCHITECTURE-OVERVIEW.md)
+- [인증/인가 설정](../01-architecture/ARCHITECTURE-OVERVIEW.md)
 
 ## 참고 자료
 
