@@ -846,7 +846,7 @@ graph TB
     end
 
     subgraph DERIVATION["Key Derivation"]
-        COMBINE[Combine<br/>ECDHE || Kyber]
+        COMBINE["Combine<br/>ECDHE + Kyber"]
         PMS[Pre-Master Secret<br/>SHA384 → 48 bytes]
         MS[Master Secret<br/>PRF-SHA384 → 48 bytes]
         KB[Key Block<br/>PRF-SHA384 → variable]

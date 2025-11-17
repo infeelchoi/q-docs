@@ -476,7 +476,7 @@ graph TB
         subgraph "Key Exchange Layer"
             KE_CLASS[Classical KE<br/>ECDHE P-384]
             KE_PQC[PQC KE<br/>KYBER1024]
-            KE_COMB["Combined Shared Secret<br/>KDF - ECDHE || KYBER"]
+            KE_COMB["Combined Shared Secret<br/>KDF - ECDHE + KYBER"]
         end
 
         subgraph "Signature Layer"

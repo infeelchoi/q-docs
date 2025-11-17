@@ -316,7 +316,7 @@ graph TB
         end
 
         subgraph PROCESS["Key Derivation"]
-            P1[Combine Secrets<br/>ECDHE || Kyber]
+            P1["Combine Secrets<br/>ECDHE + Kyber"]
             P2[PRF-SHA384<br/>Pre-Master Secret]
             P3[PRF-SHA384<br/>Master Secret]
             P4[Key Expansion<br/>Session Keys]

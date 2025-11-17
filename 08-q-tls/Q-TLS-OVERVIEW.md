@@ -573,7 +573,7 @@ graph TB
         end
 
         subgraph "Combination"
-            COMB[공유 비밀 결합<br/>KDF Shared1 || Shared2]
+            COMB["공유 비밀 결합<br/>KDF - Shared1 + Shared2"]
             MSK[Master Secret<br/>48 bytes]
             SESS[세션 키 생성<br/>Client/Server Write Keys]
         end
