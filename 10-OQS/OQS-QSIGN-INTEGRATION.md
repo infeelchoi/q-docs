@@ -186,9 +186,6 @@ sequenceDiagram
     Service-->>APISIX: Response
     APISIX-->>Client: HTTPS Response
 
-    style APISIX fill:#e3f2fd
-    style Keycloak fill:#fff9c4
-    style Vault fill:#c8e6c9
 ```
 
 ---

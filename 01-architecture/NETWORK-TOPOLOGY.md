@@ -121,6 +121,7 @@ graph TB
         subgraph NS4["Namespace: q-kms"]
             V_SVC[vault<br/>ClusterIP + NodePort:30820]
             V_AGENT[vault-agent<br/>DaemonSet]
+      HSM_DEV[/dev/k7pf0/]
         end
 
         subgraph NS5["Namespace: q-app"]
@@ -144,11 +145,11 @@ graph TB
         end
     end
 
-    KC_SVC --> V_SVC
-    KC_HSM_SVC --> V_SVC
-    V_SVC -.->|HSM| HSM_DEV[/dev/k7pf0]
+  KC_SVC --> V_SVC
+  KC_HSM_SVC --> V_SVC
+  V_SVC -.->|HSM| HSM_DEV
 
-    APISIX_SVC --> KC_SVC
+  APISIX_SVC --> KC_SVC
     APISIX_SVC --> KC_HSM_SVC
     APISIX_SVC --> APP_SVCS
 

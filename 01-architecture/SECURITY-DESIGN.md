@@ -73,30 +73,28 @@ graph TB
 
 ```mermaid
 sequenceDiagram
-    autonumber
-    participant U as 사용자
-    participant KC as Keycloak
-    participant OTP as OTP Provider
-    participant DB as Database
+  autonumber
+  participant U as 사용자
+  participant KC as Keycloak
+  participant OTP as OTP Provider
+  participant DB as Database
 
-    U->>KC: 1. Username + Password
-    KC->>DB: 2. Verify Credentials
-    DB-->>KC: 3. User Valid ✅
+  U->>KC: 1. Username + Password
+  KC->>DB: 2. Verify Credentials
+  DB-->>KC: 3. User Valid ✅
 
-    alt MFA Enabled
-        KC->>OTP: 4. Generate OTP
-        OTP-->>U: 5. Send OTP (SMS/Email/App)
-        U->>KC: 6. Submit OTP
-        KC->>OTP: 7. Verify OTP
-        OTP-->>KC: 8. OTP Valid ✅
+  alt MFA Enabled
+    KC->>OTP: 4. Generate OTP
+    OTP-->>U: 5. Send OTP (SMS/Email/App)
+    U->>KC: 6. Submit OTP
+    KC->>OTP: 7. Verify OTP
+    OTP-->>KC: 8. OTP Valid ✅
 
-        KC->>KC: 9. Create Session
-        KC-->>U: 10. Access Token + Refresh Token
-    else MFA Not Enabled
-        KC-->>U: 11. Access Token (단일 인증)
-    end
-
-    style OTP fill:#bbdefb,stroke:#1976d2,stroke-width:2px
+    KC->>KC: 9. Create Session
+    KC-->>U: 10. Access Token + Refresh Token
+  else MFA Not Enabled
+    KC-->>U: 11. Access Token (단일 인증)
+  end
 ```
 
 ### 2. RBAC (Role-Based Access Control)
@@ -734,8 +732,7 @@ sequenceDiagram
     IR->>MGMT: 16. 사후 보고
     IR->>IR: 17. 교훈 정리
 
-    style IDS fill:#ffccbc,stroke:#d84315,stroke-width:3px
-    style IR fill:#fff9c4,stroke:#f57f17,stroke-width:3px
+```
 ```
 
 ### 사고 심각도 분류
