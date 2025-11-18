@@ -33,7 +33,7 @@ Q-APP (30300) → Q-SIGN (30181) → Q-KMS (8200)
 
 ## 🔗 다음 단계
 
-- 아키텍처 이해: [../02-architecture/](../02-architecture/)
+- 아키텍처 이해: [../01-architecture/](../01-architecture/)
 - 설치 및 설정: [../02-setup/](../02-setup/)
 - 배포 가이드: [../03-deployment/](../03-deployment/)
 - 통합 테스트: [../../QSIGN-Integration-Tests/](../../QSIGN-Integration-Tests/)
