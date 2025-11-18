@@ -49,9 +49,7 @@ sequenceDiagram
         KC-->>U: 로그인 실패 ❌
     end
 
-    style KC fill:#bbdefb,stroke:#1976d2,stroke-width:3px
-    style V fill:#c8e6c9,stroke:#388e3c,stroke-width:3px
-    style HSM fill:#fff9c4,stroke:#f57f17,stroke-width:4px
+```
 ```
 
 ### 2. OAuth 2.0 Authorization Code Flow
@@ -101,9 +99,6 @@ sequenceDiagram
     GW-->>APP: 25. Final Response
     APP-->>U: 26. 서비스 제공
 
-    style KC fill:#bbdefb,stroke:#1976d2,stroke-width:3px
-    style V fill:#c8e6c9,stroke:#388e3c,stroke-width:3px
-    style HSM fill:#fff9c4,stroke:#f57f17,stroke-width:4px
 ```
 
 ### 3. OIDC Discovery 및 JWKS
@@ -162,8 +157,6 @@ sequenceDiagram
 
     Note over HSM: Private Key는<br/>HSM에만 저장됨<br/>(절대 추출 불가)
 
-    style QRNG fill:#ffccbc,stroke:#d84315,stroke-width:3px
-    style HSM fill:#fff9c4,stroke:#f57f17,stroke-width:4px
 ```
 
 ### 2. 서명 생성 플로우
@@ -198,7 +191,6 @@ sequenceDiagram
 
     Note over HSM: 서명 시간: ~1-2ms
 
-    style HSM fill:#fff9c4,stroke:#f57f17,stroke-width:4px
 ```
 
 ### 3. 암호화/복호화 플로우
@@ -234,7 +226,6 @@ sequenceDiagram
     V-->>APP: 12. Decrypted Response<br/>{"plaintext": "base64(data)"}
     end
 
-    style HSM fill:#fff9c4,stroke:#f57f17,stroke-width:4px
 ```
 
 ### 4. 키 순환 플로우
@@ -270,8 +261,6 @@ sequenceDiagram
 
     Note over V: 이전 버전 키는<br/>grace period 동안<br/>검증 가능
 
-    style NEW fill:#c8e6c9,stroke:#388e3c,stroke-width:3px
-    style OLD fill:#ffccbc,stroke:#d84315,stroke-width:2px
 ```
 
 ## 🌐 API 요청 플로우
@@ -324,8 +313,6 @@ sequenceDiagram
 
     GW-->>C: 18. Final Response<br/>(with CORS headers)
 
-    style JWT fill:#bbdefb,stroke:#1976d2,stroke-width:3px
-    style RL fill:#ffccbc,stroke:#d84315,stroke-width:2px
 ```
 
 ### 2. 애플리케이션에서 Vault 사용
@@ -402,7 +389,6 @@ sequenceDiagram
     PV-->>PG: 11. Backup File Created<br/>(/var/lib/postgresql/backups/)
     end
 
-    style PV fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
 ```
 
 ### 2. Vault 데이터 저장
@@ -435,8 +421,6 @@ sequenceDiagram
 
     Note over STORAGE: 모든 데이터는<br/>암호화되어 저장됨
 
-    style ENC fill:#c8e6c9,stroke:#388e3c,stroke-width:3px
-    style MASTER fill:#ffccbc,stroke:#d84315,stroke-width:4px
 ```
 
 ## 🔄 GitOps 배포 플로우
@@ -481,7 +465,6 @@ sequenceDiagram
     AR->>AR: 15. Record Event
     AR-->>DEV: 16. Notification<br/>(Slack/Email)
 
-    style AR fill:#c8e6c9,stroke:#388e3c,stroke-width:3px
 ```
 
 ### 2. CI/CD 파이프라인 플로우
@@ -531,9 +514,6 @@ sequenceDiagram
 
     AR-->>DEV: 17. Deployment Notification
 
-    style JK fill:#bbdefb,stroke:#1976d2,stroke-width:2px
-    style HB fill:#ffccbc,stroke:#d84315,stroke-width:2px
-    style AR fill:#c8e6c9,stroke:#388e3c,stroke-width:3px
 ```
 
 ## 📈 모니터링 데이터 플로우
@@ -574,7 +554,6 @@ sequenceDiagram
     end
     end
 
-    style PROM fill:#c8e6c9,stroke:#388e3c,stroke-width:3px
 ```
 
 ### 2. 로그 수집 플로우
@@ -603,7 +582,6 @@ sequenceDiagram
     ES-->>KB: 10. Search Results
     KB->>KB: 11. Display in UI
 
-    style ES fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
 ```
 
 ## 🔍 데이터 흐름 메트릭
