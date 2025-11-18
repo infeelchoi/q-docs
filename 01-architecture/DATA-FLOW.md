@@ -11,12 +11,12 @@ QSIGN 시스템의 데이터 플로우는 사용자 인증, 토큰 발급, 키 �
 ```mermaid
 sequenceDiagram
     autonumber
-    participant U as 사용자<br/>(브라우저)
+    participant U as 사용자<br/>- 브라우저
     participant GW as APISIX<br/>Gateway
-    participant KC as Keycloak<br/>(Q-Sign)
-    participant DB as PostgreSQL<br/>(사용자 DB)
-    participant V as Vault<br/>(Q-KMS)
-    participant HSM as Luna HSM<br/>(Hardware)
+    participant KC as Keycloak<br/>- Q-Sign
+    participant DB as PostgreSQL<br/>- 사용자 DB
+    participant V as Vault<br/>- Q-KMS
+    participant HSM as Luna HSM<br/>- Hardware
 
     U->>GW: 1. 로그인 페이지 요청
     GW->>KC: 2. Redirect to Keycloak
