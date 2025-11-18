@@ -299,7 +299,7 @@ graph TB
     SHOR -.->|파괴| V3
     SHOR -.->|파괴| V4
 
-    GROVER -.->|약화<br/>(키 길이 2배 필요)| S1
+  GROVER -.->|약화 - 키 길이 2배 필요| S1
     GROVER -.->|약화| S2
     GROVER -.->|약화| S3
 
