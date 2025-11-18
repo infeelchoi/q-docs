@@ -11,34 +11,34 @@ QSIGN 시스템의 데이터 플로우는 사용자 인증, 토큰 발급, 키 �
 ```mermaid
 sequenceDiagram
     autonumber
-    participant U as 사용자<br/>- 브라우저
+    participant U as 사용자<br/>(브라우저)
     participant GW as APISIX<br/>Gateway
-    participant KC as Keycloak<br/>- Q-Sign
-    participant DB as PostgreSQL<br/>- 사용자 DB
-    participant V as Vault<br/>- Q-KMS
-    participant HSM as Luna HSM<br/>- Hardware
+    participant KC as Keycloak<br/>(Q-Sign)
+    participant DB as PostgreSQL<br/>(사용자 DB)
+    participant V as Vault<br/>(Q-KMS)
+    participant HSM as Luna HSM<br/>(Hardware)
 
     U->>GW: 1. 로그인 페이지 요청
     GW->>KC: 2. Redirect to Keycloak
     KC-->>U: 3. 로그인 폼 반환
 
-    U->>KC: 4. 사용자 인증 정보 제출<br/>- username, password
+    U->>KC: 4. 사용자 인증 정보 제출<br/>(username, password)
     KC->>DB: 5. 사용자 검증 쿼리
     DB-->>KC: 6. 사용자 정보 반환
 
     alt 인증 성공
         KC->>KC: 7. 세션 생성
-        KC->>V: 8. PQC 서명 키 요청<br/>- Transit API
-        V->>HSM: 9. DILITHIUM3 서명 요청<br/>- PKCS#11
+        KC->>V: 8. PQC 서명 키 요청<br/>(Transit API)
+        V->>HSM: 9. DILITHIUM3 서명 요청<br/>(PKCS#11)
         HSM->>HSM: 10. Hardware 서명 생성
         HSM-->>V: 11. 서명 데이터 반환
         V-->>KC: 12. 서명된 데이터 반환
 
-        KC->>KC: 13. JWT 토큰 생성<br/>- Header + Payload + PQC Signature
-        KC-->>U: 14. Access Token + Refresh Token<br/>- Set-Cookie / Response Body
+        KC->>KC: 13. JWT 토큰 생성<br/>(Header + Payload + PQC Signature)
+        KC-->>U: 14. Access Token + Refresh Token<br/>(Set-Cookie / Response Body)
 
         U->>GW: 15. API 요청 + JWT Token
-        GW->>GW: 16. JWT 검증<br/>- PQC Signature Verification
+        GW->>GW: 16. JWT 검증<br/>(PQC Signature Verification)
         GW->>KC: 17. Token Introspection (선택적)
         KC-->>GW: 18. Token Valid ✅
 
@@ -115,12 +115,12 @@ sequenceDiagram
     participant V as Vault
 
     C->>KC: 1. GET /.well-known/openid-configuration
-    KC-->>C: 2. OIDC Discovery Document<br/>- issuer, endpoints, algorithms
+    KC-->>C: 2. OIDC Discovery Document<br/>(issuer, endpoints, algorithms)
 
     C->>KC: 3. GET /protocol/openid-connect/certs
     KC->>V: 4. Request Public Keys
     V-->>KC: 5. PQC Public Keys (DILITHIUM3)
-    KC-->>C: 6. JWKS Response<br/>- PQC + RSA keys
+    KC-->>C: 6. JWKS Response<br/>(PQC + RSA keys)
 
     Note over C: Client caches JWKS<br/>for 24 hours
 
@@ -151,16 +151,16 @@ sequenceDiagram
     QRNG-->>HSM: 7. 256-bit Entropy
     HSM-->>V: 8. Random Bytes
 
-    V->>HSM: 9. Generate DILITHIUM3 Keypair<br/>- C_GenerateKeyPair
+    V->>HSM: 9. Generate DILITHIUM3 Keypair<br/>(C_GenerateKeyPair)
     HSM->>HSM: 10. Create Key in Hardware
     HSM-->>V: 11. Key Handle + Public Key
 
-    V->>DB: 12. Store Metadata<br/>- key_id, algorithm, created_at
+    V->>DB: 12. Store Metadata<br/>(key_id, algorithm, created_at)
     DB-->>V: 13. Storage Confirmed
 
     V-->>Admin: 14. Key Created ✅<br/>{key_id, public_key, metadata}
 
-    Note over HSM: Private Key는<br/>HSM에만 저장됨<br/>- 절대 추출 불가
+    Note over HSM: Private Key는<br/>HSM에만 저장됨<br/>(절대 추출 불가)
 
     style QRNG fill:#ffccbc,stroke:#d84315,stroke-width:3px
     style HSM fill:#fff9c4,stroke:#f57f17,stroke-width:4px
@@ -190,7 +190,7 @@ sequenceDiagram
     V->>V: 7. Decode Input Data
     V->>HSM: 8. Sign Request<br/>C_Sign(handle, data)
 
-    HSM->>HSM: 9. DILITHIUM3 Signature<br/>- Hardware Operation
+    HSM->>HSM: 9. DILITHIUM3 Signature<br/>(Hardware Operation)
     HSM-->>V: 10. Signature (~3,293 bytes)
 
     V->>V: 11. Encode Signature (Base64)
@@ -250,18 +250,18 @@ sequenceDiagram
 
     CRON->>V: 1. Rotate Key Request<br/>POST /v1/transit/keys/key-name/rotate
 
-    V->>V: 2. Check Rotation Policy<br/>- min_rotation_period
+    V->>V: 2. Check Rotation Policy<br/>(min_rotation_period)
 
     alt Rotation Allowed
         V->>HSM: 3. Generate New Keypair
         HSM-->>V: 4. New Key Handle + Public Key
 
-        V->>V: 5. Update Key Version<br/>- v1 -> v2
+        V->>V: 5. Update Key Version<br/>(v1 -> v2)
         V->>V: 6. Set New Key as Primary
 
         Note over OLD,NEW: Old Key (v1): 검증 전용<br/>New Key (v2): 서명 + 검증
 
-        V->>V: 7. Schedule Old Key Deletion<br/>- deletion_allowed_at: +90 days
+        V->>V: 7. Schedule Old Key Deletion<br/>(deletion_allowed_at: +90 days)
 
         V-->>CRON: 8. Rotation Success ✅<br/>{latest_version: 2}
     else Rotation Not Allowed
@@ -296,7 +296,7 @@ sequenceDiagram
     CORS-->>GW: 4. CORS OK ✅
 
     GW->>RL: 5. Rate Limit Check
-    RL->>RL: 6. Check Request Count<br/>- Redis/Memory
+    RL->>RL: 6. Check Request Count<br/>(Redis/Memory)
     alt Rate Limit Exceeded
         RL-->>C: 429 Too Many Requests ❌
     else Rate Limit OK
@@ -306,23 +306,23 @@ sequenceDiagram
     GW->>JWT: 8. JWT Verification
     JWT->>JWT: 9. Extract Token from Header
     JWT->>JWT: 10. Decode JWT
-    JWT->>JWT: 11. Verify PQC Signature<br/>- DILITHIUM3
+    JWT->>JWT: 11. Verify PQC Signature<br/>(DILITHIUM3)
 
     alt JWT Invalid
         JWT-->>C: 401 Unauthorized ❌
     else JWT Valid
-        JWT-->>GW: 12. JWT Valid ✅<br/>- user_id, roles, scope
+        JWT-->>GW: 12. JWT Valid ✅<br/>(user_id, roles, scope)
     end
 
-    GW->>GW: 13. Add Headers<br/>- X-User-Id, X-User-Roles
-    GW->>UP: 14. Upstream Request<br/>- with user context
+    GW->>GW: 13. Add Headers<br/>(X-User-Id, X-User-Roles)
+    GW->>UP: 14. Upstream Request<br/>(with user context)
 
     UP->>UP: 15. Business Logic
     UP-->>GW: 16. Response
 
-    GW->>PROM: 17. Metrics Export<br/>- latency, status, path
+    GW->>PROM: 17. Metrics Export<br/>(latency, status, path)
 
-    GW-->>C: 18. Final Response<br/>- with CORS headers
+    GW-->>C: 18. Final Response<br/>(with CORS headers)
 
     style JWT fill:#bbdefb,stroke:#1976d2,stroke-width:3px
     style RL fill:#ffccbc,stroke:#d84315,stroke-width:2px
@@ -381,8 +381,8 @@ sequenceDiagram
 
     rect rgb(230, 245, 255)
     Note over KC,PG: 사용자 등록
-    KC->>KC: 1. Hash Password<br/>- bcrypt/PBKDF2
-    KC->>PG: 2. INSERT INTO users<br/>- username, password_hash, email
+    KC->>KC: 1. Hash Password<br/>(bcrypt/PBKDF2)
+    KC->>PG: 2. INSERT INTO users<br/>(username, password_hash, email)
     PG->>PV: 3. Write to Disk
     PV-->>PG: 4. Write Confirmed
     PG-->>KC: 5. User Created ✅
@@ -390,7 +390,7 @@ sequenceDiagram
 
     rect rgb(255, 245, 230)
     Note over KC,PG: 세션 저장
-    KC->>PG: 6. INSERT INTO sessions<br/>- session_id, user_id, expires_at
+    KC->>PG: 6. INSERT INTO sessions<br/>(session_id, user_id, expires_at)
     PG->>PV: 7. Write to Disk
     PV-->>PG: 8. Write Confirmed
     PG-->>KC: 9. Session Stored ✅
@@ -399,7 +399,7 @@ sequenceDiagram
     rect rgb(245, 255, 230)
     Note over KC,PG: 백업
     PG->>PV: 10. pg_dump (Scheduled)
-    PV-->>PG: 11. Backup File Created<br/>- /var/lib/postgresql/backups/
+    PV-->>PG: 11. Backup File Created<br/>(/var/lib/postgresql/backups/)
     end
 
     style PV fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
@@ -427,7 +427,7 @@ sequenceDiagram
     ENC->>ENC: 6. AES-256-GCM Encrypt
     ENC-->>CORE: 7. Encrypted Data
 
-    CORE->>STORAGE: 8. Write to Disk<br/>- /vault/data/logical/...
+    CORE->>STORAGE: 8. Write to Disk<br/>(/vault/data/logical/...)
     STORAGE-->>CORE: 9. Write Confirmed
 
     CORE->>CORE: 10. Update Index
@@ -452,7 +452,7 @@ sequenceDiagram
     participant K8S as Kubernetes
     participant APP as Application
 
-    DEV->>GIT: 1. git push<br/>- update manifests
+    DEV->>GIT: 1. git push<br/>(update manifests)
     GIT-->>DEV: 2. Commit SHA
 
     rect rgb(230, 245, 255)
@@ -463,7 +463,7 @@ sequenceDiagram
     AR->>AR: 5. Compare with Cluster State
     alt Changes Detected
         AR->>AR: 6. Generate Diff
-        AR->>K8S: 7. kubectl apply<br/>- Rolling Update
+        AR->>K8S: 7. kubectl apply<br/>(Rolling Update)
 
         K8S->>K8S: 8. Create New Pod
         K8S->>APP: 9. Health Check
@@ -479,7 +479,7 @@ sequenceDiagram
     end
 
     AR->>AR: 15. Record Event
-    AR-->>DEV: 16. Notification<br/>- Slack/Email
+    AR-->>DEV: 16. Notification<br/>(Slack/Email)
 
     style AR fill:#c8e6c9,stroke:#388e3c,stroke-width:3px
 ```
@@ -551,10 +551,10 @@ sequenceDiagram
 
     loop Every 15 seconds
         PROM->>SRC: 1. Scrape /metrics endpoint
-        SRC-->>PROM: 2. Metrics Data<br/>- Prometheus format
+        SRC-->>PROM: 2. Metrics Data<br/>(Prometheus format)
     end
 
-    PROM->>PROM: 3. Store in TSDB<br/>- Time Series Database
+    PROM->>PROM: 3. Store in TSDB<br/>(Time Series Database)
 
     rect rgb(230, 245, 255)
     Note over PROM,GRAF: Visualization
@@ -588,11 +588,11 @@ sequenceDiagram
     participant ES as Elasticsearch
     participant KB as Kibana
 
-    APP->>STDOUT: 1. Log Message<br/>- stdout/stderr
-    STDOUT->>FB: 2. Tail Logs<br/>- DaemonSet
+    APP->>STDOUT: 1. Log Message<br/>(stdout/stderr)
+    STDOUT->>FB: 2. Tail Logs<br/>(DaemonSet)
 
-    FB->>FB: 3. Parse Log<br/>- JSON/Regex
-    FB->>FB: 4. Add Metadata<br/>- namespace, pod, labels
+    FB->>FB: 3. Parse Log<br/>(JSON/Regex)
+    FB->>FB: 4. Add Metadata<br/>(namespace, pod, labels)
     FB->>FB: 5. Filter/Transform
 
     FB->>ES: 6. Bulk Insert<br/>POST /_bulk
