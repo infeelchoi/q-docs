@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PQC SSL/TLS 통신 시퀀스 다이어그램</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        .diagram-section {
+            margin-bottom: 50px;
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+        .diagram-title {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .description {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border: 2px solid #e9ecef;
+        }
+        .description h3 {
+            color: #495057;
+            margin-top: 0;
+        }
+        .step {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f1f3f5;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .step strong {
+            color: #667eea;
+        }
+        .mermaid {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .highlight-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .highlight-box h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .algorithm-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .algorithm-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        .algorithm-table td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .algorithm-table tr:hover {
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 PQC SSL/TLS 통신 시퀀스 다이어그램</h1>
+        <p class="subtitle">양자내성암호(Post-Quantum Cryptography)가 적용된 SSL/TLS 핸드셰이크 과정</p>
+
+        <!-- 기본 PQC SSL/TLS 핸드셰이크 -->
+        <div class="diagram-section">
+            <div class="diagram-title">1️⃣ 기본 PQC SSL/TLS 핸드셰이크</div>
+            <div class="mermaid">
+sequenceDiagram
+    participant C as 클라이언트
+    participant S as 서버
+    participant CA as CA (인증기관)
+    
+    Note over C,S: 1. 핸드셰이크 시작
+    C->>S: Client Hello<br/>(지원 PQC 알고리즘: Kyber768, Dilithium3)
+    
+    Note over S: PQC 알고리즘 선택
+    S->>C: Server Hello<br/>(선택: Kyber768 키교환, Dilithium3 서명)
+    
+    Note over S: 2. 인증서 전송
+    S->>C: Certificate<br/>(Dilithium3로 서명된 서버 인증서)
+    
+    Note over C: 3. 인증서 검증
+    C->>CA: CA 공개키로 서버 인증서 검증
+    CA-->>C: 검증 완료
+    
+    Note over C: 4. PQC 키 교환
+    C->>S: Client Key Exchange<br/>(Kyber768로 암호화된 Pre-Master Secret)
+    
+    Note over C,S: 5. 세션키 생성
+    Note over C: Master Secret 생성<br/>(Pre-Master Secret 기반)
+    Note over S: Master Secret 생성<br/>(Pre-Master Secret 복호화)
+    
+    C->>S: Change Cipher Spec<br/>(암호화 시작 알림)
+    C->>S: Finished (암호화됨)
+    
+    S->>C: Change Cipher Spec
+    S->>C: Finished (암호화됨)
+    
+    Note over C,S: 6. 암호화된 데이터 통신
+    C->>S: Application Data (AES-256-GCM 암호화)
+    S->>C: Application Data (AES-256-GCM 암호화)
+            </div>
+
+            <div class="description">
+                <h3>📋 주요 단계 설명</h3>
+                <div class="step">
+                    <strong>1단계 - Client Hello:</strong> 클라이언트가 지원하는 PQC 알고리즘 목록(Kyber, Dilithium 등)을 서버에 전송
+                </div>
+                <div class="step">
+                    <strong>2단계 - Server Hello:</strong> 서버가 사용할 PQC 알고리즘 선택 (키교환: Kyber768, 서명: Dilithium3)
+                </div>
+                <div class="step">
+                    <strong>3단계 - Certificate:</strong> Dilithium3 알고리즘으로 서명된 서버 인증서 전송
+                </div>
+                <div class="step">
+                    <strong>4단계 - 인증서 검증:</strong> CA의 PQC 공개키로 서버 인증서의 Dilithium3 서명 검증
+                </div>
+                <div class="step">
+                    <strong>5단계 - Key Exchange:</strong> Kyber768 알고리즘으로 Pre-Master Secret 암호화하여 전송
+                </div>
+                <div class="step">
+                    <strong>6단계 - 세션키 생성:</strong> 양쪽에서 동일한 Master Secret(대칭키) 생성
+                </div>
+                <div class="step">
+                    <strong>7단계 - 데이터 통신:</strong> 생성된 대칭키(AES)로 실제 데이터 암호화 통신
+                </div>
+            </div>
+        </div>
+
+        <!-- 하이브리드 PQC + 기존 알고리즘 -->
+        <div class="diagram-section">
+            <div class="diagram-title">2️⃣ 하이브리드 모드 (PQC + 기존 알고리즘)</div>
+            <div class="mermaid">
+sequenceDiagram
+    participant C as 클라이언트
+    participant S as 서버
+    participant CA as CA (인증기관)
+    
+    Note over C,S: 호환성을 위한 하이브리드 방식
+    
+    C->>S: Client Hello<br/>(PQC: Kyber768 + 기존: ECDHE-P256)
+    S->>C: Server Hello<br/>(하이브리드 모드 선택)
+    
+    Note over S: 이중 인증서 체인
+    S->>C: Certificate Chain<br/>1. RSA-2048 인증서<br/>2. Dilithium3 인증서
+    
+    Note over C: 이중 검증
+    C->>CA: RSA 서명 검증
+    CA-->>C: ✓ 검증 완료
+    C->>CA: Dilithium3 서명 검증
+    CA-->>C: ✓ 검증 완료
+    
+    Note over C: 이중 키 교환
+    C->>S: Key Exchange 1<br/>(ECDHE-P256)
+    C->>S: Key Exchange 2<br/>(Kyber768)
+    
+    Note over C,S: 두 키 교환 결과를 결합
+    Note over C: Master Secret = <br/>KDF(ECDHE_Secret || Kyber_Secret)
+    Note over S: Master Secret = <br/>KDF(ECDHE_Secret || Kyber_Secret)
+    
+    C->>S: Finished (암호화됨)
+    S->>C: Finished (암호화됨)
+    
+    Note over C,S: 양자 안전 + 기존 보안 보장
+    C->>S: Encrypted Data
+    S->>C: Encrypted Data
+            </div>
+
+            <div class="highlight-box">
+                <h4>🔄 하이브리드 모드의 장점</h4>
+                <ul>
+                    <li><strong>하위 호환성:</strong> 기존 시스템과의 호환성 유지</li>
+                    <li><strong>이중 보안:</strong> 기존 알고리즘 + PQC 알고리즘 동시 적용</li>
+                    <li><strong>점진적 전환:</strong> PQC로의 단계적 마이그레이션 가능</li>
+                    <li><strong>안전성 보장:</strong> 하나의 알고리즘이 깨져도 다른 알고리즘으로 보호</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- CA 인증서 발급 과정 (PQC) -->
+        <div class="diagram-section">
+            <div class="diagram-title">3️⃣ PQC 인증서 발급 과정</div>
+            <div class="mermaid">
+sequenceDiagram
+    participant Server as 웹 서버
+    participant CA as CA (인증기관)
+    participant Root as Root CA
+    
+    Note over Server: 1. PQC 키쌍 생성
+    Server->>Server: 개인키 생성<br/>(Dilithium3 알고리즘)
+    Server->>Server: 공개키 추출
+    
+    Note over Server: 2. CSR 생성
+    Server->>CA: Certificate Signing Request<br/>(서버 정보 + Dilithium3 공개키)
+    
+    Note over CA: 3. 신원 확인
+    CA->>CA: 서버 신원 검증<br/>(도메인 소유권 확인)
+    
+    Note over CA: 4. 인증서 서명
+    CA->>CA: Dilithium3 개인키로<br/>서버 인증서 서명
+    
+    CA->>Server: 서명된 인증서 발급<br/>(Dilithium3 서명 포함)
+    
+    Note over CA,Root: 5. CA 인증서 체인
+    CA->>Root: CA 인증서 검증 요청
+    Root->>Root: Root CA의 Dilithium5로<br/>CA 인증서 서명
+    Root->>CA: 서명된 CA 인증서
+    
+    Note over Server: 6. 인증서 체인 구성
+    Server->>Server: 인증서 체인 저장<br/>- 서버 인증서<br/>- CA 인증서<br/>- Root CA 인증서
+            </div>
+
+            <div class="description">
+                <h3>🔑 PQC 인증서 구조</h3>
+                <table class="algorithm-table">
+                    <tr>
+                        <th>구성요소</th>
+                        <th>PQC 알고리즘</th>
+                        <th>기존 알고리즘</th>
+                    </tr>
+                    <tr>
+                        <td>서버 인증서 서명</td>
+                        <td>Dilithium3</td>
+                        <td>RSA-2048</td>
+                    </tr>
+                    <tr>
+                        <td>CA 인증서 서명</td>
+                        <td>Dilithium3</td>
+                        <td>RSA-4096</td>
+                    </tr>
+                    <tr>
+                        <td>Root CA 서명</td>
+                        <td>Dilithium5</td>
+                        <td>RSA-4096</td>
+                    </tr>
+                    <tr>
+                        <td>키 교환</td>
+                        <td>Kyber768</td>
+                        <td>ECDHE-P256</td>
+                    </tr>
+                    <tr>
+                        <td>대칭키 암호화</td>
+                        <td colspan="2">AES-256-GCM (양자 안전)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- 전체 통신 흐름 (상세) -->
+        <div class="diagram-section">
+            <div class="diagram-title">4️⃣ 전체 PQC SSL/TLS 통신 흐름 (상세)</div>
+            <div class="mermaid">
+sequenceDiagram
+    participant Browser as 웹 브라우저
+    participant Server as 웹 서버
+    participant CA as CA
+    
+    Note over Browser,Server: Phase 1: TCP 연결
+    Browser->>Server: TCP SYN
+    Server->>Browser: TCP SYN-ACK
+    Browser->>Server: TCP ACK
+    
+    Note over Browser,Server: Phase 2: TLS 핸드셰이크 (PQC)
+    Browser->>Server: ClientHello<br/>- TLS 1.3<br/>- Cipher Suites: TLS_KYBER768_AES256<br/>- PQC Extensions
+    
+    Server->>Browser: ServerHello<br/>- 선택된 Cipher Suite<br/>- Kyber768 공개키 (서버)
+    
+    Server->>Browser: Certificate<br/>- Dilithium3 서명 인증서<br/>- 인증서 체인
+    
+    Server->>Browser: CertificateVerify<br/>- 핸드셰이크 메시지의<br/>  Dilithium3 서명
+    
+    Server->>Browser: Finished<br/>(암호화된 해시)
+    
+    Note over Browser: CA 공개키로<br/>Dilithium3 서명 검증
+    
+    Browser->>Server: Certificate (선택적)<br/>- 클라이언트 인증서
+    
+    Browser->>Server: ClientKeyExchange<br/>- Kyber768로 암호화된<br/>  Pre-Master Secret
+    
+    Browser->>Server: Finished<br/>(암호화된 해시)
+    
+    Note over Browser,Server: Phase 3: 세션키 확립
+    Note over Browser: Master Secret 계산<br/>Session Keys 생성
+    Note over Server: Master Secret 계산<br/>Session Keys 생성
+    
+    Note over Browser,Server: Phase 4: 암호화 통신
+    Browser->>Server: HTTP Request<br/>(AES-256-GCM 암호화)
+    Server->>Browser: HTTP Response<br/>(AES-256-GCM 암호화)
+    
+    Note over Browser,Server: Phase 5: 연결 종료
+    Browser->>Server: Close Notify<br/>(암호화됨)
+    Server->>Browser: Close Notify<br/>(암호화됨)
+            </div>
+        </div>
+
+        <!-- PQC 알고리즘 비교 -->
+        <div class="diagram-section">
+            <div class="diagram-title">5️⃣ PQC 알고리즘 특성 비교</div>
+            
+            <div class="description">
+                <h3>🔐 서명 알고리즘 (인증서용)</h3>
+                <table class="algorithm-table">
+                    <tr>
+                        <th>알고리즘</th>
+                        <th>공개키 크기</th>
+                        <th>서명 크기</th>
+                        <th>보안 수준</th>
+                        <th>특징</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Dilithium2</strong></td>
+                        <td>1,312 bytes</td>
+                        <td>2,420 bytes</td>
+                        <td>NIST Level 2</td>
+                        <td>빠른 속도, 작은 크기</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dilithium3</strong></td>
+                        <td>1,952 bytes</td>
+                        <td>3,293 bytes</td>
+                        <td>NIST Level 3</td>
+                        <td>균형잡힌 선택 (권장)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dilithium5</strong></td>
+                        <td>2,592 bytes</td>
+                        <td>4,595 bytes</td>
+                        <td>NIST Level 5</td>
+                        <td>최고 보안</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Falcon512</strong></td>
+                        <td>897 bytes</td>
+                        <td>666 bytes</td>
+                        <td>NIST Level 1</td>
+                        <td>가장 작은 서명</td>
+                    </tr>
+                </table>
+
+                <h3 style="margin-top: 30px;">🔑 키 교환 알고리즘 (핸드셰이크용)</h3>
+                <table class="algorithm-table">
+                    <tr>
+                        <th>알고리즘</th>
+                        <th>공개키 크기</th>
+                        <th>암호문 크기</th>
+                        <th>보안 수준</th>
+                        <th>특징</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Kyber512</strong></td>
+                        <td>800 bytes</td>
+                        <td>768 bytes</td>
+                        <td>NIST Level 1</td>
+                        <td>빠른 처리</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kyber768</strong></td>
+                        <td>1,184 bytes</td>
+                        <td>1,088 bytes</td>
+                        <td>NIST Level 3</td>
+                        <td>권장 (AES-128 수준)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kyber1024</strong></td>
+                        <td>1,568 bytes</td>
+                        <td>1,568 bytes</td>
+                        <td>NIST Level 5</td>
+                        <td>최고 보안 (AES-256 수준)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="highlight-box">
+                <h4>💡 알고리즘 선택 가이드</h4>
+                <ul>
+                    <li><strong>일반 웹사이트:</strong> Dilithium3 + Kyber768 (권장)</li>
+                    <li><strong>금융/의료 시스템:</strong> Dilithium5 + Kyber1024 (최고 보안)</li>
+                    <li><strong>IoT/모바일:</strong> Dilithium2 + Kyber512 (경량)</li>
+                    <li><strong>하이브리드:</strong> 기존 알고리즘 + PQC (전환기)</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            sequence: {
+                diagramMarginX: 50,
+                diagramMarginY: 10,
+                actorMargin: 80,
+                width: 200,
+                height: 65,
+                boxMargin: 10,
+                boxTextMargin: 5,
+                noteMargin: 10,
+                messageMargin: 35,
+                mirrorActors: true,
+                useMaxWidth: true
+            }
+        });
+    </script>
+</body>
+</html>
