@@ -11,45 +11,51 @@ QSIGN 시스템의 데이터 플로우는 사용자 인증, 토큰 발급, 키 �
 ```mermaid
 sequenceDiagram
     autonumber
-    participant U as 사용자<br/>(브라우저)
+    participant U as 사용자<br/>- 브라우저
+    participant APP as Q-App<br/>- 애플리케이션
     participant GW as APISIX<br/>Gateway
-    participant KC as Keycloak<br/>(Q-Sign)
-    participant DB as PostgreSQL<br/>(사용자 DB)
-    participant V as Vault<br/>(Q-KMS)
-    participant HSM as Luna HSM<br/>(Hardware)
+    participant KC as Keycloak<br/>- Q-Sign
+    participant DB as PostgreSQL<br/>- 사용자 DB
+    participant V as Vault<br/>- Q-KMS
+    participant HSM as Luna HSM<br/>- Hardware
 
-    U->>GW: 1. 로그인 페이지 요청
-    GW->>KC: 2. Redirect to Keycloak
-    KC-->>U: 3. 로그인 폼 반환
+    U->>APP: 1. 애플리케이션 접속
+    APP-->>U: 2. 메인 페이지 표시<br/>- 로그인 버튼
 
-    U->>KC: 4. 사용자 인증 정보 제출<br/>(username, password)
-    KC->>DB: 5. 사용자 검증 쿼리
-    DB-->>KC: 6. 사용자 정보 반환
+    U->>APP: 3. 로그인 버튼 클릭
+    APP->>GW: 4. 로그인 요청
+    GW->>KC: 5. Redirect to Keycloak
+    KC-->>U: 6. 로그인 폼 반환
+
+    U->>KC: 7. 사용자 인증 정보 제출<br/>- username, password
+    KC->>DB: 8. 사용자 검증 쿼리
+    DB-->>KC: 9. 사용자 정보 반환
 
     alt 인증 성공
-        KC->>KC: 7. 세션 생성
-        KC->>V: 8. PQC 서명 키 요청<br/>(Transit API)
-        V->>HSM: 9. DILITHIUM3 서명 요청<br/>(PKCS#11)
-        HSM->>HSM: 10. Hardware 서명 생성
-        HSM-->>V: 11. 서명 데이터 반환
-        V-->>KC: 12. 서명된 데이터 반환
+        KC->>KC: 10. 세션 생성
+        KC->>V: 11. PQC 서명 키 요청<br/>- Transit API
+        V->>HSM: 12. DILITHIUM3 서명 요청<br/>- PKCS#11
+        HSM->>HSM: 13. Hardware 서명 생성
+        HSM-->>V: 14. 서명 데이터 반환
+        V-->>KC: 15. 서명된 데이터 반환
 
-        KC->>KC: 13. JWT 토큰 생성<br/>(Header + Payload + PQC Signature)
-        KC-->>U: 14. Access Token + Refresh Token<br/>(Set-Cookie / Response Body)
+        KC->>KC: 16. JWT 토큰 생성<br/>- Header + Payload + PQC Signature
+        KC-->>APP: 17. Access Token + Refresh Token<br/>- Set-Cookie / Response Body
 
-        U->>GW: 15. API 요청 + JWT Token
-        GW->>GW: 16. JWT 검증<br/>(PQC Signature Verification)
-        GW->>KC: 17. Token Introspection (선택적)
-        KC-->>GW: 18. Token Valid ✅
+        APP->>GW: 18. API 요청 + JWT Token
+        GW->>GW: 19. JWT 검증<br/>- PQC Signature Verification
+        GW->>KC: 20. Token Introspection - 선택적
+        KC-->>GW: 21. Token Valid ✅
 
-        GW->>APP: 19. Authenticated Request
-        APP-->>GW: 20. Response
-        GW-->>U: 21. Final Response
+        GW->>APP: 22. Authenticated Request
+        APP-->>GW: 23. Response
+        GW-->>APP: 24. Final Response
+        APP-->>U: 25. 로그인 성공<br/>- 서비스 화면 표시
     else 인증 실패
-        KC-->>U: 로그인 실패 ❌
+        KC-->>APP: 로그인 실패 ❌
+        APP-->>U: 오류 메시지 표시
     end
 
-```
 ```
 
 ### 2. OAuth 2.0 Authorization Code Flow
