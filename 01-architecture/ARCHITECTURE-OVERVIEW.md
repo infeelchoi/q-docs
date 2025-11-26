@@ -242,24 +242,29 @@ graph TB
 ### SSO 인증 데이터 흐름
 ```mermaid
 sequenceDiagram
-    participant U as User
-    participant A as APISIX
-    participant K as Keycloak
-    participant V as Vault
-    participant H as Luna HSM
-    participant D as Database
+    participant U as 사용자<br/>- 브라우저
+    participant APP as Q-App<br/>- 애플리케이션
+    participant A as APISIX<br/>Gateway
+    participant K as Keycloak<br/>- Q-Sign
+    participant V as Vault<br/>- 키 관리
+    participant H as Luna HSM<br/>- 하드웨어 보안
+    participant D as PostgreSQL<br/>- 사용자 DB
 
-    U->>A: 1. Login Request
-    A->>K: 2. Forward to Keycloak
-    K->>D: 3. Validate User
-    D-->>K: 4. User Data
-    K->>V: 5. Request PQC Key
-    V->>H: 6. Sign with DILITHIUM3
-    H-->>V: 7. Signature
-    V-->>K: 8. Signed Data
-    K->>K: 9. Generate JWT
-    K-->>A: 10. Return Token
-    A-->>U: 11. Access Token
+    U->>APP: 1. 애플리케이션 접속
+    APP-->>U: 2. 메인 페이지 표시<br/>- 로그인 버튼
+    U->>APP: 3. 로그인 버튼 클릭
+    APP->>A: 4. 로그인 요청
+    A->>K: 5. Redirect to Keycloak
+    K->>D: 6. 사용자 검증
+    D-->>K: 7. 사용자 데이터
+    K->>V: 8. PQC 키 요청
+    V->>H: 9. DILITHIUM3 서명
+    H-->>V: 10. 서명 결과
+    V-->>K: 11. 서명된 데이터
+    K->>K: 12. JWT 토큰 생성
+    K-->>A: 13. 토큰 반환
+    A-->>APP: 14. 액세스 토큰
+    APP-->>U: 15. 인증 완료<br/>- 메인 화면 이동
 ```
 
 ### 키 관리 데이터 흐름
