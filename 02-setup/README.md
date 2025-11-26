@@ -37,7 +37,16 @@ QSIGN 시스템의 설치 및 초기 설정 문서입니다.
 - ConfigMap 및 Secret 설정
 - 환경 변수 설정
 
-### 4. [HSM-SETUP.md](./HSM-SETUP.md)
+### 4. [KEYCLOAK-PQC-CONFIGURATION.md](./KEYCLOAK-PQC-CONFIGURATION.md)
+Keycloak PQC 설정 가이드
+- Pure DILITHIUM3 설정 방법 (Keycloak Admin Console, REST API, Realm Import)
+- Hybrid Mode 설정 방법 (Hybrid Signature Provider, Protocol Mapper)
+- 설정 비교표 (Pure vs Hybrid)
+- 실전 예제 (신규 클라이언트 생성, 모드 전환, 일괄 설정)
+- 검증 방법 (JWT Header 확인, Payload 검증)
+- 언제 어떤 모드를 사용할지 가이드
+
+### 5. [HSM-SETUP.md](./HSM-SETUP.md)
 Luna HSM 상세 설정
 - Luna HSM 초기 설정
 - HSM 디바이스 확인 및 설치
